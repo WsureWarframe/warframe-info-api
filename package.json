@@ -15,6 +15,7 @@
     "request": "~2.88.0",
     "superagent": "^5.0.2",
     "superagent-proxy": "^2.0.0",
-    "memory-cache": "^0.2.0"
+    "memory-cache": "^0.2.0",
+    "moment": "^2.24.0"
   }
 }
