@@ -1,5 +1,6 @@
 var mcache = require('memory-cache');
 var superagent = require('superagent');
+var propxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 var libs = {
     dict:new mcache.Cache(),
@@ -12,13 +13,12 @@ var libs = {
 var wfaLibs ={
     mcache:mcache,
     libs:libs,
-    proxy : 'http://127.0.0.1:8888',
+    proxy : propxyConfig.config,
     libsArr : ['dict','sale','riven','nightwave','invasion'],
     initToken : function(success,fail){
         if(mcache.get("token"))
         {
             success(mcache.get("token"))
-
         } else {
             var url =  'http://api.richasy.cn/connect/token';
             var params = 'client_id=eadfa670ed114c7dbcaecb1a3a1f5fac&client_secret=2bdaaf0e90bd4e8784788d86eb8bca12&grant_type=client_credentials';
@@ -31,6 +31,7 @@ var wfaLibs ={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36',
                 'Referer': 'http://wfa.richasy.cn/'
             };
+            console.log(propxyConfig);
             superagent
                 .post(url)
                 .proxy(this.proxy)
