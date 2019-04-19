@@ -72,8 +72,8 @@ router.all('/keys',function (req,res) {
 });
 
 router.all('/time',function (req,res) {
-  wfApi('timestamp',function (body) {
-    var time = utils.apiTimeUtil(body);
+  wfApi('events',function (body) {
+    var time = utils.apiTimeUtil(body[0].expiry);
     res.json(time);
   },function () {
     res.json({error:"网络不畅"});
@@ -92,34 +92,4 @@ function wfApi(param,success,fail){
     }
   });
 }
-
-var proxy = 'http://127.0.0.1:8888';
-function access_token(success,fail){
-  var url =  'http://api.richasy.cn/connect/token';
-  var params = 'client_id=eadfa670ed114c7dbcaecb1a3a1f5fac&client_secret=2bdaaf0e90bd4e8784788d86eb8bca12&grant_type=client_credentials';
-  var reqData = {
-    'client_id': 'eadfa670ed114c7dbcaecb1a3a1f5fac',
-    'client_secret': '2bdaaf0e90bd4e8784788d86eb8bca12',
-    'grant_type': 'client_credentials'
-  };
-  var headers= {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36',
-      'Referer': 'http://wfa.richasy.cn/'
-    };
-  superagent
-      .post(url)
-      .proxy(proxy)
-      .send(params)
-      .set('client_id','eadfa670ed114c7dbcaecb1a3a1f5fac')
-      .set('client_secret', '2bdaaf0e90bd4e8784788d86eb8bca12')
-      .set('grant_type', 'client_credentials')
-      .then(res=>{
-        console.log(res);
-        success(res.body);
-  }).catch(err=>{
-    console.log(err);
-    fail();
-  })
-}
-
 module.exports = router;
