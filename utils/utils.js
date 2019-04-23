@@ -13,7 +13,7 @@ utils = {
     };
   },
   timeDiff:function (t1,t2) {
-    return timeDiff(t1?moment(t1):moment(),moment(t2));
+    return timeDiff(t1?moment(t1):moment(),t2?moment(t2):moment());
   },
   eta:function (str) {
     return str

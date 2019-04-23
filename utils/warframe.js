@@ -7,9 +7,9 @@ warframe = {
             case "timestamp":
                 return utils.apiTimeUtil(orginInfo);
             case "news":
-                return orginInfo;
+                return newsFormat(orginInfo);
             case "events":
-                return orginInfo;
+                return eventsFormat(orginInfo);
             case "alerts":
                 return alertsFormat(orginInfo);
             case "sortie":
@@ -58,10 +58,10 @@ function alertsFormat(body){
     body.forEach(function (value) {
         //剩余时间格式化
         value.eta = utils.timeDiff(null,value.expiry);
-        value.mission.description = tran.rewardString(value.mission.description);
-        value.mission.reward.asString = tran.rewardString(value.mission.reward.asString);
-        value.mission.node = tran.nodeString(value.mission.node);
-        value.mission.type = tran.rewardString(value.mission.type);
+        value.mission.description = tran.translateByCache(value.mission.description);
+        value.mission.reward.asString = tran.translateByCache(value.mission.reward.asString);
+        value.mission.node = tran.translateByCache(value.mission.node);
+        value.mission.type = tran.translateByCache(value.mission.type);
         //
     });
     return body;
@@ -69,23 +69,50 @@ function alertsFormat(body){
 
 function nightwaveFormat(body){
     body.activeChallenges.forEach(function (value) {
-        value.title = tran.rewardString(value.title);
-        value.desc = tran.rewardString(value.desc);
+        value.title = tran.translateByCache(value.title);
+        value.desc = tran.translateByCache(value.desc);
         value.eta = utils.timeDiff(null,value.expiry);
     });
     return body;
 }
 
 function sortieFormat(body){
-    body.boss = tran.rewardString(body.boss);
+    body.boss = tran.translateByCache(body.boss);
     body.eta = utils.timeDiff(null,body.expiry);
     body.variants.forEach(function (value) {
         Object.keys(value).forEach(function (val) {
-            value[val] = tran.rewardString(value[val])
+            value[val] = tran.translateByCache(value[val])
         });
-        value.node = tran.nodeString(value.node);
+        value.node = tran.translateByCache(value.node);
     });
     return body;
 }
 
+function eventsFormat(body){
+    body.forEach(function (value) {
+        value.description = tran.translateByCache(value.description);
+        value.tooltip = tran.translateByCache(value.tooltip);
+        value.node = tran.translateByCache(value.node);
+        value.victimNode = tran.translateByCache(value.victimNode);
+        value.rewards.forEach(function (val) {
+            val.asString = tran.translateByCache(val.asString);
+        })
+    });
+    return body;
+}
+
+function newsFormat(body){
+    body.forEach(function (value) {
+        if(value.translations.zh)
+        {
+            value.message = value.translations.zh
+        } else {
+            var language = Object.keys(value.translations)[0];
+            value.message = tran.googleTranslate(value.translations[language] ,language);
+        }
+
+        value.eta = utils.timeDiff(null,value.date);
+    });
+    return body;
+}
 module.exports = warframe;

@@ -74,7 +74,7 @@ router.all('/keys',function (req,res) {
 
 router.all('/test',function (req,res) {
   var test = req.body.str;
-  res.send(tran.rewardString(test));
+  res.send(tran.translateByCache(test));
 });
 
 router.all('/time',function (req,res) {
