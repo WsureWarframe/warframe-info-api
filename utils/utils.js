@@ -12,7 +12,18 @@ utils = {
       diff:timeDiff(moment(),time)
     };
   },
-  timeDiff:timeDiff,
+  timeDiff:function (t1,t2) {
+    return timeDiff(t1?moment(t1):moment(),moment(t2));
+  },
+  eta:function (str) {
+    return str
+        .replace(/ /g,'')
+        .replace(/d/g,'天')
+        .replace(/h/g,'小时')
+        .replace(/m/g,'分')
+        .replace(/s/g,'秒')
+        ;
+  }
 
 };
 

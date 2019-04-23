@@ -1,4 +1,5 @@
-{
+localLib =
+    {
   "dict": [
     {
       "id": 1,
@@ -33626,4 +33627,6 @@
       "en": "Exilus Adapter Blueprint"
     }
   ]
-}
+};
+
+module.exports = localLib;

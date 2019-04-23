@@ -5,7 +5,8 @@ require('superagent-proxy')(superagent);
 var router = express.Router();
 var wfaLibs = require('../utils/wfaLibs');
 var utils = require('../utils/utils');
-var mcache = require('memory-cache');
+var warframeUtil = require('../utils/warframe');
+var tran = require('../utils/translate');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -71,10 +72,26 @@ router.all('/keys',function (req,res) {
   res.send(mcache.keys());
 });
 
+router.all('/test',function (req,res) {
+  var test = req.body.str;
+  res.send(tran.rewardString(test));
+});
+
 router.all('/time',function (req,res) {
   wfApi('events',function (body) {
     var time = utils.apiTimeUtil(body[0].expiry);
     res.json(time);
+  },function () {
+    res.json({error:"网络不畅"});
+  });
+});
+
+router.all('/dev/:type',function (req,res) {
+  var type = req.params.type;
+  console.log(type);
+  wfApi(type,function (body) {
+    var data = warframeUtil.getInfo(type,body);
+    res.json(data);
   },function () {
     res.json({error:"网络不畅"});
   });

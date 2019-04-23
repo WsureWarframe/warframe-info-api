@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var wxRouter = require('./routes/wx');
 var warframe = require('./routes/warframe');
 var initJs = require('./utils/wfaLibs');
+var config = require('./config/myConfig');
 var app = express();
 
 // view engine setup
@@ -23,17 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/wx', wxRouter);
 app.use('/wf', warframe);
-
-initJs.initToken(function (res) {
-  console.log('app.js : ','Token init success!');
-  // initJs.initLibs(function (res_) {
-  //   console.log('app.js : ','Libs init success!');
-  //   initJs.initLibsCache();
-    // Object.keys(initJs.lib).forEach(function (value) {
-    //   console.log(value,initJs.libs[value].keys().length);
-    // })
-  // })
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,4 +41,20 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//init data
+if(config.localLib){
+  initJs.initLocalLib();
+  initJs.initLibsCache();
+} else {
+  initJs.initToken(function (res) {
+    console.log('app.js : ','Token init success!');
+    initJs.initLibs(function (res_) {
+      console.log('app.js : ','Libs init success!');
+      initJs.initLibsCache();
+    // Object.keys(initJs.lib).forEach(function (value) {
+    //   console.log(value,initJs.libs[value].keys().length);
+    // })
+    })
+  });
+}
 module.exports = app;
