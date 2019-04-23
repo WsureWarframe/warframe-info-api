@@ -1,5 +1,5 @@
 const USE_PROXY = true;
-const PROXY_CONFIG = 'http://127.0.0.1:1081';
+const PROXY_CONFIG = 'http://127.0.0.1:1080';
 proxyConfig = {
     enabled:USE_PROXY,
     proxy:PROXY_CONFIG,

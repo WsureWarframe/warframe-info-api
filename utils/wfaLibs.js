@@ -1,7 +1,9 @@
 var mcache = require('memory-cache');
 var superagent = require('superagent');
 var propxyConfig = require('../config/proxyConfig');
+var localLib = require('../utils/localLibs');
 require('superagent-proxy')(superagent);
+
 var libs = {
     dict:new mcache.Cache(),
     sale:new mcache.Cache(),
@@ -119,6 +121,12 @@ var wfaLibs ={
                     }
                 })
             }
+        })
+    },
+    initLocalLib(){
+        var vm = this;
+        this.libsArr.forEach(function (value) {
+            vm.mcache.put('lib_'+value,localLib[value])
         })
     }
 };
