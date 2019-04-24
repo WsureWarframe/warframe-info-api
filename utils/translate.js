@@ -32,16 +32,23 @@ function getSearchStr(original,getCache){
         for(var end=max;start<end;end--){
             var data = getCache(getStringByArray(stringArray,start,end));
             if(data.cache){
-                console.log('get!');
-                resArr.push(data.prefix+data.cache.zh+data.suffix);
+                var result = data.prefix+data.cache.zh+data.suffix;
+                resArr.push(regExpTest(result));
                 start = end-1;
                 continue outside;
             }
         }
         if(start<max)
-        resArr.push(stringArray[start]);
+        resArr.push(regExpTest(stringArray[start]));
     }
     return resArr.join(' ');
+}
+
+//在这里可以做一些格式化，使用正则处理
+function regExpTest(result) {
+    // /\d+cr$/.test('') 判断星币
+    result = /\d+cr$/.test(result)?result.replace(/cr$/,'星币'):result;
+    return result;
 }
 
 function getStringByArray(arr,start,end){
