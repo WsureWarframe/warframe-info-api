@@ -3,7 +3,13 @@ const googleTranslate = require('google-baidu-translate-api');
 translate = {
     translateByCache:function (original) {
         if(original)
+        {
+            //防止过度翻译
+            if(isNode(original)){
+                return preRegExpTest(original);
+            }
             return getSearchStr(original,getCache);
+        }
         return null;
     },
     googleTranslate: function (original, from) {
@@ -44,11 +50,21 @@ function getSearchStr(original,getCache){
     return resArr.join(' ');
 }
 
-//在这里可以做一些格式化，使用正则处理
+//在这里可以做一些格式化，使用正则处理 对翻译不充分做处理
 function regExpTest(result) {
     // /\d+cr$/.test('') 判断星币
     result = /\d+cr$/.test(result)?result.replace(/cr$/,'星币'):result;
     return result;
+}
+
+function isNode(input) {
+    return /^[a-zA-Z]+ \([a-zA-Z]+\)$/.test(input);
+}
+
+function preRegExpTest (input) {
+    var prefix = input.replace(/\([a-zA-Z]+\)$/,'');
+    var plant = input.match(/\([a-zA-Z]+\)$/).join('');
+    return prefix + getSearchStr(plant,getCache);
 }
 
 function getStringByArray(arr,start,end){

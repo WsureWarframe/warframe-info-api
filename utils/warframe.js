@@ -62,11 +62,15 @@ warframe = {
             case "alerts":
                 return alertsAsString(alertsFormat(orginInfo));
             case "sortie":
-                return sortieFormat(orginInfo);
+                return sortieAsString(sortieFormat(orginInfo));
             case "syndicateMissions":
                 return syndicateMissionsFormat(orginInfo);
+            case "Solaris":
+                return syndicateAsString(syndicateMissionsFormat(orginInfo),'Solaris United');
+            case "Ostrons":
+                return syndicateAsString(syndicateMissionsFormat(orginInfo),'Ostrons');
             case "fissures":
-                return fissuresFormat(orginInfo);
+                return fissuresAsString(fissuresFormat(orginInfo));
             case "globalUpgrades":
                 return orginInfo;
             case "flashSales":
@@ -280,5 +284,43 @@ function alertsAsString(body){
         )
     });
     return alerts.join('\n');
+}
+
+function sortieAsString(body){
+    let sortie = ['Boss:'+body.boss+' ('+body.faction+')\n'];
+    body.variants.forEach(function (value,index) {
+        sortie.push((index+1)+'.'+value.node
+            +'\n任务：'+value.missionType+'('+value.modifier)
+    });
+    sortie.push('\n时间：'+body.eta);
+    return sortie.join('\n');
+}
+
+/**
+ * @return {string}
+ */
+function syndicateAsString(body,syndicate = 'Ostrons'){ //Solaris United
+    let resArr = [],target = {};
+    body.forEach(function (value) {
+        if(value.syndicate === syndicate)
+            target = value;
+    });
+    target.jobs.forEach(function (job,index) {
+        resArr.push('赏金'+(index+1)+':');
+        resArr.push(job.rewardPool.join('\n')+'\n');
+    });
+    resArr.push('时间：'+target.eta);
+    return resArr.join('\n');
+}
+
+function fissuresAsString(body){
+    let fissures = [];
+    body.forEach(function (value) {
+        fissures.push('['+value.tier+']'+value.node
+            +'\n任务：'+value.missionType+'('+value.enemy+')'
+            +'\n时间：'+value.eta
+        )
+    });
+    return fissures.join('\n\n');
 }
 module.exports = warframe;

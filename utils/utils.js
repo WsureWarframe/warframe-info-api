@@ -23,8 +23,13 @@ utils = {
         .replace(/m/g,'分')
         .replace(/s/g,'秒')
         ;
+  },
+  testType:function (type) {
+    if(type === 'Ostrons'||type === 'Solaris'){
+      return 'syndicateMissions';
+    }
+    return type;
   }
-
 };
 
 function timeDiff(t1,t2) {

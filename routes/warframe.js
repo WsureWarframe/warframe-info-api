@@ -113,9 +113,10 @@ router.all('/dev/:type',function (req,res) {
 });
 
 router.all('/robot/:type',function (req,res) {
-  var type = req.params.type;
+    var type = req.params.type;
+  var param = utils.testType(req.params.type);
   console.log(type);
-  wfApi(type,function (body) {
+  wfApi(param,function (body) {
     var data = warframeUtil.robotFormatStr(type,body);
     if (data instanceof Promise) {
       data.then(result=>{
