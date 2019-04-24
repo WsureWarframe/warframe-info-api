@@ -260,18 +260,25 @@ function newsAsString(promise){
 }
 
 function eventsAsString(body){
-    let asString = '活动：\n' ,evevts = [];
+    let evevts = [];
     body.forEach(function (value,index) {
         evevts.push((index+1)+':'+value.description
             +'\n进度:'+value.health
             +'\n'+value.eta);
     });
-    asString += evevts.join('\n');
-    return asString;
+    return evevts.join('\n');
 }
 
 function alertsAsString(body){
-
-    return body;
+    let alerts = [];
+    body.forEach(function (value,index) {
+        alerts.push((index+1)+'.'+value.mission.node
+            +(value.mission.description === 'Gift From The Lotus'?' Lotus的施舍':'')
+            +'\n类型：'+value.mission.faction+' '+value.mission.type+(value.mission.archwingRequired?'(Archwing)':'')
+            +'\n奖励：'+value.mission.reward.asString
+            +'\n时间：'+value.eta
+        )
+    });
+    return alerts.join('\n');
 }
 module.exports = warframe;
