@@ -77,6 +77,12 @@ router.all('/test',function (req,res) {
   res.send(tran.translateByCache(test));
 });
 
+router.all('/tran',async function (req, res) {
+  var test = req.body.str;
+  var lan = req.body.lan;
+  res.send(await tran.googleTranslate(test, lan))
+});
+
 router.all('/time',function (req,res) {
   wfApi('events',function (body) {
     var time = utils.apiTimeUtil(body[0].expiry);
@@ -91,7 +97,15 @@ router.all('/dev/:type',function (req,res) {
   console.log(type);
   wfApi(type,function (body) {
     var data = warframeUtil.getInfo(type,body);
-    res.json(data);
+    if (data instanceof Promise) {
+      data.then(result=>{
+        res.json(result);
+      }).catch(err=>{
+        res.json(err);
+      })
+    } else {
+      res.json(data);
+    }
   },function () {
     res.json({error:"网络不畅"});
   });

@@ -1,17 +1,20 @@
 var wfaLibs = require('./wfaLibs');
-const googleTranslate = require('google-translate-api');
+const googleTranslate = require('google-baidu-translate-api');
 translate = {
     translateByCache:function (original) {
         if(original)
             return getSearchStr(original,getCache);
         return null;
     },
-    googleTranslate:function (original,from) {
-        return googleTranslate(original,{from:from,to:'zh'}).then(res=>{
-            return res.text;
-        }).catch(err=>{
-            return err;
-        })
+    googleTranslate: function (original, from) {
+        return googleTranslate.google(original, 'zh-cn', from)
+        //     .then(res=>{
+        //     console.log(res);
+        //     return res.text;
+        // }).catch(err=>{
+        //     console.log(err);
+        //     return err;
+        // })
     }
 };
 

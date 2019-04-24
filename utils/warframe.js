@@ -101,18 +101,22 @@ function eventsFormat(body){
     return body;
 }
 
-function newsFormat(body){
-    body.forEach(function (value) {
-        if(value.translations.zh)
-        {
-            value.message = value.translations.zh
-        } else {
-            var language = Object.keys(value.translations)[0];
-            value.message = tran.googleTranslate(value.translations[language] ,language);
+function newsFormat(body) {
+    return new Promise(async (resolve, reject) => {
+        for (let value of body) {
+            if (value.translations.zh) {
+                value.message = value.translations.zh
+            } else {
+                var language = Object.keys(value.translations)[0];
+                console.log(language, value.translations[language]);
+                var tranRes = await tran.googleTranslate(value.translations[language], language);
+                console.log(tranRes);
+                value.message = tranRes.dist;
+            }
+            value.eta = utils.timeDiff(null, value.date);
         }
+        resolve(body);
+    })
 
-        value.eta = utils.timeDiff(null,value.date);
-    });
-    return body;
 }
 module.exports = warframe;
