@@ -76,30 +76,28 @@ warframe = {
             case "flashSales":
                 return flashSalesFormat(orginInfo);
             case "invasions":
-                return invasionsFormat(orginInfo);
+                return invasionsAsString(invasionsFormat(orginInfo));
             case "voidTrader":
-                return voidTraderFormat(orginInfo);
+                return voidTraderAsString(voidTraderFormat(orginInfo));
             case "dailyDeals":
-                return dailyDealsFormat(orginInfo);
-            case "conclaveChallenges":
-                return orginInfo;
+                return dailyDealsAsString(dailyDealsFormat(orginInfo));
             case "persistentEnemies":
                 return orginInfo;
             case "earthCycle":
                 return cycleAsString(cycleFormat(orginInfo));
             case "cetusCycle":
                 return cycleAsString(cycleFormat(orginInfo));
-            case "weeklyChallenges":
-                return orginInfo;
             case "constructionProgress":
-                return orginInfo;
+                return constructionProgressAsString(orginInfo);
             case "vallisCycle":
                 return cycleAsString(cycleFormat(orginInfo));
             case "nightwave":
-                return nightwaveFormat(orginInfo);
-            case "twitter":
-            case "darkSectors":
-            case "simaris":
+                return nightwaveAsString(nightwaveFormat(orginInfo));
+            case "conclaveChallenges":  //没人打pvp ， 没需求不做
+            case "twitter":             //和我们没啥关系
+            case "darkSectors":         //黑区已经废弃
+            case "simaris":             //这个没用
+            case "weeklyChallenges":    //一个未开发完成的接口
             default:
                 return orginInfo;
         }
@@ -207,14 +205,19 @@ function flashSalesFormat(body){
 }
 
 function invasionsFormat(body){
+    let resArr = [];
     body.forEach(function (value) {
-        value.node = tran.translateByCache(value.node);
-        value.desc = tran.translateByCache(value.desc);
-        value.attackerReward.asString = tran.translateByCache(value.attackerReward.asString);
-        value.defenderReward.asString = tran.translateByCache(value.defenderReward.asString);
-        value.eta = utils.timeDiff(null,value.activation);
+        if(!value.completed)
+        {
+            value.node = tran.translateByCache(value.node);
+            value.desc = tran.translateByCache(value.desc);
+            value.attackerReward.asString = tran.translateByCache(value.attackerReward.asString);
+            value.defenderReward.asString = tran.translateByCache(value.defenderReward.asString);
+            value.eta = utils.timeDiff(null,value.activation);
+            resArr.push(value);
+        }
     });
-    return body
+    return resArr;
 }
 
 function voidTraderFormat(body){
@@ -232,6 +235,7 @@ function voidTraderFormat(body){
 function dailyDealsFormat(body){
     body.forEach(function (value) {
         value.item = tran.translateByCache(value.item);
+        value.eta = utils.timeDiff(null,value.expiry);
     });
     return body
 }
@@ -334,5 +338,69 @@ function cycleAsString(body){
             )
     );
     return '状态：'+state+'\n时间：'+body.timeLeft;
+}
+
+function constructionProgressAsString(body){
+    return '巨人舰队：'+body.fomorianProgress+'%\n利刃豺狼：'+body.razorbackProgress+'%';
+}
+
+function dailyDealsAsString(body){
+    let res = [];
+    body.forEach(function (value) {
+        res.push('商品：'+value.item+' [-'+value.discount+'%]'
+        +'\n价格：'+value.salePrice+'('+value.originalPrice+')'
+        +'\n库存：'+(value.total-value.sold)+'/'+value.total
+        +'\n时间：'+value.eta);
+    });
+    return res.join('\n');
+}
+
+function invasionsAsString(body){
+    let invasions = [];
+    body.forEach(function (value,index) {
+        invasions.push(
+            (index+1)+'.'+value.node
+            +'\n   攻['+value.completion.toFixed(2)+'%]\t受['+(100-value.completion).toFixed(2)+'%]'
+            +'\n   '+value.attackingFaction+'\tvs\t'+value.defendingFaction
+            +'\n'+(value.attackerReward.asString?value.attackerReward.asString:'没有奖励')+' vs '+(value.defenderReward.asString?value.defenderReward.asString:'没有奖励')
+            +'\n'+(
+                value.vsInfestation ? // 是否是I佬参与的？
+                    ('I佬挨打中...   需'+(value.count+value.requiredRuns)+'助攻喵~') :  //是 就I佬挨打
+                    (value.completion>=50 ?  //否 再判断进攻方是否是优势
+                        ('需'+(value.requiredRuns-value.count)+'助攻喵~  '+value.defendingFaction.substr(0,1)+'佬挨打中...') :  // 攻方优势 受方挨打
+                            (value.attackingFaction.substr(0,1)+'佬挨打中...   需'+(value.count+value.requiredRuns)+'助攻喵~')  // 受方优势 攻方挨打
+                    )
+            )
+        )
+    });
+    return invasions.join('\n\n');
+}
+
+function voidTraderAsString(body){
+    let voidTrader = [];
+    voidTrader.push('奸商状态：'+(body.active?'到达':'离开'));
+    if(body.active)
+    {
+        voidTrader.push('奸商货物：');
+        body.inventory.forEach(function (val,ind) {
+            voidTrader.push((ind+1)+'.'+val.item+'('+val.ducats+'du'+val.credits+'cr)')
+        })
+    }
+    voidTrader.push(
+        '\n奸商：' + (body.active ? body.endString+'离开' : body.startString+'到达')
+    );
+    return voidTrader.join('\n');
+}
+
+function nightwaveAsString(body){
+    let activeChallenges = [];
+    body.activeChallenges.forEach(function (value,index) {
+        activeChallenges.push(
+            (index+1)+'.'+value.title+'('+value.reputation+')'
+            +'\n'+value.desc
+            +(value.isDaily ? '\n时间：'+value.eta:'')
+        )
+    });
+    return activeChallenges.join('\n\n');
 }
 module.exports = warframe;
