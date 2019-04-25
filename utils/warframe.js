@@ -86,15 +86,15 @@ warframe = {
             case "persistentEnemies":
                 return orginInfo;
             case "earthCycle":
-                return cycleFormat(orginInfo);
+                return cycleAsString(cycleFormat(orginInfo));
             case "cetusCycle":
-                return cycleFormat(orginInfo);
+                return cycleAsString(cycleFormat(orginInfo));
             case "weeklyChallenges":
                 return orginInfo;
             case "constructionProgress":
                 return orginInfo;
             case "vallisCycle":
-                return cycleFormat(orginInfo);
+                return cycleAsString(cycleFormat(orginInfo));
             case "nightwave":
                 return nightwaveFormat(orginInfo);
             case "twitter":
@@ -322,5 +322,17 @@ function fissuresAsString(body){
         )
     });
     return fissures.join('\n\n');
+}
+
+function cycleAsString(body){
+    var state = (
+        body.isDay===undefined
+            ? (
+                body.isWarm ? '温暖' : '寒冷'
+            ) : (
+                body.isDay ? '白天' : '夜晚'
+            )
+    );
+    return '状态：'+state+'\n时间：'+body.timeLeft;
 }
 module.exports = warframe;
