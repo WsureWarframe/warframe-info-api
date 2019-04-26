@@ -9,7 +9,8 @@ var libs = {
     sale:new mcache.Cache(),
     riven:new mcache.Cache(),
     nightwave:new mcache.Cache(),
-    invasion:new mcache.Cache()
+    invasion:new mcache.Cache(),
+    wm:new mcache.Cache()
 };
 /* GET users listing. */
 var wfaLibs ={
@@ -107,12 +108,21 @@ var wfaLibs ={
         this.libsArr.forEach(function (value, index, array) {
             // that.libs[value].put(value,index);
             // console.log(value,that.libs[value].get(value))
+            if(value === 'sale'){
+                that.mcache.get('lib_'+value).forEach(function (value_,index_) {
+                    that.libs[value].put(value_.en,value_);
+                    if(value_.en !== value_.zh && value_ === 'sale')
+                    {
+                        that.libs[value].put(value_.zh,value_)
+                    }
+                })
+            }
+
             if(value === 'riven'){
                 that.mcache.get('lib_'+value).forEach(function (value_,index_) {
                     that.libs[value].put(value_.name,value_);
                 })
-            }
-            else {
+            } else {
                 that.mcache.get('lib_'+value).forEach(function (value_,index_) {
                     that.libs[value].put(value_.en,value_);
                     if(value_.en !== value_.zh && value_ === 'sale')

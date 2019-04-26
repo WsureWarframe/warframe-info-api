@@ -21,6 +21,9 @@ translate = {
         //     console.log(err);
         //     return err;
         // })
+    },
+    saleName:function (input) {
+        return getSearchStr(input,getCache);
     }
 };
 
