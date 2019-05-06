@@ -7,7 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('warframe-info-api:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+var myConfig = require('../config/myConfig');
 
+// Configuare https
+const httpsOption = {
+  key : fs.readFileSync("./config/1600598_zhshy.top.key"),
+  cert: fs.readFileSync("./config/1600598_zhshy.top.pem")
+}
 /**
  * Get port from environment and store in Express.
  */
@@ -29,6 +37,12 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+if(myConfig.https){
+  var https_server = https.createServer(httpsOption,app);
+  https_server.listen(443);
+  https_server.on('error', onError);
+  https_server.on('listening', onListening);
+}
 /**
  * Normalize a port into a number, string, or false.
  */
