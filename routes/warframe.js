@@ -1,5 +1,6 @@
 var express = require('express');
-var request = require('request');
+const WorldState = require('warframe-worldstate-parser');
+var rp = require('request-promise');
 var superagent = require('superagent');
 require('superagent-proxy')(superagent);
 var propxyConfig = require('../config/proxyConfig');
@@ -135,7 +136,7 @@ router.all('/robot/:type',function (req,res) {
 });
 
 function wfApi(param,success,fail){
-  var url = 'http://api.warframestat.us/pc'+(param?'/'+param:'');
+  /*
   superagent
       .get(url)
       .proxy(propxyConfig.proxy)
@@ -152,5 +153,18 @@ function wfApi(param,success,fail){
     console.log(err);
     fail();
   });
+  */
+  rp('http://content.warframe.com/dynamic/worldState.php')
+      .then(res=>{
+        console.log("wfApi request success:",param);
+        const ws = new WorldState(res);
+        if(param) {
+          success(ws[param]);
+        } else {
+          success(ws)
+        }
+      }).catch( err => {
+        fail(err);
+  })
 }
 module.exports = router;
