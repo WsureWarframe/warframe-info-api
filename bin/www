@@ -13,8 +13,8 @@ var myConfig = require('../config/myConfig');
 
 // Configuare https
 const httpsOption = {
-  key : fs.readFileSync("./config/1600598_zhshy.top.key"),
-  cert: fs.readFileSync("./config/1600598_zhshy.top.pem")
+  key : fs.readFileSync("/home/key/1600598_zhshy.top.key"),
+  cert: fs.readFileSync("/home/key/1600598_zhshy.top.pem")
 }
 /**
  * Get port from environment and store in Express.
