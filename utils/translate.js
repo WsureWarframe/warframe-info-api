@@ -57,6 +57,7 @@ function getSearchStr(original,getCache){
 function regExpTest(result) {
     // /\d+cr$/.test('') 判断星币
     result = /\d+cr$/.test(result)?result.replace(/cr$/,'星币'):result;
+    result = /Only$/.test(result)?result.replace(/Only$/,'限定'):result;
     return result;
 }
 

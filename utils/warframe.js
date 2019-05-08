@@ -133,7 +133,6 @@ function sortieFormat(body){
         Object.keys(value).forEach(function (val) {
             value[val] = tran.translateByCache(value[val])
         });
-        value.node = tran.translateByCache(value.node);
     });
     return body;
 }
