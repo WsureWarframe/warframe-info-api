@@ -125,9 +125,9 @@ var wfaLibs ={
             } else {
                 that.mcache.get('lib_'+value).forEach(function (value_,index_) {
                     that.libs[value].put(value_.en,value_);
-                    if(value_.en !== value_.zh && value_ === 'sale')
+                    if(value === 'sale')    //value_.en !== value_.zh &&
                     {
-                        that.libs[value].put(value_.zh,value_)
+                        that.libs.wm.put(value_.zh,value_)
                     }
                 })
             }
