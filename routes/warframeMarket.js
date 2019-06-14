@@ -4,7 +4,7 @@ var wm = require('../utils/warframeMarket');
 
 /**
  *  warframe market 信息相关接口
- *  ps：wfa是指http://warframe.market
+ *  ps：wm是指http://warframe.market
  */
 
 //获取字典接口

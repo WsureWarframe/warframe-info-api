@@ -10,7 +10,8 @@ var libs = {
     riven:new mcache.Cache(),
     nightwave:new mcache.Cache(),
     invasion:new mcache.Cache(),
-    wm:new mcache.Cache()
+    wm:new mcache.Cache(),
+    rm:new mcache.Cache()
 };
 /* GET users listing. */
 var wfaLibs ={
@@ -121,6 +122,14 @@ var wfaLibs ={
             if(value === 'riven'){
                 that.mcache.get('lib_'+value).forEach(function (value_,index_) {
                     that.libs[value].put(value_.name,value_);
+                });
+                that.mcache.get('lib_'+value).forEach(function (value_) {
+                    that.mcache.get('lib_dict').some(function (dict) {
+                        if(value_.name === dict.zh){
+                            that.libs['rm'].put(value_.name,dict);
+                            return true;
+                        }
+                    });
                 })
             } else {
                 that.mcache.get('lib_'+value).forEach(function (value_,index_) {
