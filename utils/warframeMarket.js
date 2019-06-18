@@ -6,14 +6,18 @@ var propxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 
 var warframeMarket = {
-    getInfo: async function (name) {
+    getInfo: async function (name,page = 1,size = 10) {
         var objs = utils.getSaleWord(name, wfaLibs.libs.wm.keys());
         var obj = objs.length > 0 ? wfaLibs.libs.wm.get(objs[0].key) : null;
+        var list = (await wmOrders(obj.search)).data;
         return obj ? {
+            page: page,
+            size: size,
+            total: list.size,
             word: obj,
             words: objs.slice(1, 11),
             statistics: (await wmStatistics(obj.search)).data.slice(-1)[0],
-            seller: (await wmOrders(obj.search)).data
+            seller: list.slice((page-1)*size,page*size)
         } : {
             word: obj,
             words: objs,
@@ -21,7 +25,7 @@ var warframeMarket = {
         };
     },
     robotFormatStr:async function (name) {
-        var info = await this.getInfo(name);
+        var info = await this.getInfo(name,1,5);
         var res = '你查询的物品是:'+info.word.zh+' ('+info.word.search+')\n' +
             '估计价格区间：'+info.statistics.min_price+' - '+info.statistics.max_price+'p\n' +
             '昨日均价：'+info.statistics.avg_price+'p\n' +
@@ -50,7 +54,11 @@ function wmOrders(name = 'primed_chamber'){
                 return item.order_type === 'sell'&&item.user.status !== 'offline';
             }).sort(function (a,b) {
                 return a.platinum-b.platinum;
-            })
+            }).concat(res.body.payload.orders.filter(function (item) {
+                return item.order_type === 'sell'&&item.user.status === 'offline';
+            }).sort(function (a,b) {
+                return a.platinum-b.platinum;
+            }))
         })).catch(err=>({
             state:'error',
             data:err

@@ -8,18 +8,19 @@ var wm = require('../utils/warframeMarket');
  */
 
 //获取字典接口
-router.all('/libs',async function(req, res) {
-    //warframe market
-    var test = req.body.test;
-    console.log(test);
-    res.send(await wm.getInfo(test));
+router.all(['/detail/:detail','/detail'],async function (req,res) {
+    var bodyDetail = req.body.detail;
+    var pathDetail = req.params.detail;
+    var detail = pathDetail?pathDetail:(bodyDetail?bodyDetail:null);
+    var page = req.body.page ;
+    var size = req.body.size ;
+    res.send(await wm.getInfo(detail,page,size));
 });
 
-
-router.all('/robot',async function(req, res) {
-    //warframe market
-    var test = req.body.test;
-    console.log(test);
-    res.send(await wm.robotFormatStr(test));
+router.all(['/robot/:detail','/robot'],async function (req,res) {
+    var bodyDetail = req.body.detail;
+    var pathDetail = req.params.detail;
+    var detail = pathDetail?pathDetail:(bodyDetail?bodyDetail:null);
+    res.send(await wm.robotFormatStr(detail));
 });
 module.exports = router;

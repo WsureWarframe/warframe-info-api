@@ -7,24 +7,44 @@ var cheerio = require('cheerio');
 var rivenProperty = require('./rm');
 
 rivenMarket = {
-    getInfo:async function (name) {
+    getInfo:async function (name,page = 1,size = 10) {
         var objs = utils.getSaleWord(name, wfaLibs.libs.riven.keys());
         var obj = objs.length > 0 ? wfaLibs.libs.rm.get(objs[0].key) : null;
+        var rivenList_ = elementsToRivenList((await rivenList(obj,page,size)).data.text);
         return obj ? {
+            page: page,
+            size: size,
+            total: rivenList_.total,
             word: obj,
             words: objs.slice(1, 11),
-            seller: elementsToRivenList((await rivenList(obj)).data.text)
+            seller: rivenList_.rivenList
         } : {
             word: obj,
             words: objs,
             seller: []
         };
+    },
+    robotFormatStr:async function (name) {
+        var res = '从Riven.Market查询到以下紫卡信息(截取价格最低前5条):\n';
+        var info = await this.getInfo(name,1,5);
+        info.seller.forEach(((value, index) => {
+            res+= '\n'+value.weapon+' '+value.name+'('+value.price+')'+value.age+'\n';
+            res+= value.rerolls+'洗 '+value.rank+'级 段位'+value.mr+'\n';
+            res+= '\t'+value.stat1+':'+value.stat1val+'\n';
+            res+= '\t'+value.stat2+':'+value.stat2val+'\n';
+            if(value.stat3)
+                res+= '\t'+value.stat3+':'+value.stat3val+'\n';
+            if(value.stat4)
+                res+= '\t'+value.stat4+':'+value.stat4val+'\n';
+            res+= 'id:'+value.seller+' ['+value.status+']\n';
+        }));
+        return res;
     }
 };
 
-function rivenList(obj){
+function rivenList(obj,page,size){
     var weapon = obj.en.replace(' ','_');
-    var rmUrl = rivenMarketUrlCreate(5, true, weapon, 9999, 1);
+    var rmUrl = rivenMarketUrlCreate(size, true, weapon, 999999, page);
     return superagent
         .get(rmUrl)
         .proxy(propxyConfig.config)
@@ -63,6 +83,8 @@ function rivenMarketUrlCreate(limit, onlinefirst, weapon, price, page)
 function elementsToRivenList(text){
     var rivenList = [];
     var $ = cheerio.load(text);
+    var total_text = $('.pagination > .left > p').first().text();
+    var total = parseInt(total_text.match(/(?<=from\s)\d+(?=\stotal)/).join());
     var rivens = $('#riven-list').find('.riven').each((index,value)=>{
        var e = $(value);
        var riven = {
@@ -90,7 +112,10 @@ function elementsToRivenList(text){
        riven = setRivenPerporty(riven);
        rivenList.push(riven);
     });
-    return rivenList;
+    return {
+        rivenList: rivenList,
+        total: total
+    };
 }
 
 function setRivenPerporty(riven){
