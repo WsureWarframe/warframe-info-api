@@ -4,6 +4,7 @@ require('superagent-proxy')(superagent);
 var utils = require('./utils');
 var wfaLibs = require('../utils/wfaLibs');
 var cheerio = require('cheerio');
+var rivenProperty = require('./rm');
 
 rivenMarket = {
     getInfo:async function (name) {
@@ -65,7 +66,7 @@ function elementsToRivenList(text){
     var rivens = $('#riven-list').find('.riven').each((index,value)=>{
        var e = $(value);
        var riven = {
-            id : e.attr("id"),
+           id : e.attr("id"),
            weapon : e.attr("data-weapon"),
            wType : e.attr("data-wtype"),
            name : e.attr("data-name"),
@@ -86,8 +87,31 @@ function elementsToRivenList(text){
            seller : e.find(".seller").text().replace(/[\s\r\n]+/g,''),
            status : e.find('div').is(".ingame")?'ingame':(e.find('div').is(".offline")?'offline':'online')
        };
+       riven = setRivenPerporty(riven);
        rivenList.push(riven);
     });
     return rivenList;
+}
+
+function setRivenPerporty(riven){
+    for(var i=1;i<5;i++){
+        var property = getPerporty(riven['stat'+i]);
+        if(property){
+            riven['stat'+i] = property.Name;
+            riven['stat'+i+'val'] = getPre(property.Pre,i)+ riven['stat'+i+'val']+property.Unit;
+        } else {
+            delete riven['stat'+i];
+            delete riven['stat'+i+'val'];
+        }
+    }
+    return riven;
+}
+
+function getPerporty( perporty ){
+    return ( perporty === '' || perporty === undefined ) ? null : rivenProperty[perporty];
+}
+
+function getPre(pre,i){
+    return i === 4 ? (pre === '+' ? '-' : '+') : pre ;
 }
 module.exports = rivenMarket;
