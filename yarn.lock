@@ -3716,21 +3716,21 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-warframe-worldstate-data@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npm.taobao.org/warframe-worldstate-data/download/warframe-worldstate-data-1.0.1.tgz#217df486bfe63010cfa7292e8abb80edd5fff280"
-  integrity sha1-IX30hr/mMBDPpykuiruA7dX/8oA=
+warframe-worldstate-data@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npm.taobao.org/warframe-worldstate-data/download/warframe-worldstate-data-1.0.3.tgz#9618c435aabcff30145cae186b294aad0f85fcc2"
+  integrity sha1-lhjENaq8/zAUXK4YaylKrQ+F/MI=
 
-warframe-worldstate-parser@^2.6.3:
-  version "2.6.3"
-  resolved "https://registry.npm.taobao.org/warframe-worldstate-parser/download/warframe-worldstate-parser-2.6.3.tgz#0cdd9048632d7a254a236f2738371a22e7a5fc39"
-  integrity sha1-DN2QSGMteiVKI28nODcaIuel/Dk=
+warframe-worldstate-parser@^2.7.3:
+  version "2.7.3"
+  resolved "https://registry.npm.taobao.org/warframe-worldstate-parser/download/warframe-worldstate-parser-2.7.3.tgz#9bb67a0035ade650b9700129c5313f63d94b74fd"
+  integrity sha1-m7Z6ADWt5lC5cAEpxTE/Y9lLdP0=
   dependencies:
     chai "^4.2.0"
     node-fetch "^2.3.0"
     node-md-config "^2.0.1"
     right-pad "^1.0.1"
-    warframe-worldstate-data "^1.0.0"
+    warframe-worldstate-data "^1.0.3"
 
 wcwidth@^1.0.0:
   version "1.0.1"

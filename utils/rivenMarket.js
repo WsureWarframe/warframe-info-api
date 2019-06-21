@@ -28,7 +28,7 @@ rivenMarket = {
         var res = '从Riven.Market查询到以下紫卡信息(截取价格最低前5条):\n';
         var info = await this.getInfo(name,1,5);
         info.seller.forEach(((value, index) => {
-            res+= '\n'+value.weapon+' '+value.name+'('+value.price+')'+value.age+'\n';
+            res+= '\n'+value.weapon+' '+value.name+' ('+value.price+'p)'+value.age+'\n';
             res+= value.rerolls+'洗 '+value.rank+'级 段位'+value.mr+'\n';
             res+= '\t'+value.stat1+':'+value.stat1val+'\n';
             res+= '\t'+value.stat2+':'+value.stat2val+'\n';
@@ -137,6 +137,7 @@ function getPerporty( perporty ){
 }
 
 function getPre(pre,i){
-    return i === 4 ? (pre === '+' ? '-' : '+') : pre ;
+    pre = pre.replace('Slide Attack has ','滑行攻击时');
+    return i === 4 ? (pre.indexOf('+')>-1 ? pre.replace('+','-') : pre.replace('-','+') ) : pre ;
 }
 module.exports = rivenMarket;

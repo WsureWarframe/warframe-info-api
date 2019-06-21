@@ -58,7 +58,7 @@ router.all('/list',function (req,res) {
   });
 });
 
-router.all('/detail/:detail',function (req,res) {
+router.all(['/detail/:detail','/detail'],function (req,res) {
   var bodyDetail = req.body.detail;
   var pathDetail = req.params.detail;
   var detail = pathDetail?pathDetail:(bodyDetail?bodyDetail:null);
@@ -94,8 +94,10 @@ router.all('/time',function (req,res) {
   });
 });
 
-router.all('/dev/:type',function (req,res) {
-  var type = req.params.type;
+router.all(['/dev/:type','/dev'],function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
   console.log(type);
   wfApi(type,function (body) {
     var data = warframeUtil.getInfo(type,body);
@@ -113,10 +115,11 @@ router.all('/dev/:type',function (req,res) {
   });
 });
 
-router.all('/robot/:type',function (req,res) {
-    var type = req.params.type;
-  var param = utils.testType(req.params.type);
-  console.log(type);
+router.all(['/robot/:type','/robot'],function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
+  var param = utils.testType(type);
   wfApi(param,function (body) {
     var data = warframeUtil.robotFormatStr(type,body);
     if (data instanceof Promise) {
