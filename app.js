@@ -9,6 +9,8 @@ var wxRouter = require('./routes/wx');
 var warframe = require('./routes/warframe');
 var wm = require('./routes/warframeMarket');
 var rm = require('./routes/rivenMarket');
+var wiki = require('./routes/huijiwiki');
+
 var initJs = require('./utils/wfaLibs');
 var config = require('./config/myConfig');
 var app = express();
@@ -28,6 +30,7 @@ app.use('/wx', wxRouter);
 app.use('/wf', warframe);
 app.use('/wm', wm);
 app.use('/rm', rm);
+app.use('/wiki', wiki);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

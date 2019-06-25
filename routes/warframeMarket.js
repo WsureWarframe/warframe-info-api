@@ -8,19 +8,19 @@ var wm = require('../utils/warframeMarket');
  */
 
 //获取字典接口
-router.all(['/detail/:detail','/detail'],async function (req,res) {
-    var bodyDetail = req.body.detail;
-    var pathDetail = req.params.detail;
-    var detail = pathDetail?pathDetail:(bodyDetail?bodyDetail:null);
+router.all(['/dev/:type','/dev'],async function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
     var page = req.body.page ;
     var size = req.body.size ;
-    res.send(await wm.getInfo(detail,page,size));
+    res.send(await wm.getInfo(type,page,size));
 });
 
-router.all(['/robot/:detail','/robot'],async function (req,res) {
-    var bodyDetail = req.body.detail;
-    var pathDetail = req.params.detail;
-    var detail = pathDetail?pathDetail:(bodyDetail?bodyDetail:null);
-    res.send(await wm.robotFormatStr(detail));
+router.all(['/robot/:type','/dev'],async function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
+    res.send(await wm.robotFormatStr(type));
 });
 module.exports = router;
