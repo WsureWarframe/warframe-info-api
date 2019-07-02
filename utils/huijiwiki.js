@@ -4,6 +4,7 @@ require('superagent-proxy')(superagent);
 var utils = require('./utils');
 var wfaLibs = require('../utils/wfaLibs');
 var cheerio = require('cheerio');
+var puppeteerUtil = require('../utils/puppeteerFullShot');
 
 huijiwiki ={
     getInfo: async function (name, page = 1, size = 10) {
@@ -12,24 +13,43 @@ huijiwiki ={
         {
             var obj = elementsToList(res.data.text);
             var data = {
+                state:'success',
                 page:page,
                 size:size,
                 total:obj.total,
                 wiki:obj.wikiList
             };
-            if(obj.wikiList.length >0 ){
-                var detailObj = await wikiHtml(getDetailUrl(obj.wikiList[0].url));
+            if(obj.wikiList.length >0 ) {
+                var wikiObj ;
+                obj.wikiList.forEach(value => {
+                    if (value.title.toString().toLowerCase() === name.toString().toLowerCase()){
+                        wikiObj = value;
+                    }
+                });
+                wikiObj = wikiObj?wikiObj:obj.wikiList[0];
+                data['detail'] = wikiObj;
+                var detailObj = await wikiHtml(wikiObj.url);
                 if(detailObj.state === 'success')
                 {
-                    data['detail'] = elementsToText(detailObj.data.text)
+                    data['detail']['html'] = elementsToText(detailObj.data.text)
                 } else {
-                    data['detail'] = "error";
+                    data['detail']['html'] = "error";
                 }
             }
             return data;
         }
         else {
             return res;
+        }
+    },
+    async getDetail(name) {
+        var listInfo = await this.getInfo(name);
+        if(listInfo.state === 'success' ){
+            var data = listInfo.detail;
+            data['screenshot'] = await puppeteerUtil(data.title);
+            return data;
+        } else {
+            return listInfo;
         }
     }
 };
@@ -62,7 +82,7 @@ function elementsToText(text){
     var $ = cheerio.load(text);
     $('.mw-parser-output > table').last().remove();
     $('.mw-parser-output > div').attr('style','width:100%;text-align:center;').remove();
-    return $('.mw-parser-output').first().text().replace(/[\n\t]+/g,'\n');
+    return $('.mw-parser-output').first().text();//.replace(/[\n\t]+/g,'\n');
 }
 function elementsToList(text){
     var wikiList = [];
@@ -74,7 +94,7 @@ function elementsToList(text){
         var result = e.find('.searchresult');
         var result_data = e.find('.mw-search-result-data');
         var wiki = {
-            url:heading.attr('href'),
+            url:getDetailUrl(heading.attr('href')),
             title:heading.attr('title'),
             result:result.text(),
             result_data:result_data.text()

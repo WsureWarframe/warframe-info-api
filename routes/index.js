@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var wfaLib = require('../utils/wfaLibs');
+var puppeteerUtil = require('../utils/puppeteerFullShot');
+const puppeteer = require('puppeteer');
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',async function(req, res, next) {
+  await puppeteerUtil('绝路');
   res.render('index', { title: 'Express' });
 });
 

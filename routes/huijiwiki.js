@@ -10,4 +10,11 @@ router.all(['/dev/:type','/dev'],async function (req,res) {
     var size = req.body.size ;
     res.send(await hjwiki.getInfo(type,page,size));
 });
+
+router.all(['/detail/:type','/detail'],async function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
+    res.send(await hjwiki.getDetail(type));
+});
 module.exports = router;

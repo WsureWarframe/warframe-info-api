@@ -22,6 +22,8 @@
     "superagent-proxy": "^2.0.0",
     "warframe-worldstate-parser": "^2.7.3",
     "request-promise": "^4.2.4",
-    "cheerio": "^1.0.0-rc.3"
+    "cheerio": "^1.0.0-rc.3",
+    "puppeteer": "^1.18.1",
+    "puppeteer-core": "^1.18.1"
   }
 }
