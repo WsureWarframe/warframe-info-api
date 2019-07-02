@@ -46,7 +46,8 @@ huijiwiki ={
         var listInfo = await this.getInfo(name);
         if(listInfo.state === 'success' ){
             var data = listInfo.detail;
-            data['screenshot'] = await puppeteerUtil(data.title);
+            if(name === data.title)
+                data['screenshot'] = await puppeteerUtil(data.title);
             return data;
         } else {
             return listInfo;
