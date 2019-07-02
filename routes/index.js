@@ -6,8 +6,7 @@ const puppeteer = require('puppeteer');
 
 
 /* GET home page. */
-router.get('/',async function(req, res, next) {
-  await puppeteerUtil('绝路');
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
