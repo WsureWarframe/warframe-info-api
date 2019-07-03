@@ -28,13 +28,6 @@ huijiwiki ={
                 });
                 wikiObj = wikiObj?wikiObj:obj.wikiList[0];
                 data['detail'] = wikiObj;
-                var detailObj = await wikiHtml(wikiObj.url);
-                if(detailObj.state === 'success')
-                {
-                    data['detail']['html'] = elementsToText(detailObj.data.text)
-                } else {
-                    data['detail']['html'] = "error";
-                }
             }
             return data;
         }
@@ -52,6 +45,38 @@ huijiwiki ={
         } else {
             return listInfo;
         }
+    },
+    async getHtmlText(name) {
+        var listInfo = await this.getInfo(name);
+        if(listInfo.state === 'success' ){
+            var data = listInfo.detail;
+            var detailObj = await wikiHtml(data.url);
+            if(detailObj.state === 'success')
+            {
+                data['html'] = elementsToText(detailObj.data.text)
+            } else {
+                data['html'] = "error";
+            }
+            return data;
+        } else {
+            return listInfo;
+        }
+    },
+    robotFormatStr: async function (name) {
+        const apiData = await this.getInfo(name,1,6);
+        var res = '';
+        if(apiData.detail){
+            res += ('为你找到:'+ apiData.detail.title +':\n\t'+apiData.detail.result+'\n'+apiData.detail.url+'\n')
+        } else {
+            res += ('未找到:'+name+' !\n')
+        }
+        res += '你可能还需要找:';
+        apiData.wiki.filter(function (item) {
+            return item.title !== name;
+        }).forEach(value => {
+            res += '\n'+value.title
+        });
+        return res;
     }
 };
 

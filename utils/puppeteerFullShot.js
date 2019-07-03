@@ -18,14 +18,14 @@ const getScreenshot  = async (name) => {
     // 打开新页面
     const page = await browser.newPage();
     // 设置页面分辨率
-    await page.setViewport({width: 1920, height: 1080, deviceScaleFactor: 1.25});
+    await page.setViewport({width: 1080, height: 720});
 
     let request_url = getReqUrl(name);
     // 访问
     await page.goto(request_url, {waitUntil: 'domcontentloaded'}).catch(err => console.log(err));
     await page.waitFor(1000);
-    let title = await page.title();
-    console.log(title);
+    // let title = await page.title();
+    // console.log(title);
 
     // 网页加载最大高度
     const max_height_px = 20000;

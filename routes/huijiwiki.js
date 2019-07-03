@@ -17,4 +17,18 @@ router.all(['/detail/:type','/detail'],async function (req,res) {
     var type = pathType?pathType:(bodyType?bodyType:null);
     res.send(await hjwiki.getDetail(type));
 });
+
+router.all(['/text/:type','/text'],async function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
+    res.send(await hjwiki.getHtmlText(type));
+});
+
+router.all(['/robot/:type','/robot'],async function (req,res) {
+    var bodyType = req.body.type;
+    var pathType = req.params.type;
+    var type = pathType?pathType:(bodyType?bodyType:null);
+    res.send(await hjwiki.robotFormatStr(type));
+});
 module.exports = router;
