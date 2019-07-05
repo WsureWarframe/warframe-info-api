@@ -1,7 +1,9 @@
+const path = require('path');
 const puppeteer = require('puppeteer');
 var fs= require('fs');
 
 const getScreenshot  = async (name) => {
+    const hasError = false;
     const img_path = '/screenshot/'+name+'.png';
     try {
         var res = await isFileExisted(name);
@@ -30,7 +32,7 @@ const getScreenshot  = async (name) => {
     // 网页加载最大高度
     const max_height_px = 20000;
     // 滚动高度
-    let scrollStep = 1080;
+    let scrollStep = 720;
     let height_limit = false;
     let mValues = {'scrollEnable': true, 'height_limit': height_limit};
 
@@ -50,9 +52,9 @@ const getScreenshot  = async (name) => {
 
                 let scrollEnableFlag = false;
                 if (null != document.body) {
-                    scrollEnableFlag = document.body.clientHeight > scrollTop + 1081 && !height_limit;
+                    scrollEnableFlag = document.body.clientHeight > scrollTop + (scrollStep+1) && !height_limit;
                 } else {
-                    scrollEnableFlag = document.scrollingElement.scrollTop + scrollStep > scrollTop + 1081 && !height_limit;
+                    scrollEnableFlag = document.scrollingElement.scrollTop + scrollStep > scrollTop + (scrollStep+1) && !height_limit;
                 }
                 return {
                     'scrollEnable': scrollEnableFlag,
@@ -66,12 +68,13 @@ const getScreenshot  = async (name) => {
         await sleep(800);
     }
     try {
-        await page.screenshot({path: "./public"+img_path, fullPage:true}).catch(err => {
+        await page.screenshot({path: path.join(__dirname, "../public"+img_path), fullPage:true}).catch(err => {
             console.log('截图失败');
             console.log(err);
+            hasError = true;
         });
         await page.waitFor(5000);
-        return img_path;
+        return hasError?'error':img_path;
     } catch (e) {
         console.log('执行异常');
         return 'error';
@@ -97,14 +100,14 @@ function getReqUrl(name) {
 }
 
 function hasScreenshot(name){
-    const fileName = './public/screenshot/'+name+'.png';
+    const fileName = '../public/screenshot/'+name+'.png';
     fs.exists(fileName, function(exists) {
         console.log(exists ? "创建成功" : "创建失败");
     });
 }
 
 function isFileExisted(name) {
-    const fileName = './public/screenshot/'+name+'.png';
+    const fileName = path.join(__dirname, '../public/screenshot/'+name+'.png');
     return new Promise(function(resolve, reject) {
         fs.access(fileName, (err) => {
             if (err) {
