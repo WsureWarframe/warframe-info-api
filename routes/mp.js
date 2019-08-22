@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var wxUtils = require('../utils/wx');
+var mpUtils = require('../utils/mp');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 router.post('/login',async function (req,res) {
   // var obj = req;
   var code = req.body.code;
-  await waitForPromise(res,wxUtils.wxLogin(code))
+  var platform = req.body.platform;
+  await waitForPromise(res,mpUtils.mpLogin(code,platform))
 });
 
 async function waitForPromise(res,promise){

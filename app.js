@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var wxRouter = require('./routes/wx');
+var mpRouter = require('./routes/mp');
 var warframe = require('./routes/warframe');
 var wm = require('./routes/warframeMarket');
 var rm = require('./routes/rivenMarket');
@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/wx', wxRouter);
+app.use('/mp', mpRouter);
 app.use('/wf', warframe);
 app.use('/wm', wm);
 app.use('/rm', rm);

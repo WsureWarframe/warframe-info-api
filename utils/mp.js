@@ -3,16 +3,20 @@ var superagent = require('superagent');
 var propxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 
-wxUtils = {
-    wxLogin:wxLogin
+mpUtils = {
+    mpLogin:mpLogin
 };
 
-function wxLogin(code){
-    var wxLoginUrl = 'https://api.weixin.qq.com/sns/jscode2session?appid='+mpConfig.mpAppId+'&secret='+mpConfig.mpAppSecret+'&grant_type=authorization_code&js_code='+code;
-    console.log(wxLoginUrl);
+function mpLogin(code,platform = 'weixin'){
+    var code2Session = {
+        weixin:'https://api.weixin.qq.com/sns/jscode2session',
+        qq:'https://api.q.qq.com/sns/jscode2session'
+    };
+    var mpLoginUrl = code2Session[platform]+'?appid='+mpConfig[platform].appId+'&secret='+mpConfig[platform].appSecret+'&grant_type=authorization_code&js_code='+code;
+    console.log(mpLoginUrl);
     return new Promise((resolve,reject)=>{
         superagent
-            .get(wxLoginUrl)
+            .get(mpLoginUrl)
             .proxy(propxyConfig.config)
             //.set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
             .then(res=>{
@@ -40,4 +44,4 @@ function wxLogin(code){
 
 }
 
-module.exports = wxUtils;
+module.exports = mpUtils;
