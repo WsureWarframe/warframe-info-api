@@ -1,12 +1,12 @@
 const path = require('path');
 const puppeteer = require('puppeteer');
-var fs= require('fs');
+const fs = require('fs');
 
 const getScreenshot  = async (name) => {
     const hasError = false;
     const img_path = '/screenshot/'+name+'.png';
     try {
-        var res = await isFileExisted(name);
+        const res = await isFileExisted(name);
         console.log(name,res);
         if(res === 'existed')
         {

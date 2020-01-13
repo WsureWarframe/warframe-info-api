@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var wfaLib = require('../utils/wfaLibs');
-var puppeteerUtil = require('../utils/puppeteerFullShot');
+const express = require('express');
+const router = express.Router();
+const wfaLib = require('../utils/wfaLibs');
+const puppeteerUtil = require('../utils/puppeteerFullShot');
 const puppeteer = require('puppeteer');
 
 

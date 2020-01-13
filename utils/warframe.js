@@ -1,5 +1,5 @@
-var tran = require('./translate');
-var utils = require('./utils');
+const tran = require('./translate');
+const utils = require('./utils');
 
 warframe = {
     getInfo:function (type = 'alerts',orginInfo) {
@@ -138,17 +138,25 @@ function sortieFormat(body){
 }
 
 function eventsFormat(body){
-    body.forEach(function (value) {
-        value.description = tran.translateByCache(value.description);
-        value.tooltip = tran.translateByCache(value.tooltip);
-        value.node = tran.translateByCache(value.node);
-        value.victimNode = tran.translateByCache(value.victimNode);
-        value.rewards.forEach(function (val) {
-            val.asString = tran.translateByCache(val.asString);
-        });
-        value.eta = utils.timeDiff(null,value.expiry);
+    return new Promise(async (resolve, reject) => {
+        for (let value of body) {
+            value.description = tran.translateByCache(value.description);
+            console.log(tran.translateByCache(value.tooltip));
+            value.tooltip = (await tran.googleTranslate(tran.translateByCache(value.tooltip))).dist;
+            value.node = tran.translateByCache(value.node);
+            value.victimNode = tran.translateByCache(value.victimNode);
+            for (let val of value.rewards) {
+                val.asString = tran.translateByCache(val.asString);
+                val.itemString = tran.translateByCache(val.itemString);
+            }
+            for (let val of value.interimSteps) {
+                val.reward.asString = tran.translateByCache(val.reward.asString);
+                val.reward.itemString = tran.translateByCache(val.reward.itemString);
+            }
+            value.eta = utils.timeDiff(null, value.expiry);
+            resolve(body);
+        }
     });
-    return body;
 }
 
 function newsFormat(body) {
@@ -157,9 +165,9 @@ function newsFormat(body) {
             if (value.translations.zh) {
                 value.message = value.translations.zh
             } else {
-                var language = Object.keys(value.translations)[0];
+                const language = Object.keys(value.translations)[0];
                 console.log(language, value.translations[language]);
-                var tranRes = await tran.googleTranslate(value.translations[language], language);
+                const tranRes = await tran.googleTranslate(tran.translateByCache(value.translations[language]), language);
                 console.log(tranRes);
                 value.message = tranRes.dist;
             }
@@ -328,8 +336,8 @@ function fissuresAsString(body){
 }
 
 function cycleAsString(body){
-    var state = (
-        body.isDay===undefined
+    const state = (
+        body.isDay === undefined
             ? (
                 body.isWarm ? '温暖' : '寒冷'
             ) : (

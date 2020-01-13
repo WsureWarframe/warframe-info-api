@@ -1,37 +1,36 @@
-var mcache = require('memory-cache');
-var superagent = require('superagent');
-var propxyConfig = require('../config/proxyConfig');
-var localLib = require('../utils/localLibs');
+const mcache = require('memory-cache');
+const superagent = require('superagent');
+const propxyConfig = require('../config/proxyConfig');
+const localLib = require('../utils/localLibs');
 require('superagent-proxy')(superagent);
 
-var libs = {
-    dict:new mcache.Cache(),
-    sale:new mcache.Cache(),
-    riven:new mcache.Cache(),
-    nightwave:new mcache.Cache(),
-    invasion:new mcache.Cache(),
-    wm:new mcache.Cache(),
-    rm:new mcache.Cache()
+const libs = {
+    dict: new mcache.Cache(),
+    sale: new mcache.Cache(),
+    riven: new mcache.Cache(),
+    nightwave: new mcache.Cache(),
+    invasion: new mcache.Cache(),
+    wm: new mcache.Cache(),
+    rm: new mcache.Cache()
 };
 /* GET users listing. */
-var wfaLibs ={
-    mcache:mcache,
-    libs:libs,
-    proxy : propxyConfig.config,
-    libsArr : ['dict','sale','riven','nightwave','invasion'],
-    initToken : function(success,fail){
-        if(mcache.get("token"))
-        {
+const wfaLibs = {
+    mcache: mcache,
+    libs: libs,
+    proxy: propxyConfig.config,
+    libsArr: ['dict', 'sale', 'riven', 'nightwave', 'invasion'],
+    initToken: function (success, fail) {
+        if (mcache.get("token")) {
             success(mcache.get("token"))
         } else {
-            var url =  'http://api.richasy.cn/connect/token';
-            var params = 'client_id=eadfa670ed114c7dbcaecb1a3a1f5fac&client_secret=2bdaaf0e90bd4e8784788d86eb8bca12&grant_type=client_credentials';
-            var reqData = {
+            const url = 'http://api.richasy.cn/connect/token';
+            const params = 'client_id=eadfa670ed114c7dbcaecb1a3a1f5fac&client_secret=2bdaaf0e90bd4e8784788d86eb8bca12&grant_type=client_credentials';
+            const reqData = {
                 'client_id': 'eadfa670ed114c7dbcaecb1a3a1f5fac',
                 'client_secret': '2bdaaf0e90bd4e8784788d86eb8bca12',
                 'grant_type': 'client_credentials'
             };
-            var headers= {
+            const headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36',
                 'Referer': 'http://wfa.richasy.cn/'
             };
@@ -40,60 +39,58 @@ var wfaLibs ={
                 .post(url)
                 .proxy(this.proxy)
                 .send(params)
-                .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
-                .set('Referer','http://wfa.richasy.cn/')
-                .then(res=>{
-                    if(res.body.error)
-                    {
+                .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
+                .set('Referer', 'http://wfa.richasy.cn/')
+                .then(res => {
+                    if (res.body.error) {
                         fail();
                         return;
                     }
                     console.log(res.body);
-                    var body = res.body;
-                    var token = body.token_type+' '+body.access_token;
-                    mcache.put("token",token,body.expires_in);
-                    success(body.token_type+' '+body.access_token);
-                }).catch(err=>{
+                    const body = res.body;
+                    const token = body.token_type + ' ' + body.access_token;
+                    mcache.put("token", token, body.expires_in);
+                    success(body.token_type + ' ' + body.access_token);
+                }).catch(err => {
                 console.log(err);
                 fail();
             })
         }
     },
-    getLib:function (libName, success, fail) {
-        if(mcache.get("lib_"+libName))
-        {
-            success(mcache.get("lib_"+libName));
+    getLib: function (libName, success, fail) {
+        if (mcache.get("lib_" + libName)) {
+            success(mcache.get("lib_" + libName));
             return;
         }
-        var url = 'http://api.richasy.cn/wfa/lib/all/'+libName;
+        const url = 'http://api.richasy.cn/wfa/lib/all/' + libName;
         superagent
             .get(url)
             .proxy(this.proxy)
-            .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
-            .set('Referer','http://wfa.richasy.cn/')
-            .set('Authorization',mcache.get("token"))
-            .then(res=>{
-                console.log("lib_"+libName);
+            .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
+            .set('Referer', 'http://wfa.richasy.cn/')
+            .set('Authorization', mcache.get("token"))
+            .then(res => {
+                console.log("lib_" + libName);
                 console.log(res.body.length);
-                mcache.put("lib_"+libName,res.body);
+                mcache.put("lib_" + libName, res.body);
                 success(res.body);
-        }).catch(err=>{
+            }).catch(err => {
             fail(err);
         })
     },
-    initLibs(complete){
-        var result = {};
-        var that = this;
-        let async=(data)=>new Promise((resolve,reject)=>{
-            that.getLib(that.libsArr[data],function (libRes) {
-                result[that.libsArr[data]] =  libRes;
-                return resolve(data+1);
-            },function (libErr) {
-                result[that.libsArr[data]] =  libErr;
-                return resolve(data+1);
+    initLibs(complete) {
+        const result = {};
+        const that = this;
+        let async = (data) => new Promise((resolve, reject) => {
+            that.getLib(that.libsArr[data], function (libRes) {
+                result[that.libsArr[data]] = libRes;
+                return resolve(data + 1);
+            }, function (libErr) {
+                result[that.libsArr[data]] = libErr;
+                return resolve(data + 1);
             })
         });
-        let final=value=>{
+        let final = value => {
             console.log('完成: ', Object.keys(result));
             complete(result);
         };
@@ -105,47 +102,46 @@ var wfaLibs ={
             .then(final);
     },
     initLibsCache() {
-        var that = this;
+        const that = this;
         this.libsArr.forEach(function (value, index, array) {
             // that.libs[value].put(value,index);
             // console.log(value,that.libs[value].get(value))
-            if(value === 'sale'){
-                that.mcache.get('lib_'+value).forEach(function (value_,index_) {
-                    that.libs[value].put(value_.en,value_);
-                    if(value_.en !== value_.zh && value_ === 'sale')
-                    {
-                        that.libs[value].put(value_.zh,value_)
+            if (value === 'sale') {
+                that.mcache.get('lib_' + value).forEach(function (value_, index_) {
+                    that.libs[value].put(value_.en, value_);
+                    if (value_.en !== value_.zh && value_ === 'sale') {
+                        that.libs[value].put(value_.zh, value_)
                     }
                 })
             }
 
-            if(value === 'riven'){
-                that.mcache.get('lib_'+value).forEach(function (value_,index_) {
-                    that.libs[value].put(value_.name,value_);
+            if (value === 'riven') {
+                that.mcache.get('lib_' + value).forEach(function (value_, index_) {
+                    that.libs[value].put(value_.name, value_);
                 });
-                that.mcache.get('lib_'+value).forEach(function (value_) {
+                that.mcache.get('lib_' + value).forEach(function (value_) {
                     that.mcache.get('lib_dict').some(function (dict) {
-                        if(value_.name === dict.zh){
-                            that.libs['rm'].put(value_.name,dict);
+                        if (value_.name === dict.zh) {
+                            that.libs['rm'].put(value_.name, dict);
                             return true;
                         }
                     });
                 })
             } else {
-                that.mcache.get('lib_'+value).forEach(function (value_,index_) {
-                    that.libs[value].put(value_.en,value_);
-                    if(value === 'sale')    //value_.en !== value_.zh &&
+                that.mcache.get('lib_' + value).forEach(function (value_, index_) {
+                    that.libs[value].put(value_.en, value_);
+                    if (value === 'sale')    //value_.en !== value_.zh &&
                     {
-                        that.libs.wm.put(value_.zh,value_)
+                        that.libs.wm.put(value_.zh, value_)
                     }
                 })
             }
         })
     },
-    initLocalLib(){
-        var vm = this;
+    initLocalLib() {
+        const vm = this;
         this.libsArr.forEach(function (value) {
-            vm.mcache.put('lib_'+value,localLib[value])
+            vm.mcache.put('lib_' + value, localLib[value])
         })
     }
 };

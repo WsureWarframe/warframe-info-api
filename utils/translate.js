@@ -1,4 +1,4 @@
-var wfaLibs = require('./wfaLibs');
+const wfaLibs = require('./wfaLibs');
 const googleTranslate = require('google-baidu-translate-api');
 translate = {
     translateByCache:function (original) {
@@ -12,7 +12,7 @@ translate = {
         }
         return null;
     },
-    googleTranslate: function (original, from) {
+    googleTranslate: function (original, from = 'en') {
         return googleTranslate.google(original, 'zh-cn', from)
         //     .then(res=>{
         //     console.log(res);
@@ -28,20 +28,20 @@ translate = {
 };
 
 function getSearchStr(original,getCache){
-    var stringArray = original.split(/\\n| /);//.split(' ');   //.match(/\w+|\S/g);   //.split(/\W+/);
+    const stringArray = original.split(/\\n| /);//.split(' ');   //.match(/\w+|\S/g);   //.split(/\W+/);
     if(stringArray.length === 0)
     {
         console.log('original.length === 0 !!');
         return original;
     }
-    var resArr = [],start = 0, max = stringArray.length;
+    let resArr = [], start = 0, max = stringArray.length;
     outside:
     for(;start<max;start++)
     {
-        for(var end=max;start<end;end--){
-            var data = getCache(getStringByArray(stringArray,start,end));
+        for(let end=max; start<end; end--){
+            const data = getCache(getStringByArray(stringArray, start, end));
             if(data.cache){
-                var result = data.prefix+data.cache.zh+data.suffix;
+                const result = data.prefix + data.cache.zh + data.suffix;
                 resArr.push(regExpTest(result));
                 start = end-1;
                 continue outside;
@@ -66,8 +66,8 @@ function isNode(input) {
 }
 
 function preRegExpTest (input) {
-    var prefix = input.replace(/\([a-zA-Z]+\)$/,'');
-    var plant = input.match(/\([a-zA-Z]+\)$/).join('');
+    const prefix = input.replace(/\([a-zA-Z]+\)$/, '');
+    const plant = input.match(/\([a-zA-Z]+\)$/).join('');
     return prefix + getSearchStr(plant,getCache);
 }
 
@@ -77,10 +77,10 @@ function getStringByArray(arr,start,end){
 }
 
 function getCache(key){
-    var searchKy = key.replace(/^[^a-zA-Z0-9\s]+/,'').replace(/[^a-zA-Z0-9\s]+$/,'');
-    var prefix = key.match(/^[^a-zA-Z0-9\s]+/);
-    var suffix = key.match(/[^a-zA-Z0-9\s]+$/);
-    var cache = wfaLibs.libs.dict.get(searchKy) || wfaLibs.libs.invasion.get(searchKy) || wfaLibs.libs.nightwave.get(searchKy) || wfaLibs.libs.sale.get(searchKy) || wfaLibs.libs.riven.get(searchKy);
+    const searchKy = key.replace(/^[^a-zA-Z0-9\s]+/, '').replace(/[^a-zA-Z0-9\s]+$/, '');
+    const prefix = key.match(/^[^a-zA-Z0-9\s]+/);
+    const suffix = key.match(/[^a-zA-Z0-9\s]+$/);
+    const cache = wfaLibs.libs.dict.get(searchKy) || wfaLibs.libs.invasion.get(searchKy) || wfaLibs.libs.nightwave.get(searchKy) || wfaLibs.libs.sale.get(searchKy) || wfaLibs.libs.riven.get(searchKy);
     return {
         cache:cache,
         prefix : prefix?prefix.join(''):'',

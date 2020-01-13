@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var rm = require('../utils/rivenMarket');
+const express = require('express');
+const router = express.Router();
+const rm = require('../utils/rivenMarket');
 
 /**
  *  riven market 信息相关接口
@@ -9,19 +9,19 @@ var rm = require('../utils/rivenMarket');
 
 //获取字典接口
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
-    var page = req.body.page ;
-    var size = req.body.size ;
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
+    const page = req.body.page;
+    const size = req.body.size;
     //warframe market
     res.send(await rm.getInfo(type,page,size));
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
     //warframe market
     res.send(await rm.robotFormatStr(type));
 });

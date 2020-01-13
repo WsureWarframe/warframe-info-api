@@ -1,19 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var mpRouter = require('./routes/mp');
-var warframe = require('./routes/warframe');
-var wm = require('./routes/warframeMarket');
-var rm = require('./routes/rivenMarket');
-var wiki = require('./routes/huijiwiki');
+const indexRouter = require('./routes/index');
+const mpRouter = require('./routes/mp');
+const warframe = require('./routes/warframe');
+const wm = require('./routes/warframeMarket');
+const rm = require('./routes/rivenMarket');
+const wiki = require('./routes/huijiwiki');
 
-var initJs = require('./utils/wfaLibs');
-var config = require('./config/myConfig');
-var app = express();
+const initJs = require('./utils/wfaLibs');
+const config = require('./config/myConfig');
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

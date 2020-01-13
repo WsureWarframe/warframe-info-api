@@ -1,6 +1,6 @@
-var mpConfig = require('../config/mpConfig');
-var superagent = require('superagent');
-var propxyConfig = require('../config/proxyConfig');
+const mpConfig = require('../config/mpConfig');
+const superagent = require('superagent');
+const propxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 
 mpUtils = {
@@ -8,11 +8,11 @@ mpUtils = {
 };
 
 function mpLogin(code,platform = 'weixin'){
-    var code2Session = {
-        weixin:'https://api.weixin.qq.com/sns/jscode2session',
-        qq:'https://api.q.qq.com/sns/jscode2session'
+    const code2Session = {
+        weixin: 'https://api.weixin.qq.com/sns/jscode2session',
+        qq: 'https://api.q.qq.com/sns/jscode2session'
     };
-    var mpLoginUrl = code2Session[platform]+'?appid='+mpConfig[platform].appId+'&secret='+mpConfig[platform].appSecret+'&grant_type=authorization_code&js_code='+code;
+    const mpLoginUrl = code2Session[platform] + '?appid=' + mpConfig[platform].appId + '&secret=' + mpConfig[platform].appSecret + '&grant_type=authorization_code&js_code=' + code;
     console.log(mpLoginUrl);
     return new Promise((resolve,reject)=>{
         superagent
@@ -20,7 +20,7 @@ function mpLogin(code,platform = 'weixin'){
             .proxy(propxyConfig.config)
             //.set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
             .then(res=>{
-                var data = res.data?res.data:JSON.parse(res.text);
+                const data = res.data ? res.data : JSON.parse(res.text);
                 if(data.errcode){
                     reject({
                         state:false,

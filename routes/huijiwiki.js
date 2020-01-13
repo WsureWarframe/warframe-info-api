@@ -1,34 +1,34 @@
-var express = require('express');
-var router = express.Router();
-var hjwiki = require('../utils/huijiwiki');
+const express = require('express');
+const router = express.Router();
+const hjwiki = require('../utils/huijiwiki');
 
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
-    var page = req.body.page ;
-    var size = req.body.size ;
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
+    const page = req.body.page;
+    const size = req.body.size;
     res.send(await hjwiki.getInfo(type,page,size));
 });
 
 router.all(['/detail/:type','/detail'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
     res.send(await hjwiki.getDetail(type));
 });
 
 router.all(['/text/:type','/text'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
     res.send(await hjwiki.getHtmlText(type));
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    var bodyType = req.body.type;
-    var pathType = req.params.type;
-    var type = pathType?pathType:(bodyType?bodyType:null);
+    const bodyType = req.body.type;
+    const pathType = req.params.type;
+    const type = pathType ? pathType : (bodyType ? bodyType : null);
     res.send(await hjwiki.robotFormatStr(type));
 });
 module.exports = router;
