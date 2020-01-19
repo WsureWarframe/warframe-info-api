@@ -185,7 +185,7 @@ function syndicateMissionsFormat(body){
             value.nodes[index] = tran.translateByCache(node);
         });
         value.jobs.forEach(function (job) {
-            job.rewardPool.forEach(function (reward,index) {
+            job.rewardPool && job.rewardPool.forEach(function (reward,index) {
                 job.rewardPool[index] = tran.translateByCache(reward);
             });
             job.type = tran.translateByCache(job.type);
@@ -274,14 +274,17 @@ function newsAsString(promise){
     });
 }
 
-function eventsAsString(body){
-    let evevts = [];
-    body.forEach(function (value,index) {
-        evevts.push((index+1)+':'+value.description
-            +'\n进度:'+value.health
-            +'\n'+value.eta);
+function eventsAsString(promise){
+    return new Promise(async (resolve, reject) => {
+        let body = await promise;
+        let evevts = [];
+        body.forEach(function (value,index) {
+            evevts.push((index+1)+':'+value.description
+                +'\n进度:'+(value.health===''?value.health:'未知')
+                +'\n'+value.eta);
+        });
+        resolve(evevts.join('\n'));
     });
-    return evevts.join('\n');
 }
 
 function alertsAsString(body){
@@ -318,7 +321,7 @@ function syndicateAsString(body,syndicate = 'Ostrons'){ //Solaris United
     });
     target.jobs.forEach(function (job,index) {
         resArr.push('赏金'+(index+1)+':');
-        resArr.push(job.rewardPool.join('\n')+'\n');
+        resArr.push(job.standingStages.join('/')+'\n');
     });
     resArr.push('时间：'+target.eta);
     return resArr.join('\n');
@@ -386,11 +389,12 @@ function invasionsAsString(body){
 function voidTraderAsString(body){
     let voidTrader = [];
     voidTrader.push('奸商状态：'+(body.active?'到达':'离开'));
+    voidTrader.push('奸商位置：'+body.location);
     if(body.active)
     {
         voidTrader.push('奸商货物：');
         body.inventory.forEach(function (val,ind) {
-            voidTrader.push((ind+1)+'.'+val.item+'('+val.ducats+'du'+val.credits+'cr)')
+            voidTrader.push((ind+1)+'.'+val.item+'('+val.ducats+'du '+val.credits/10000+'Wcr)')
         })
     }
     voidTrader.push(
