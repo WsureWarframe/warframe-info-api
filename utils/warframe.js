@@ -31,7 +31,7 @@ warframe = {
             case "conclaveChallenges":
                 return orginInfo;
             case "persistentEnemies":
-                return orginInfo;
+                return persistentEnemiesFormat(orginInfo);
             case "earthCycle":
                 return cycleFormat(orginInfo);
             case "cetusCycle":
@@ -74,7 +74,7 @@ warframe = {
             case "globalUpgrades":
                 return orginInfo;
             case "flashSales":
-                return flashSalesFormat(orginInfo);
+                return flashSalesAsString(flashSalesFormat(orginInfo));
             case "invasions":
                 return invasionsAsString(invasionsFormat(orginInfo));
             case "voidTrader":
@@ -82,7 +82,7 @@ warframe = {
             case "dailyDeals":
                 return dailyDealsAsString(dailyDealsFormat(orginInfo));
             case "persistentEnemies":
-                return orginInfo;
+                return persistentEnemiesAsString(persistentEnemiesFormat(orginInfo));
             case "earthCycle":
                 return cycleAsString(cycleFormat(orginInfo));
             case "cetusCycle":
@@ -206,7 +206,8 @@ function fissuresFormat(body){
 
 function flashSalesFormat(body){
     body.forEach(function (value) {
-       value.item = tran.translateByCache(value.item);
+       // value.item = tran.translateByCache(value.item);
+        value.eta = utils.timeDiff(null,value.expiry);
     });
     return body;
 }
@@ -243,6 +244,15 @@ function dailyDealsFormat(body){
     body.forEach(function (value) {
         value.item = tran.translateByCache(value.item);
         value.eta = utils.timeDiff(null,value.expiry);
+    });
+    return body
+}
+
+function persistentEnemiesFormat(body) {
+    body.forEach(function (value) {
+        value.agentType = tran.translateByCache(value.agentType);
+        value.lastDiscoveredAt = tran.translateByCache(value.lastDiscoveredAt);
+        value.lastDiscoveredTime = utils.timeDiff(null,value.lastDiscoveredTime);
     });
     return body
 }
@@ -338,6 +348,22 @@ function fissuresAsString(body){
     return fissures.join('\n\n');
 }
 
+function persistentEnemiesAsString(body) {
+    let persistentEnemies = [];
+    body.forEach(value=>{
+        persistentEnemies.push('类型:'+value.agentType+'(生命:'+Math.round(value.healthPercent*100)+'%)'
+            +'\n时间:'+value.lastDiscoveredTime
+            +'\n位置:'+value.lastDiscoveredAt
+            +'\n状态:'+( value.isDiscovered?'可以追捕喵(>^ω^<)':'正在逃跑，无法追捕喵(>^ω^<)')
+        )
+    });
+    if(body.length() === 0){
+        persistentEnemies.push('当前没有小小黑哦');
+    }
+    return persistentEnemies.join('\n\n');
+}
+
+
 function cycleAsString(body){
     const state = (
         body.isDay === undefined
@@ -363,6 +389,16 @@ function dailyDealsAsString(body){
         +'\n时间：'+value.eta);
     });
     return res.join('\n');
+}
+
+function flashSalesAsString(body) {
+    let res = [];
+    body.forEach((value)=>{
+        res.push('商品：'+value.item
+            +'\n价格：'+value.premiumOverride+'p ('+value.regularOverride+')'+' [-'+value.discount+'%] '
+            +(value.isFeatured?'精选':(value.isPopular?'流行':'未知')))
+    });
+    return res.join("\n\n");
 }
 
 function invasionsAsString(body){
