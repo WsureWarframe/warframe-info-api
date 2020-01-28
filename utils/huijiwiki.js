@@ -66,16 +66,18 @@ huijiwiki ={
         const apiData = await this.getInfo(name,1,6);
         let res = '';
         if(apiData.detail){
-            res += ('为你找到:'+ apiData.detail.title +':\n\t'+apiData.detail.result+'\n'+apiData.detail.url+'\n')
+            res += ('为你找到:'+ apiData.detail.title +':\n\t'+apiData.detail.result+'\n'+apiData.detail.url+'\n');
+
+            res += '你可能还需要找:';
+            apiData.wiki.filter( item => {
+                return item.title !== name;
+            }).forEach(value => {
+                res += '\n'+value.title
+            });
         } else {
-            res += ('未找到:'+name+' !\n')
+            res += ('未找到:'+name+' !\n请重新确认!')
         }
-        res += '你可能还需要找:';
-        apiData.wiki.filter(function (item) {
-            return item.title !== name;
-        }).forEach(value => {
-            res += '\n'+value.title
-        });
+
         return res;
     }
 };

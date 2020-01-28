@@ -134,7 +134,7 @@ router.all(['/robot/:type','/robot'],function (req,res) {
       res.send(data);
     }
   },function () {
-    res.json({error:"网络不畅"});
+    res.send("500：服务器内部错误，参数："+type);
   });
 });
 
