@@ -2,6 +2,7 @@ const mcache = require('memory-cache');
 const superagent = require('superagent');
 const propxyConfig = require('../config/proxyConfig');
 const localLib = require('../utils/localLibs');
+const localRivenData = require('../utils/localRivenData');
 require('superagent-proxy')(superagent);
 
 const libs = {
@@ -11,7 +12,9 @@ const libs = {
     nightwave: new mcache.Cache(),
     invasion: new mcache.Cache(),
     wm: new mcache.Cache(),
-    rm: new mcache.Cache()
+    rm: new mcache.Cache(),
+    /* riven weapon */
+    rw: new mcache.Cache()
 };
 /* GET users listing. */
 const wfaLibs = {
@@ -78,6 +81,28 @@ const wfaLibs = {
             fail(err);
         })
     },
+    getRivenMarketData:(that)=> {
+
+        const RMHost = 'https://riven.market';
+
+        return new Promise(async (resolve, reject) => {
+            const RMRes = await utils.getRequest(RMHost + '/list/PC');
+            if (RMRes.text !== '') {
+                const RMDataUrl = RMRes.text.match(/(?<=src=").+warframeData.+?(?=")/).join();
+                const RMData = await utils.getRequest(RMHost + RMDataUrl);
+                if (RMData.text !== '') {
+                    const Module = require('module');
+                    const rivenData = new Module("riven-data");
+                    rivenData._compile(`${RMData.text}
+                    module.exports = { statsData : statsData ,weaponData : weaponData };`, 'riven-data');
+                    that.initRWCache(rivenData.exports.weaponData);
+                    console.log(`riven-data create success`);
+                    resolve();
+                }
+            }
+            reject();
+        });
+    },
     initLibs(complete) {
         const result = {};
         const that = this;
@@ -99,7 +124,17 @@ const wfaLibs = {
             .then(async)
             .then(async)
             .then(async)
+            .then(this.getRivenMarketData(that))
             .then(final);
+    },
+    initRWCache(rivenData){
+        let that = this;
+        Object.keys(rivenData).forEach(type =>{
+            Object.keys(rivenData[type]).forEach(weapon=>{
+                that.libs.rw.put(weapon.replace(/_/g,' '),rivenData[type][weapon]);
+            })
+        });
+        console.log("rw:"+ that.libs.rw.size());
     },
     initLibsCache() {
         const that = this;
@@ -108,41 +143,35 @@ const wfaLibs = {
             // console.log(value,that.libs[value].get(value))
             if (value === 'sale') {
                 that.mcache.get('lib_' + value).forEach(function (value_, index_) {
-                    that.libs[value].put(value_.en, value_);
-                    if (value_.en !== value_.zh && value_ === 'sale') {
-                        that.libs[value].put(value_.zh, value_)
-                    }
-                })
+                    that.libs['wm'].put(value_.en, value_);
+                    value_.en !== value_.zh && that.libs['wm'].put(value_.zh, value_);
+                });
             }
 
-            if (value === 'riven') {
-                that.mcache.get('lib_' + value).forEach(function (value_, index_) {
-                    that.libs[value].put(value_.name, value_);
+            if(value === 'dict'){
+                that.mcache.get('lib_' + value).filter(item=> item.type === 'Weapon' && that.libs['rw'].get(item.en)!=null ).forEach(function (value_, index_) {
+                    that.libs['rm'].put(value_.en, value_);
+                    value_.en !== value_.zh && that.libs['rm'].put(value_.zh, value_);
+                    that.libs.rw.del(value_.en);
                 });
-                that.mcache.get('lib_' + value).forEach(function (value_) {
-                    that.mcache.get('lib_dict').some(function (dict) {
-                        if (value_.name === dict.zh) {
-                            that.libs['rm'].put(value_.name, dict);
-                            return true;
-                        }
-                    });
-                })
-            } else {
-                that.mcache.get('lib_' + value).forEach(function (value_, index_) {
-                    that.libs[value].put(value_.en, value_);
-                    if (value === 'sale')    //value_.en !== value_.zh &&
-                    {
-                        that.libs.wm.put(value_.zh, value_)
-                    }
-                })
             }
-        })
+
+            that.mcache.get('lib_' + value).forEach(function (value_, index_) {
+                that.libs[value].put(value_.en, value_);
+            })
+        });
+
+        console.log("rw :"+that.libs.rw.size()+" rm: "+that.libs.rm.size())
+        console.log(that.libs.rw.keys().join(','))
     },
     initLocalLib() {
         const vm = this;
         this.libsArr.forEach(function (value) {
             vm.mcache.put('lib_' + value, localLib[value])
         })
+    },
+    initLocalRW(){
+        this.initRWCache(localRivenData.weaponData);
     }
 };
 

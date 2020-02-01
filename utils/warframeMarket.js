@@ -8,24 +8,31 @@ require('superagent-proxy')(superagent);
 const warframeMarket = {
     getInfo: async function (name, page = 1, size = 10) {
         const objs = utils.getSaleWord(name, wfaLibs.libs.wm.keys());
-        const obj = objs.length > 0 ? wfaLibs.libs.wm.get(objs[0].key) : null;
-        const list = (await wmOrders(obj.search)).data;
-        return obj ? {
-            page: page,
-            size: size,
-            total: list.size,
-            word: obj,
-            words: objs.slice(1, 11),
-            statistics: (await wmStatistics(obj.search)).data.slice(-1)[0],
-            seller: list.slice((page - 1) * size, page * size)
-        } : {
-            word: obj,
-            words: objs,
+        if(objs.length > 0){
+            const obj = wfaLibs.libs.wm.get(objs[0].key);
+            const list = (await wmOrders(obj.search)).data;
+            return {
+                page: page,
+                size: size,
+                total: list.size,
+                word: obj,
+                words: objs.slice(1, 11),
+                statistics: (await wmStatistics(obj.search)).data.slice(-1)[0],
+                seller: list.slice((page - 1) * size, page * size)
+            }
+        }
+        return {
+            name: name,
+            word: null,
+            words: [],
             seller: []
         };
     },
     robotFormatStr: async function (name) {
         const info = await this.getInfo(name, 1, 5);
+        if(info.word == null && info.name!==''){
+            return `未找到任何与${info.name}相关的物品`
+        }
         let res = '你查询的物品是:' + info.word.zh + ' (' + info.word.search + ')\n' +
             '估计价格区间：' + info.statistics.min_price + ' - ' + info.statistics.max_price + 'p\n' +
             '昨日均价：' + info.statistics.avg_price + 'p\n' +

@@ -8,41 +8,62 @@ const rivenProperty = require('./rm');
 
 rivenMarket = {
     getInfo:async function (name,page = 1,size = 10) {
-        const objs = utils.getSaleWord(name, wfaLibs.libs.riven.keys());
-        const obj = objs.length > 0 ? wfaLibs.libs.rm.get(objs[0].key) : null;
-        const rivenList_ = elementsToRivenList((await rivenList(obj, page, size)).data.text);
-        return obj ? {
-            page: page,
-            size: size,
-            total: rivenList_.total,
-            word: obj,
-            words: objs.slice(1, 11),
-            seller: rivenList_.rivenList
-        } : {
-            word: obj,
-            words: objs,
+        const objs = utils.getSaleWord(name, wfaLibs.libs.rm.keys());
+        const objs1 = utils.getSaleWord(name, wfaLibs.libs.rw.keys());
+        let obj = null;
+        objs.length > 0 && (obj = wfaLibs.libs.rm.get(objs[0].key));
+        if(objs1.length > 0){
+            obj = wfaLibs.libs.rw.get(objs1[0].key) ;
+            obj.en = objs1[0].key;
+        }
+
+        if(obj != null)
+        {
+            const rivenList_ = elementsToRivenList((await rivenList(obj, page, size)).data.text);
+            return {
+                page: page,
+                size: size,
+                total: rivenList_.total,
+                word: obj,
+                words: objs.slice(1, 11),
+                seller: rivenList_.rivenList
+            };
+        }
+         return  {
+            name: name,
+            word: null,
+            words: [],
             seller: []
         };
     },
     robotFormatStr:async function (name) {
-        let res = '从Riven.Market查询到以下紫卡信息(截取价格最低前5条):\n';
         const info = await this.getInfo(name, 1, 5);
+        if(info.word == null && info.name!==''){
+            return `未找到与${info.name}相关的武器紫卡，请尝试输入英文`;
+        }
+        let res = `从Riven.Market查询到'${info.word.zh?info.word.zh:info.word.en}'的紫卡信息(截取价格最低前5条):\n`;
         info.seller.forEach(((value, index) => {
             res+= '\n'+value.weapon+' '+value.name+' ('+value.price+'p)'+value.age+'\n';
             res+= value.rerolls+'洗 '+value.rank+'级 段位'+value.mr+'\n';
-            res+= '\t'+value.stat1+':'+value.stat1val+'\n';
-            res+= '\t'+value.stat2+':'+value.stat2val+'\n';
-            if(value.stat3)
-                res+= '\t'+value.stat3+':'+value.stat3val+'\n';
-            if(value.stat4)
-                res+= '\t'+value.stat4+':'+value.stat4val+'\n';
+            for(let i=1;i<5;i++){
+                if(value['stat'+i] !== '' && value['stat'+i] !== undefined)
+                    res+= '\t'+value['stat'+i]+':'+value['stat'+i+'val']+'\n';
+            }
             res+= 'id:'+value.seller+' ['+value.status+']\n';
         }));
+        info.words.length >0 && (res += `你可能还想查：${info.words.map(v=>v.key).join('\n')}`);
         return res;
     }
 };
 
 function rivenList(obj,page,size){
+    if(obj == null){
+        return {
+            state:'error',
+            data:'词库中不包含此武器，请使用英文名再试'
+        }
+    }
+
     const weapon = obj.en.replace(' ', '_');
     const rmUrl = rivenMarketUrlCreate(size, true, weapon, 999999, page);
     return superagent

@@ -1,6 +1,8 @@
 const moment = require('moment');
 //require 方式
 require('moment/locale/zh-cn');
+const superagent = require('superagent');
+const propxyConfig = require('../config/proxyConfig');
 moment.locale('zh-cn');
 utils = {
   apiTimeUtil:function (str) {
@@ -77,6 +79,22 @@ utils = {
             return b.acc - a.acc;
         });
         return resSort.slice(0,11);
+    },
+    getRequest:(url)=>{
+      return new Promise((resolve, reject) => {
+          superagent
+              .get(url)
+              .proxy(propxyConfig.config)
+              .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
+              .set('Accept', 'text/html')
+              .then(res => {
+                  if(res.header['content-type'] === 'application/javascript')
+                      res.text = res.body.toString('utf8');
+                  resolve(res);
+              }).catch(err => {
+              reject(err);
+          })
+      });
     }
 };
 

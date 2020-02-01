@@ -49,6 +49,7 @@ app.use(function(err, req, res, next) {
 
 //init data
 if(config.localLib){
+  initJs.initLocalRW();
   initJs.initLocalLib();
   initJs.initLibsCache();
 } else {

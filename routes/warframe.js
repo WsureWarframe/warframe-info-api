@@ -74,6 +74,15 @@ router.all('/keys',function (req,res) {
   res.send(mcache.keys());
 });
 
+router.all('/keys/:type/:key',function (req,res) {
+  const pathType = req.params.type;
+  const pathKey = req.params.key;
+  if(pathKey === '' || pathType === '')
+    res.send("参数错误");
+  else
+    res.json(wfaLibs.libs[pathType].get(pathKey));
+});
+
 router.all('/test',function (req, res) {
   const test = req.body.str;
   res.send(tran.translateByCache(test));

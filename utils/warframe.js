@@ -288,6 +288,9 @@ function eventsAsString(promise){
     return new Promise(async (resolve, reject) => {
         let body = await promise;
         let evevts = [];
+        if(body.length === 0){
+            resolve('暂无活动')
+        }
         body.forEach(function (value,index) {
             evevts.push((index+1)+':'+value.description
                 +'\n进度:'+(value.health===''?value.health:'未知')
@@ -298,6 +301,9 @@ function eventsAsString(promise){
 }
 
 function alertsAsString(body){
+    if(body.length ===0){
+        return '暂无警报事件';
+    }
     let alerts = [];
     body.forEach(function (value,index) {
         alerts.push((index+1)+'.'+value.mission.node
