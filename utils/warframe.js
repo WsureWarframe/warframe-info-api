@@ -358,12 +358,12 @@ function persistentEnemiesAsString(body) {
     let persistentEnemies = [];
     body.forEach(value=>{
         persistentEnemies.push('类型:'+value.agentType+'(生命:'+Math.round(value.healthPercent*100)+'%)'
-            +'\n时间:'+value.lastDiscoveredTime
-            +'\n位置:'+value.lastDiscoveredAt
+            +'\n最近出现时间:'+value.lastDiscoveredTime
+            +'\n最近出现位置:'+value.lastDiscoveredAt
             +'\n状态:'+( value.isDiscovered?'可以追捕喵(>^ω^<)':'正在逃跑，无法追捕喵(>^ω^<)')
         )
     });
-    if(body.length() === 0){
+    if(body.length === 0){
         persistentEnemies.push('当前没有小小黑哦');
     }
     return persistentEnemies.join('\n\n');

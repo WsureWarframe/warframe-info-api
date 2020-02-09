@@ -142,7 +142,7 @@ router.all(['/robot/:type','/robot'],function (req,res) {
       // res.json({type:type,context:data});
       res.send(data);
     }
-  },function () {
+  },function (e) {
     res.send("500：服务器内部错误，参数："+type);
   });
 });
@@ -176,6 +176,7 @@ function wfApi(param,success,fail){
           success(ws)
         }
       }).catch( err => {
+        console.log(err);
         fail(err);
   })
 }
