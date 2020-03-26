@@ -107,7 +107,7 @@ router.all('/time',function (req,res) {
 });
 
 router.all(['/dev/:type','/dev'],function (req,res) {
-  const bodyType = req.body.type;
+  const bodyType = req.query.type;
   const pathType = req.params.type;
   const type = pathType ? pathType : (bodyType ? bodyType : null);
   console.log(type);
@@ -128,7 +128,7 @@ router.all(['/dev/:type','/dev'],function (req,res) {
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-  const bodyType = req.body.type;
+  const bodyType = req.query.type;
   const pathType = req.params.type;
   const type = pathType ? pathType : (bodyType ? bodyType : null);
   const param = utils.testType(type);

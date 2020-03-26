@@ -12,7 +12,7 @@ const timeout = 60 * 1000;
 
 //获取字典接口
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    const bodyType = req.body.type;
+    const bodyType = req.query.type;
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
     const page = req.body.page;
@@ -21,7 +21,7 @@ router.all(['/dev/:type','/dev'],async function (req,res) {
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    const bodyType = req.body.type;
+    const bodyType = req.query.type;
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
     const key = `${cacheHeader}:${type}`;
