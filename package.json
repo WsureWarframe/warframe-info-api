@@ -2,6 +2,7 @@
   "name": "warframe-info-api",
   "version": "0.0.1",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "node ./bin/www"
   },
