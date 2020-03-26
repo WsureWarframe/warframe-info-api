@@ -1,4 +1,5 @@
 const moment = require('moment');
+const mcache = require('memory-cache');
 //require 方式
 require('moment/locale/zh-cn');
 const superagent = require('superagent');
@@ -95,6 +96,19 @@ utils = {
               reject(err);
           })
       });
+    },
+    async cacheUtil(key,data,timeout){
+        let result = null;
+        if(!mcache.get(key)){
+            console.log(`set cache , key:${key}`);
+            result = await data();
+            await mcache.put(key, result, timeout, () => {
+            })
+        } else {
+            console.log(`get cache , key:${key}`);
+            result = mcache.get(key)
+        }
+        return result;
     }
 };
 

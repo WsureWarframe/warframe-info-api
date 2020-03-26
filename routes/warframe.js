@@ -9,6 +9,9 @@ const wfaLibs = require('../utils/wfaLibs');
 const utils = require('../utils/utils');
 const warframeUtil = require('../utils/warframe');
 const tran = require('../utils/translate');
+
+const cacheHeader = 'rm';
+const timeout = 2 * 60 * 1000;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -124,30 +127,20 @@ router.all(['/dev/:type','/dev'],function (req,res) {
   });
 });
 
-router.all(['/robot/:type','/robot'],function (req,res) {
+router.all(['/robot/:type','/robot'],async function (req,res) {
   const bodyType = req.body.type;
   const pathType = req.params.type;
   const type = pathType ? pathType : (bodyType ? bodyType : null);
   const param = utils.testType(type);
-  wfApi(param,function (body) {
-    const data = warframeUtil.robotFormatStr(type, body);
-    if (data instanceof Promise) {
-      data.then(result=>{
-        // res.json({type:type,context:result});
-        res.send(result);
-      }).catch(err=>{
-        res.json({type:type,err:err});
-      })
-    } else {
-      // res.json({type:type,context:data});
-      res.send(data);
-    }
-  },function (e) {
-    res.send("500：服务器内部错误，参数："+type);
-  });
+  const key = `${cacheHeader}:${type}`;
+  let body = await utils.cacheUtil(key, async () => {
+    return await wfApi(param)
+  }, timeout);
+  let result = await warframeUtil.robotFormatStr(type, body);
+  res.send(result);
 });
 
-function wfApi(param,success,fail){
+let wfApi = (param) => new Promise((resolve, reject) => {
   /*
   superagent
       .get(url)
@@ -171,13 +164,13 @@ function wfApi(param,success,fail){
         console.log("wfApi request success:",param);
         const ws = new WorldState(res);
         if(param) {
-          success(ws[param]);
+          resolve(ws[param]);
         } else {
-          success(ws)
+          resolve(ws)
         }
       }).catch( err => {
         console.log(err);
-        fail(err);
+    reject(err);
   })
-}
+});
 module.exports = router;

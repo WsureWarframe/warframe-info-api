@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const hjwiki = require('../utils/huijiwiki');
+const utils = require('../utils/utils');
+
+const cacheHeader = 'wiki';
+const timeout = 24 * 60 * 60 * 1000;
 
 router.all(['/dev/:type','/dev'],async function (req,res) {
     const bodyType = req.body.type;
@@ -29,6 +33,10 @@ router.all(['/robot/:type','/robot'],async function (req,res) {
     const bodyType = req.body.type;
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
-    res.send(await hjwiki.robotFormatStr(type));
+    const key = `${cacheHeader}:${type}`;
+    let result = await utils.cacheUtil(key, async () => {
+        return await hjwiki.robotFormatStr(type);
+    }, timeout);
+    res.send(result);
 });
 module.exports = router;

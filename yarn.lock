@@ -1722,11 +1722,6 @@ json-buffer@3.0.0:
   resolved "https://registry.npm.taobao.org/json-buffer/download/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=
 
-json-fetch-cache@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/json-fetch-cache/-/json-fetch-cache-1.2.1.tgz#85db6746441e5e647472fc77ac7e2f73f28d24ae"
-  integrity sha512-8gvC1a7A7ltPNi3ze2p0RyoG/FY2uVWPLgvStzEiqvoM0Vhh0FnRsZd86/7xKV4cP9fSnPHQs/rwG0BbZlyh1Q==
-
 json-parse-better-errors@^1.0.0, json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/json-parse-better-errors/download/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -3882,21 +3877,20 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-warframe-worldstate-data@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/warframe-worldstate-data/-/warframe-worldstate-data-1.3.0.tgz#370e632928dc210b741c0848fe524336ca3124ad"
-  integrity sha512-9yxmJHrv8aI3SJoJm6WzPi79Cgs48ozkCIxBKbgQW1fC4eiKFNi1g33oR+rzPHhszNJRLZ5KCePCOkE2XDHi5Q==
+warframe-worldstate-data@^1.4.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/warframe-worldstate-data/-/warframe-worldstate-data-1.4.1.tgz#df00503da87557f3332890c341440d791529b412"
+  integrity sha512-JHbkw4Jxid9Z97qQaCTyTqMEQ6QZ8wBooo2TjsG/yko2L5dsHN4ZifV2hhTYhqsP7lU4THX0b9CyPrAe64JrJw==
 
-warframe-worldstate-parser@^2.10.4:
-  version "2.10.4"
-  resolved "https://registry.yarnpkg.com/warframe-worldstate-parser/-/warframe-worldstate-parser-2.10.4.tgz#a2a6f333fbe8fa940b0171a83df6f5c792c98908"
-  integrity sha512-+5OsU4GxxBZXx6AvLLhqpjz9v495GB8dBy7oUreeg4hK8QXz/5/NzuGsWj1hsV92nwMbB+MDjVTYKq+DX5mbFw==
+warframe-worldstate-parser@^2.10.8:
+  version "2.10.8"
+  resolved "https://registry.yarnpkg.com/warframe-worldstate-parser/-/warframe-worldstate-parser-2.10.8.tgz#35e4cb602000ce86dd6417a1d12fe53a2422b447"
+  integrity sha512-Xe5yA/1L9cpup506lc1yPd7gNUFfYiCUyWOpoN5tGjuTN/uW8+TSgLqBkK3foqlvhYHMYvXDz4Ki9/n63DWVaw==
   dependencies:
-    json-fetch-cache "^1.2.1"
     node-fetch "^2.6.0"
     node-md-config "^2.0.1"
     right-pad "^1.0.1"
-    warframe-worldstate-data "^1.3.0"
+    warframe-worldstate-data "^1.4.0"
 
 wcwidth@^1.0.0:
   version "1.0.1"

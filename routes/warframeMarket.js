@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const wm = require('../utils/warframeMarket');
+const utils = require('../utils/utils');
 
+const cacheHeader = 'wm';
+const timeout = 60 * 1000;
 /**
  *  warframe market 信息相关接口
  *  ps：wm是指http://warframe.market
@@ -21,6 +24,10 @@ router.all(['/robot/:type','/dev'],async function (req,res) {
     const bodyType = req.body.type;
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
-    res.send(await wm.robotFormatStr(type));
+    const key = `${cacheHeader}:${type}`;
+    let result = await utils.cacheUtil(key, async () => {
+        return await wm.robotFormatStr(type)
+    }, timeout);
+    res.send(result);
 });
 module.exports = router;
