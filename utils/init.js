@@ -1,6 +1,7 @@
 const mcache = require('memory-cache');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
+const puppeteer = require('puppeteer');
 
 /* GET users listing. */
 const init = {
@@ -87,6 +88,14 @@ const init = {
             .then(async)
             .then(async)
             .then(final);
+    },
+    loadPage: async () => {
+        const browser = await puppeteer.launch({headless: false});
+        const page = await browser.newPage()
+        await page.goto('https://riven.richasy.cn/')
+        const localStorage = await page.evaluate(() =>  Object.assign({}, window.localStorage));
+        console.log(localStorage);
+        await browser.close();
     }
 };
 

@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const getScreenshot  = async (name) => {
-    const hasError = false;
+    let hasError = false;
     const img_path = '/screenshot/'+name+'.png';
     try {
         const res = await isFileExisted(name);
