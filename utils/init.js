@@ -97,13 +97,13 @@ const init = {
         console.log(localStorage);
         await browser.close();
     },
-    async getPageStorage(){
+    getPageStorage : async (url)=>{
+        //'https://wfa.richasy.cn/'
         const browser = await puppeteer.launch()
         const page = await browser.newPage()
-        await page.goto('https://wfa.richasy.cn/')
-
+        await page.goto(url)
         const returnedCookie = await page.cookies();
-        console.log(returnedCookie)
+        console.log(`${url} - cookies - ${returnedCookie}`)
 
         await page.waitFor( 10000 );
         const localStorageData = await page.evaluate(() => {
@@ -114,10 +114,13 @@ const init = {
             }
             return json;
         });
-
-        console.log(localStorageData)
+        console.log(`${url} - localStorage - ${Object.keys(localStorageData)}`)
 
         await browser.close()
+        return {
+            cookies: returnedCookie,
+            storage: localStorageData
+        }
     }
 };
 

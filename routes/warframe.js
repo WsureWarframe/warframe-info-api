@@ -53,10 +53,12 @@ router.all('/token',function (req,res) {
 
 //获取分类
 router.all('/list',function (req,res) {
-  wfApi(null,function (body) {
+  wfApi(null).then( body => {
+    console.log(body)
     const list = Object.keys(body);
     res.send(list);
-  },function () {
+  }).catch(e => {
+    console.error(e)
     res.json({error:"网络不畅"});
   });
 });

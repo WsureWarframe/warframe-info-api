@@ -47,9 +47,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-initUtils.getPageStorage().then(r => {
-  console.log(r)
-});
+initUtils.getPageStorage("https://wfa.richasy.cn/").then( r => {
+  console.log(r);
+})
 //init data
 if(config.localLib){
   initJs.initLocalRW();
