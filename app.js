@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const initUtils = require('./utils/init')
 
 const indexRouter = require('./routes/index');
 const mpRouter = require('./routes/mp');
@@ -46,7 +47,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+initUtils.getPageStorage().then(r => {
+  console.log(r)
+});
 //init data
 if(config.localLib){
   initJs.initLocalRW();

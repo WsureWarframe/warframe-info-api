@@ -96,6 +96,28 @@ const init = {
         const localStorage = await page.evaluate(() =>  Object.assign({}, window.localStorage));
         console.log(localStorage);
         await browser.close();
+    },
+    async getPageStorage(){
+        const browser = await puppeteer.launch()
+        const page = await browser.newPage()
+        await page.goto('https://wfa.richasy.cn/')
+
+        const returnedCookie = await page.cookies();
+        console.log(returnedCookie)
+
+        await page.waitFor( 10000 );
+        const localStorageData = await page.evaluate(() => {
+            let json = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                json[key] = localStorage.getItem(key);
+            }
+            return json;
+        });
+
+        console.log(localStorageData)
+
+        await browser.close()
     }
 };
 
