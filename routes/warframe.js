@@ -67,9 +67,10 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
   const bodyDetail = req.body.detail;
   const pathDetail = req.params.detail;
   const detail = pathDetail ? pathDetail : (bodyDetail ? bodyDetail : null);
-  wfApi(detail,function (body) {
+  wfApi(detail).then( body => {
     res.json(body);
-  },function () {
+  }).catch(e => {
+    console.error(e)
     res.json({error:"网络不畅"});
   });
 });
@@ -100,10 +101,11 @@ router.all('/tran',async function (req, res) {
 });
 
 router.all('/time',function (req,res) {
-  wfApi('events',function (body) {
+  wfApi('events').then(body => {
     const time = utils.apiTimeUtil(body[0].expiry);
     res.json(time);
-  },function () {
+  }).catch(e => {
+    console.error(e)
     res.json({error:"网络不畅"});
   });
 });
@@ -113,20 +115,21 @@ router.all(['/dev/:type','/dev'],function (req,res) {
   const pathType = req.params.type;
   const type = pathType ? pathType : (bodyType ? bodyType : null);
   console.log(type);
-  wfApi(type,function (body) {
+  wfApi(type).then(body => {
     const data = warframeUtil.getInfo(type, body);
     if (data instanceof Promise) {
-      data.then(result=>{
+      data.then(result => {
         res.json(result);
-      }).catch(err=>{
+      }).catch(err => {
         res.json(err);
       })
     } else {
       res.json(data);
     }
-  },function () {
-    res.json({error:"网络不畅"});
-  });
+  }).catch( e => {
+    console.error(e)
+    res.json({error: "网络不畅"});
+  })
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
@@ -160,7 +163,7 @@ let wfApi = (param) => new Promise((resolve, reject) => {
     console.log(err);
     fail();
   });
-  */
+  //不用这玩意了，拿不到仲裁，还慢
   rp('http://content.warframe.com/dynamic/worldState.php')
       .then(res=>{
         console.log("wfApi request success:",param);
@@ -174,5 +177,19 @@ let wfApi = (param) => new Promise((resolve, reject) => {
         console.log(err);
     reject(err);
   })
+  */
+
+  superagent
+      .get("https://api.warframestat.us/1pc")
+      .then( res => {
+        console.log("wfApi request success:",param);
+        const ws = res.body;
+        if(param) {
+          resolve(ws[param]);
+        } else {
+          resolve(ws)
+        }
+      }).catch( error => reject(error))
+
 });
 module.exports = router;

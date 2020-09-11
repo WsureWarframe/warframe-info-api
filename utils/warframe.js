@@ -36,6 +36,8 @@ warframe = {
                 return cycleFormat(orginInfo);
             case "cetusCycle":
                 return cycleFormat(orginInfo);
+            case "cambionCycle":
+                return cycleFormat(orginInfo);
             case "weeklyChallenges":
                 return orginInfo;
             case "constructionProgress":
