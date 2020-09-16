@@ -1,6 +1,6 @@
 const wfaLibs = require('./wfaLibs');
 const googleTranslate = require('google-baidu-translate-api');
-translate = {
+const translate = {
     translateByCache:function (original) {
         if(original)
         {
@@ -77,9 +77,12 @@ function getStringByArray(arr,start,end){
 }
 
 function getCache(key){
+    /** 去除首尾特殊符号 **/
     const searchKy = key.replace(/^[^a-zA-Z0-9\s]+/, '').replace(/[^a-zA-Z0-9\s]+$/, '');
+    /** 保存首尾特殊符号用于还原 **/
     const prefix = key.match(/^[^a-zA-Z0-9\s]+/);
     const suffix = key.match(/[^a-zA-Z0-9\s]+$/);
+    /** 查缓存 **/
     const cache = wfaLibs.libs.dict.get(searchKy) || wfaLibs.libs.invasion.get(searchKy) || wfaLibs.libs.nightwave.get(searchKy) || wfaLibs.libs.sale.get(searchKy) || wfaLibs.libs.riven.get(searchKy);
     return {
         cache:cache,

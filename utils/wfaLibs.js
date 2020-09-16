@@ -3,6 +3,7 @@ const superagent = require('superagent');
 const propxyConfig = require('../config/proxyConfig');
 const localLib = require('../utils/localLibs');
 const localRivenData = require('../utils/localRivenData');
+const utils = require("./utils");
 require('superagent-proxy')(superagent);
 
 const libs = {
@@ -81,7 +82,7 @@ const wfaLibs = {
             fail(err);
         })
     },
-    getRivenMarketData:(that)=> {
+    getRivenMarketData:function (that){
 
         const RMHost = 'https://riven.market';
 
@@ -124,7 +125,7 @@ const wfaLibs = {
             .then(async)
             .then(async)
             .then(async)
-            .then(this.getRivenMarketData(that))
+            .then(() => that.getRivenMarketData(that))
             .then(final);
     },
     initRWCache(rivenData){

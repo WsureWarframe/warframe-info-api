@@ -14,6 +14,9 @@ const wiki = require('./routes/huijiwiki');
 
 const initJs = require('./utils/wfaLibs');
 const config = require('./config/myConfig');
+const schedule = require("node-schedule");
+const wsSchedule = require('./schedule/worldStateSchedule');
+const libSchedule = require('./schedule/wfaLibrarySchedule');
 const app = express();
 
 // view engine setup
@@ -25,6 +28,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+schedule.scheduleJob('0 0/3 * * * ?' , function (){
+    wsSchedule.setWorldStateCache(wsSchedule).finally()
+});
+schedule.scheduleJob('0 0 0/2 * * ?' , function (){
+    libSchedule.setWfaLibCache(libSchedule).finally()
+
+});
 
 app.use('/', indexRouter);
 app.use('/mp', mpRouter);
@@ -47,8 +58,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-initUtils.getPageStorage("https://wfa.richasy.cn/").then( r => {
-  console.log(r);
+
+libSchedule.getWfaLibCache(libSchedule).then(res => {
+  console.log(Object.keys(res))
 })
 //init data
 if(config.localLib){

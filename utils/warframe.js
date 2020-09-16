@@ -46,6 +46,8 @@ warframe = {
                 return cycleFormat(orginInfo);
             case "nightwave":
                 return nightwaveFormat(orginInfo);
+            case "arbitration":
+                return arbitrationFormat(orginInfo);
             case "twitter":
             case "darkSectors":
             case "simaris":
@@ -95,6 +97,8 @@ warframe = {
                 return cycleAsString(cycleFormat(orginInfo));
             case "nightwave":
                 return nightwaveAsString(nightwaveFormat(orginInfo));
+            case "arbitration":
+                return arbitrationAsString(arbitrationFormat(orginInfo));
             case "conclaveChallenges":  //没人打pvp ， 没需求不做
             case "twitter":             //和我们没啥关系
             case "darkSectors":         //黑区已经废弃
@@ -125,6 +129,13 @@ function nightwaveFormat(body){
         value.desc = tran.translateByCache(value.desc);
         value.eta = utils.timeDiff(null,value.expiry);
     });
+    return body;
+}
+
+function arbitrationFormat(body){
+    body.node = tran.translateByCache(body.node);
+    body.eta = utils.timeDiff(null,body.expiry);
+    body.type = tran.translateByCache(body.type);
     return body;
 }
 
@@ -457,5 +468,9 @@ function nightwaveAsString(body){
         )
     });
     return activeChallenges.join('\n\n');
+}
+
+function arbitrationAsString(body){
+    return `类型：${body.type} (${body.enemy})\n节点：${body.node}\n时间：${body.eta}`
 }
 module.exports = warframe;

@@ -9,6 +9,8 @@ const wfaLibs = require('../utils/wfaLibs');
 const utils = require('../utils/utils');
 const warframeUtil = require('../utils/warframe');
 const tran = require('../utils/translate');
+const schedule = require('../schedule/worldStateSchedule');
+const initUtils = require('../utils/init')
 
 const cacheHeader = 'rm';
 const timeout = 2 * 60 * 1000;
@@ -138,31 +140,13 @@ router.all(['/robot/:type','/robot'],async function (req,res) {
   const type = pathType ? pathType : (bodyType ? bodyType : null);
   const param = utils.testType(type);
   const key = `${cacheHeader}:${type}`;
-  let body = await utils.cacheUtil(key, async () => {
-    return await wfApi(param)
-  }, timeout);
+  let body =  await wfApi(param)
   let result = await warframeUtil.robotFormatStr(type, body);
   res.send(result);
 });
 
-let wfApi = (param) => new Promise((resolve, reject) => {
+let wfApi = (param) => new Promise(async (resolve, reject) => {
   /*
-  superagent
-      .get(url)
-      .proxy(propxyConfig.proxy)
-      .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
-      .then(res=>{
-        if(res.body.error)
-        {
-          fail();
-          return;
-        }
-        console.log("wfApi body",res.body);
-        success(res.body);
-      }).catch(err=>{
-    console.log(err);
-    fail();
-  });
   //不用这玩意了，拿不到仲裁，还慢
   rp('http://content.warframe.com/dynamic/worldState.php')
       .then(res=>{
@@ -179,17 +163,7 @@ let wfApi = (param) => new Promise((resolve, reject) => {
   })
   */
 
-  superagent
-      .get("https://api.warframestat.us/1pc")
-      .then( res => {
-        console.log("wfApi request success:",param);
-        const ws = res.body;
-        if(param) {
-          resolve(ws[param]);
-        } else {
-          resolve(ws)
-        }
-      }).catch( error => reject(error))
-
+  let worldState = await schedule.getWorldStateCache(schedule);
+  resolve(param ? worldState[param] : worldState)
 });
 module.exports = router;

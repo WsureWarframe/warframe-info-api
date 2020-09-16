@@ -4,9 +4,14 @@ const MY_DEV = true;
 const LOCAL_LIB = true;
 //https配置 如果使用Https，请手动修改./bin/www 内配置的证书，不用请
 const USE_HTTPS = false;
+//WFA_HOST
+const WFA_HOST = 'https://wfa.richasy.cn/';
+const WFA_RIVEN_HOST = 'https://riven.richasy.cn/';
 myConfig = {
     localLib:LOCAL_LIB,
     isDev:MY_DEV,
-    https:USE_HTTPS
+    https:USE_HTTPS,
+    wfaHost:WFA_HOST,
+    wfaRivenHost:WFA_RIVEN_HOST
 };
 module.exports = myConfig;
