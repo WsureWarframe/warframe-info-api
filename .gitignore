@@ -6,3 +6,5 @@ home/key/1600598_zhshy.top.pem
 config/1600598_zhshy.top.pem
 
 yarn-error.log
+
+yarn.lock
