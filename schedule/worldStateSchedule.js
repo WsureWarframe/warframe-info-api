@@ -1,7 +1,8 @@
 const mcache = require('memory-cache');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
-const moment = require("moment")
+const moment = require("moment");
+const retry = require("promise-retry");
 
 const cacheKey = 'ws';
 

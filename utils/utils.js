@@ -128,4 +128,8 @@ function millisecondToString(mss = 0){
       (seconds === 0 ? '':seconds+'秒' );
 }
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time))
+}
+
 module.exports = utils;
