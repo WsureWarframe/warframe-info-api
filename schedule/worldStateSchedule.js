@@ -2,7 +2,7 @@ const mcache = require('memory-cache');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
 const moment = require("moment");
-const retry = require("promise-retry");
+const retry = require('../utils/retry');
 
 const cacheKey = 'ws';
 
@@ -20,12 +20,12 @@ const worldStateSchedule = {
     },
     setWorldStateCache: async function (that) {
         let start = new Date().getTime();
-        const ws = await that.queryWorldState().catch( e => {
-            console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
-            setTimeout( async () => {
-                await that.setWorldStateCache(that)
-            },3*1000)
-        })
+        const ws = await retry( async () => { return await that.queryWorldState() },
+            { times : 999, delay: 3000,onRetry: (data) => {
+                    console.log('onRetry',data)
+                    console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
+                } })
+            .finally()
         that.cache.put(cacheKey,ws)
         console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 结束 ,耗时${new Date().getTime() - start} ms`)
     },

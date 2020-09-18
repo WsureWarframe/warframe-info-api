@@ -4,6 +4,7 @@ require('superagent-proxy')(superagent);
 const moment = require("moment");
 const init = require('../utils/init');
 const config = require('../config/myConfig');
+const retry = require('../utils/retry');
 
 const cacheKey = 'lib';
 
@@ -13,20 +14,25 @@ const wfaLibrarySchedule = {
     //todo 使用闭包完成失败重试
     setWfaLibCache: async function(that){
         let start = new Date().getTime();
-        try {
-            let wfa = await init.getPageStorage(config.wfaHost);
-            let riven = await init.getPageStorage(config.wfaRivenHost);
-            Object.assign(wfa.storage,riven.storage);
-            Object.assign(wfa.cookies,riven.cookies);
-            that.cache.put(cacheKey,wfa.storage)
-            console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 结束 ,耗时${new Date().getTime() - start} ms`)
-        } catch (error){
-            console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
-            setTimeout( async () => {
-                await that.setWfaLibCache(that)
-            },3*60*1000)
-        }
+        let wfa,riven
+        wfa = await retry( async () => { return await init.getPageStorage(config.wfaHost); },
+            { times : 999, delay: 3000,onRetry: (data) => {
+                    console.log('onRetry',data)
+                    console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
+                } })
+            .finally()
+        riven = await retry( async () => { return await init.getPageStorage(config.wfaRivenHost); },
+            { times : 999, delay: 3000,onRetry: (data) => {
+                    console.log('onRetry',data)
+                    console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
+                }
+            })
+            .finally()
 
+        Object.assign(wfa.storage,riven.storage);
+        Object.assign(wfa.cookies,riven.cookies);
+        that.cache.put(cacheKey,wfa.storage)
+        console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 结束 ,耗时${new Date().getTime() - start} ms`)
     },
     getWfaLibCache: async function (that){
         let cacheLib = that.cache;
