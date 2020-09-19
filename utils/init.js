@@ -6,7 +6,7 @@ const puppeteer = require('puppeteer');
 const init = {
     getPageStorage : async (url)=>{
         //'https://wfa.richasy.cn/'
-        const browser = await puppeteer.launch()
+        const browser = await puppeteer.launch({args:['--no-sandbox']})
         const page = await browser.newPage()
         await page.goto(url)
         const returnedCookie = await page.cookies();
