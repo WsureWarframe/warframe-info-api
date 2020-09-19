@@ -12,7 +12,7 @@ const init = {
         const returnedCookie = await page.cookies();
         console.log(`${url} - cookies - ${returnedCookie}`)
 
-        await page.waitFor( 10000 );
+        await page.waitForTimeout( 10000 );
         const localStorageData = await page.evaluate(() => {
             let json = {};
             for (let i = 0; i < localStorage.length; i++) {
