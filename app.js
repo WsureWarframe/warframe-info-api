@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const initUtils = require('./utils/init')
+const init = require('./utils/init')
 
 const indexRouter = require('./routes/index');
 const mpRouter = require('./routes/mp');
@@ -11,37 +11,8 @@ const warframe = require('./routes/warframe');
 const wm = require('./routes/warframeMarket');
 const rm = require('./routes/rivenMarket');
 const wiki = require('./routes/huijiwiki');
-
-const initJs = require('./utils/wfaLibs');
-const config = require('./config/myConfig');
-const schedule = require("node-schedule");
-const wsSchedule = require('./schedule/worldStateSchedule');
-const libSchedule = require('./schedule/wfaLibrarySchedule');
-const retry = require('./utils/retry');
 const app = express();
 
-let getData = (index) => {
-  return new Promise(((resolve, reject) => {
-    if(index >0){
-      console.log('getData reject(), index:' + index)
-      reject()
-    } else {
-      console.log('getData resolve(), index:' + index)
-      resolve()
-    }
-  }))
-}
-let count = 5;
-retry( () => getData(count--),{times : 10, delay: 1000,onRetry: (data)=>{
-    console.log('onRetry',data)
-  }
-}).then(res => {
-  console.log('then',res)
-}).catch( error => {
-  console.log('catch',error)
-}).finally( () => {
-  console.log('finally')
-})
 
 
 // view engine setup
@@ -54,13 +25,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-schedule.scheduleJob('0 0/3 * * * ?' , function (){
-    wsSchedule.setWorldStateCache(wsSchedule).finally()
-});
-schedule.scheduleJob('0 0 0/2 * * ?' , function (){
-    libSchedule.setWfaLibCache(libSchedule).finally()
-
-});
+//启动时任务
+init.onstart()
 
 app.use('/', indexRouter);
 app.use('/mp', mpRouter);
@@ -84,24 +50,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-libSchedule.getWfaLibCache(libSchedule).then(res => {
-  console.log(Object.keys(res))
-})
-//init data
-if(config.localLib){
-  initJs.initLocalRW();
-  initJs.initLocalLib();
-  initJs.initLibsCache();
-} else {
-  initJs.initToken(function (res) {
-    console.log('app.js : ','Token init success!');
-    initJs.initLibs(function (res_) {
-      console.log('app.js : ','Libs init success!');
-      initJs.initLibsCache();
-    // Object.keys(initJs.lib).forEach(function (value) {
-    //   console.log(value,initJs.libs[value].keys().length);
-    // })
-    })
-  });
-}
+
+
 module.exports = app;

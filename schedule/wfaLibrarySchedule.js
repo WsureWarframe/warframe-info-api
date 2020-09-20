@@ -2,7 +2,7 @@ const mcache = require('memory-cache');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
 const moment = require("moment");
-const init = require('../utils/init');
+const { getPageStorage } = require('../utils/puppeteer');
 const config = require('../config/myConfig');
 const retry = require('../utils/retry');
 
@@ -15,13 +15,13 @@ const wfaLibrarySchedule = {
     setWfaLibCache: async function(that){
         let start = new Date().getTime();
         let wfa,riven
-        wfa = await retry( async () => { return await init.getPageStorage(config.wfaHost); },
+        wfa = await retry( async () => { return await getPageStorage(config.wfaHost); },
             { times : 999, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })
             .finally()
-        riven = await retry( async () => { return await init.getPageStorage(config.wfaRivenHost); },
+        riven = await retry( async () => { return await getPageStorage(config.wfaRivenHost); },
             { times : 999, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)

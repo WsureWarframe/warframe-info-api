@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const wfaLib = require('../utils/wfaLibs');
-const puppeteerUtil = require('../utils/puppeteerFullShot');
-const puppeteer = require('puppeteer');
 
 
 /* GET home page. */

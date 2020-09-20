@@ -1,5 +1,5 @@
 const path = require('path');
-const puppeteer = require('puppeteer');
+const Chroium = require("./browser");
 const fs = require('fs');
 
 const getScreenshot  = async (name) => {
@@ -16,7 +16,7 @@ const getScreenshot  = async (name) => {
         console.log(error);
     }
     // 启动Chromium
-    const browser = await puppeteer.launch({ignoreHTTPSErrors: true, headless:true, args: ['--no-sandbox']});
+    const browser = await Chroium.getBrowser() // await puppeteer.launch({ignoreHTTPSErrors: true, headless:true, args: ['--no-sandbox']});
     // 打开新页面
     const page = await browser.newPage();
     // 设置页面分辨率
@@ -25,7 +25,7 @@ const getScreenshot  = async (name) => {
     let request_url = getReqUrl(name);
     // 访问
     await page.goto(request_url, {waitUntil: 'domcontentloaded'}).catch(err => console.log(err));
-    await page.waitFor(1000);
+    await page.waitForTimeout(1000);
     // let title = await page.title();
     // console.log(title);
 
@@ -73,13 +73,13 @@ const getScreenshot  = async (name) => {
             console.log(err);
             hasError = true;
         });
-        await page.waitFor(5000);
+        await page.waitForTimeout(5000);
         return hasError?'error':img_path;
     } catch (e) {
         console.log('执行异常');
         return 'error';
     } finally {
-        await browser.close();
+        await page.close();
     }
 };
 
@@ -119,4 +119,38 @@ function isFileExisted(name) {
     })
 }
 
-module.exports = getScreenshot;
+const getPageStorage = async (url)=>{
+    //'https://wfa.richasy.cn/'
+    const browser = await Chroium.getBrowser()
+    console.log('wsEndpoint',browser.wsEndpoint())
+    const page = await browser.newPage()
+    try {
+        await page.goto(url)
+        const returnedCookie = await page.cookies();
+        console.log(`${url} - cookies - ${returnedCookie}`)
+
+        await page.waitForTimeout( 10000 );
+
+        const localStorageData = await page.evaluate(() => {
+            let json = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                json[key] = localStorage.getItem(key);
+            }
+            return json;
+        });
+        console.log(`${url} - localStorage - ${Object.keys(localStorageData)}`)
+
+
+        return {
+            cookies: returnedCookie,
+            storage: localStorageData
+        }
+    } catch (error) {
+        throw error;
+    } finally {
+        await page.close()
+    }
+}
+
+module.exports = { getPageStorage , getScreenshot }
