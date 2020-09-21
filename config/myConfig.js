@@ -7,7 +7,7 @@ const USE_HTTPS = false;
 //WFA_HOST
 const WFA_HOST = 'https://wfa.richasy.cn/';
 const WFA_RIVEN_HOST = 'https://riven.richasy.cn/';
-myConfig = {
+const myConfig = {
     localLib:LOCAL_LIB,
     isDev:MY_DEV,
     https:USE_HTTPS,

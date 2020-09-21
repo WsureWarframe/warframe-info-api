@@ -1,8 +1,9 @@
+const utils = require('./utils');
 const path = require('path');
 const Chroium = require("./browser");
 const fs = require('fs');
 
-const getScreenshot  = async (name) => {
+async function getScreenshot(name) {
     let hasError = false;
     const img_path = '/screenshot/'+name+'.png';
     try {
@@ -119,7 +120,7 @@ function isFileExisted(name) {
     })
 }
 
-const getPageStorage = async (url)=>{
+async function getPageStorage (url){
     //'https://wfa.richasy.cn/'
     const browser = await Chroium.getBrowser()
     console.log('wsEndpoint',browser.wsEndpoint())
@@ -132,10 +133,23 @@ const getPageStorage = async (url)=>{
         await page.waitForTimeout( 10000 );
 
         const localStorageData = await page.evaluate(() => {
+            const checkIsJson = function (str) {
+                if (typeof str == 'string') {
+                    try {
+                        const obj = JSON.parse(str);
+                        return !!(typeof obj == 'object' && obj);
+                    } catch (e) {
+                        return false;
+                    }
+                }
+                return false;
+            }
+
             let json = {};
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                json[key] = localStorage.getItem(key);
+                let value = localStorage.getItem(key);
+                json[key] = checkIsJson(value) ? JSON.parse(value) : value ;
             }
             return json;
         });

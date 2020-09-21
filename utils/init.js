@@ -14,6 +14,7 @@ const screenshotDir = path.join(__dirname, '../public/screenshot') ;
 const init = {
     onstart :function (){
 
+        //初始化截图
         this.initScreenshotDir()
 
 

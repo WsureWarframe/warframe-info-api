@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const wfaLib = require('../utils/wfaLibs');
-
+const wfaSchedule = require('../schedule/wfaLibrarySchedule');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,5 +12,20 @@ router.all('/test', function(req, res, next) {
   wfaLib.initLibsCache();
   res.send(wfaLib.libsArr);
 });
+
+router.all('/keys/:type/',function (req,res) {
+  const pathType = req.params.type;
+  if( !pathType )
+    res.send("参数错误");
+  else{
+    wfaSchedule.getWfaLibCache(wfaSchedule).then( data => {
+      res.json(data[pathType]);
+    }).catch(error => {
+      res.json({error:error})
+    })
+  }
+
+});
+
 
 module.exports = router;
