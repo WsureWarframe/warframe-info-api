@@ -12,7 +12,7 @@ const endpointFile = path.join(__dirname,  '../config'); //保存至目录下的
 const screenshotDir = path.join(__dirname, '../public/screenshot') ;
 
 const init = {
-    onstart :function (){
+    onstart :async function (){
 
         //初始化截图目录
         this.initScreenshotDir()
@@ -31,12 +31,11 @@ const init = {
             wfaLib.initLocalLib(wfaLib);
             wfaLib.initLibsCache(wfaLib);
         } else {
-            libSchedule.getWfaLibCache(libSchedule).then(res => {
-                console.log(Object.keys(res));
-                wfaLib.initOnlineRW(wfaLib)
-                    .then(() => wfaLib.initOnlineLib(wfaLib))
-                    .finally(() => wfaLib.initLibsCache(wfaLib));
-            })
+            libSchedule.getWfaLibCache(libSchedule)
+                .then(res => console.log(Object.keys(res)))
+                .then(() => wfaLib.initOnlineRW(wfaLib))
+                .then(() => wfaLib.initOnlineLib(wfaLib))
+                .then(() => wfaLib.initLibsCache(wfaLib));
         }
     },
     saveEndpoint: function(endpointInfo) {

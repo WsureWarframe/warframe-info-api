@@ -1,7 +1,7 @@
 const mcache = require('memory-cache');
 const localLib = require('./dict/localLibs');
 const localRivenData = require('./dict/localRivenData');
-const statsName = require('./dict/StatsName.json');
+const statsName = require('./dict/RivenStatsName.json');
 const wfaLibrarySchedule = require('../schedule/wfaLibrarySchedule');
 
 const libs = {
@@ -89,7 +89,6 @@ const wfaLibs = {
     initOnlineLib: async (that) => {
         let library = await wfaLibrarySchedule.getWfaLibCache(wfaLibrarySchedule);
         that.libsArr.forEach(function (value) {
-            console.log(value ,library[value])
             that.commonMcache.put(value, library[value])
         })
     },

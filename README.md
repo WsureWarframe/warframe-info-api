@@ -21,10 +21,12 @@
         - dailyDeals: 达尔沃
         - persistentEnemies: 小小黑
         - earthCycle: 地球
-        - cetusCycle: 平原
+        - cetusCycle: G平原
         - constructionProgress: 舰队
-        - vallisCycle: 山谷
+        - vallisCycle: C平原
         - nightwave: 电波
+        - arbitration: 仲裁
+        - cambionCycle: I平原
 2. warframeMarket 商品价格查询  __url:[/wm/①/②]()__
     - ① 必填参数
         - dev: 国际服`json`数据

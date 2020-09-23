@@ -1,7 +1,8 @@
 const tran = require('./translate');
 const utils = require('./utils');
+const cycleState = require('./dict/CycleState.json');
 
-warframe = {
+const warframe = {
     getInfo:function (type = 'alerts',orginInfo) {
         switch (type) {
             case "timestamp":
@@ -18,8 +19,6 @@ warframe = {
                 return syndicateMissionsFormat(orginInfo);
             case "fissures":
                 return fissuresFormat(orginInfo);
-            case "globalUpgrades":
-                return orginInfo;
             case "flashSales":
                 return flashSalesFormat(orginInfo);
             case "invasions":
@@ -28,26 +27,21 @@ warframe = {
                 return voidTraderFormat(orginInfo);
             case "dailyDeals":
                 return dailyDealsFormat(orginInfo);
-            case "conclaveChallenges":
-                return orginInfo;
             case "persistentEnemies":
                 return persistentEnemiesFormat(orginInfo);
             case "earthCycle":
-                return cycleFormat(orginInfo);
             case "cetusCycle":
-                return cycleFormat(orginInfo);
             case "cambionCycle":
-                return cycleFormat(orginInfo);
-            case "weeklyChallenges":
-                return orginInfo;
-            case "constructionProgress":
-                return orginInfo;
             case "vallisCycle":
                 return cycleFormat(orginInfo);
             case "nightwave":
                 return nightwaveFormat(orginInfo);
             case "arbitration":
                 return arbitrationFormat(orginInfo);
+            case "conclaveChallenges":
+            case "weeklyChallenges":
+            case "globalUpgrades":
+            case "constructionProgress":
             case "twitter":
             case "darkSectors":
             case "simaris":
@@ -87,14 +81,13 @@ warframe = {
                 return dailyDealsAsString(dailyDealsFormat(orginInfo));
             case "persistentEnemies":
                 return persistentEnemiesAsString(persistentEnemiesFormat(orginInfo));
+            case "vallisCycle":
             case "earthCycle":
-                return cycleAsString(cycleFormat(orginInfo));
             case "cetusCycle":
+            case "cambionCycle":
                 return cycleAsString(cycleFormat(orginInfo));
             case "constructionProgress":
                 return constructionProgressAsString(orginInfo);
-            case "vallisCycle":
-                return cycleAsString(cycleFormat(orginInfo));
             case "nightwave":
                 return nightwaveAsString(nightwaveFormat(orginInfo));
             case "arbitration":
@@ -272,6 +265,7 @@ function persistentEnemiesFormat(body) {
 
 function cycleFormat(body){
     body.timeLeft = utils.timeDiff(null,body.expiry);
+    !body.state && ( body.state = body.active ) ;
     return body;
 }
 
@@ -384,14 +378,7 @@ function persistentEnemiesAsString(body) {
 
 
 function cycleAsString(body){
-    const state = (
-        body.isDay === undefined
-            ? (
-                body.isWarm ? '温暖' : '寒冷'
-            ) : (
-                body.isDay ? '白天' : '夜晚'
-            )
-    );
+    const state = cycleState[body.state] ? cycleState[body.state] : body.state;
     return '状态：'+state+'\n时间：'+body.timeLeft;
 }
 
