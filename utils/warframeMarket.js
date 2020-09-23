@@ -2,7 +2,7 @@ const tran = require('./translate');
 const wfaLibs = require('../utils/wfaLibs');
 const utils = require('./utils');
 const superagent = require('superagent');
-const propxyConfig = require('../config/proxyConfig');
+const proxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 
 const warframeMarket = {
@@ -53,7 +53,7 @@ function wmOrders(name = 'primed_chamber'){
     const wmUrl = 'https://api.warframe.market/v1/items/' + name + '/orders';
     return superagent
         .get(wmUrl)
-        .proxy(propxyConfig.config)
+        .proxy(proxyConfig.config)
         .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
         .then(res=>({
             state:'success',
@@ -76,7 +76,7 @@ function wmStatistics(name = 'primed_chamber'){
     const wmUrl = 'https://api.warframe.market/v1/items/' + name + '/statistics';
     return superagent
         .get(wmUrl)
-        .proxy(propxyConfig.config)
+        .proxy(proxyConfig.config)
         .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
         .then(res=>({
             state:'success',

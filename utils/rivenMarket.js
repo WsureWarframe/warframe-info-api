@@ -1,10 +1,9 @@
 const superagent = require('superagent');
-const propxyConfig = require('../config/proxyConfig');
+const proxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 const utils = require('./utils');
 const wfaLibs = require('../utils/wfaLibs');
 const cheerio = require('cheerio');
-const rivenProperty = require('./rm');
 
 rivenMarket = {
     getInfo:async function (name,page = 1,size = 10) {
@@ -68,7 +67,7 @@ function rivenList(obj,page,size){
     const rmUrl = rivenMarketUrlCreate(size, true, weapon, 999999, page);
     return superagent
         .get(rmUrl)
-        .proxy(propxyConfig.config)
+        .proxy(proxyConfig.config)
         .set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
         .then(res=>({
             state:'success',
@@ -130,7 +129,7 @@ function elementsToRivenList(text){
             seller: e.find(".seller").text().replace(/[\s\r\n]+/g, ''),
             status: e.find('div').is(".ingame") ? 'ingame' : (e.find('div').is(".offline") ? 'offline' : 'online')
         };
-        riven = setRivenPerporty(riven);
+        riven = setRivenProperty(riven);
         rivenList.push(riven);
     });
     return {
@@ -139,22 +138,24 @@ function elementsToRivenList(text){
     };
 }
 
-function setRivenPerporty(riven){
+function setRivenProperty(riven){
     for(let i=1; i<5; i++){
-        const property = getPerporty(riven['stat' + i]);
+        const property = getProperty(riven['stat' + i]);
         if(property){
             riven['stat'+i] = property.Name;
             riven['stat'+i+'val'] = getPre(property.Pre,i)+ riven['stat'+i+'val']+property.Unit;
-        } else {
-            delete riven['stat'+i];
-            delete riven['stat'+i+'val'];
         }
+        // else {
+        //     delete riven['stat'+i];
+        //     delete riven['stat'+i+'val'];
+        // }
     }
     return riven;
 }
 
-function getPerporty( perporty ){
-    return ( perporty === '' || perporty === undefined ) ? null : rivenProperty[perporty];
+function getProperty( property ){
+    return wfaLibs.libs.rd.get(property);
+    // return ( property === '' || property === undefined ) ? null : rivenProperty[property];
 }
 
 function getPre(pre,i){

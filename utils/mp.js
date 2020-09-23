@@ -1,6 +1,6 @@
 const mpConfig = require('../config/mpConfig');
 const superagent = require('superagent');
-const propxyConfig = require('../config/proxyConfig');
+const proxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 
 mpUtils = {
@@ -17,7 +17,7 @@ function mpLogin(code,platform = 'weixin'){
     return new Promise((resolve,reject)=>{
         superagent
             .get(mpLoginUrl)
-            .proxy(propxyConfig.config)
+            .proxy(proxyConfig.config)
             //.set('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
             .then(res=>{
                 const data = res.data ? res.data : JSON.parse(res.text);

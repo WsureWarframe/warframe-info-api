@@ -2,7 +2,7 @@ const express = require('express');
 const WorldState = require('warframe-worldstate-parser');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
-const propxyConfig = require('../config/proxyConfig');
+const proxyConfig = require('../config/proxyConfig');
 const router = express.Router();
 const wfaLibs = require('../utils/wfaLibs');
 const utils = require('../utils/utils');
@@ -77,7 +77,7 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
 });
 
 router.all('/keys',function (req,res) {
-  const mcache = wfaLibs.mcache;
+  const mcache = wfaLibs.commonMcache;
   res.send(mcache.keys());
 });
 

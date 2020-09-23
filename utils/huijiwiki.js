@@ -1,5 +1,5 @@
 const superagent = require('superagent');
-const propxyConfig = require('../config/proxyConfig');
+const proxyConfig = require('../config/proxyConfig');
 require('superagent-proxy')(superagent);
 const utils = require('./utils');
 const wfaLibs = require('../utils/wfaLibs');
@@ -102,8 +102,8 @@ function wikiHtml(wikiUrl){
             state: 'error',
             data: err
         }));
-    if(propxyConfig.config)
-        req.proxy(propxyConfig.config);
+    if(proxyConfig.config)
+        req.proxy(proxyConfig.config);
     return req;
 }
 function elementsToText(text){

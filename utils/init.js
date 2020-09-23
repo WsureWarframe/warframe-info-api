@@ -14,10 +14,10 @@ const screenshotDir = path.join(__dirname, '../public/screenshot') ;
 const init = {
     onstart :function (){
 
-        //初始化截图
+        //初始化截图目录
         this.initScreenshotDir()
 
-
+        //Schedule
         schedule.scheduleJob('0 0/3 * * * ?' , function (){
             wsSchedule.setWorldStateCache(wsSchedule).finally()
         });
@@ -25,27 +25,18 @@ const init = {
             libSchedule.setWfaLibCache(libSchedule).finally()
         });
 
-
-        libSchedule.getWfaLibCache(libSchedule).then(res => {
-            console.log(Object.keys(res))
-        })
-
         //init data
         if(config.localLib){
-            wfaLib.initLocalRW();
-            wfaLib.initLocalLib();
-            wfaLib.initLibsCache();
+            wfaLib.initLocalRW(wfaLib);
+            wfaLib.initLocalLib(wfaLib);
+            wfaLib.initLibsCache(wfaLib);
         } else {
-            wfaLib.initToken(function (res) {
-                console.log('app.js : ','Token init success!');
-                wfaLib.initLibs(function (res_) {
-                    console.log('app.js : ','Libs init success!');
-                    wfaLib.initLibsCache();
-                    // Object.keys(initJs.lib).forEach(function (value) {
-                    //   console.log(value,initJs.libs[value].keys().length);
-                    // })
-                })
-            });
+            libSchedule.getWfaLibCache(libSchedule).then(res => {
+                console.log(Object.keys(res));
+                wfaLib.initOnlineRW(wfaLib)
+                    .then(() => wfaLib.initOnlineLib(wfaLib))
+                    .finally(() => wfaLib.initLibsCache(wfaLib));
+            })
         }
     },
     saveEndpoint: function(endpointInfo) {

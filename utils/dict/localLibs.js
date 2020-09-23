@@ -1,4 +1,4 @@
-localLib =
+const localLib =
     {
   "dict": [
     {
