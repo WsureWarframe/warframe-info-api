@@ -1,6 +1,6 @@
 const localLib =
     {
-  "dict": [
+  "Dict": [
     {
       "id": 1,
       "type": "Mod",
@@ -14606,7 +14606,7 @@ const localLib =
       "en": "Korrudo"
     }
   ],
-  "sale": [
+  "Sale": [
     {
       "id": 1,
       "type": "Part",
@@ -30750,7 +30750,7 @@ const localLib =
       "en": "Prisma Grinlok"
     }
   ],
-  "riven": [
+  "Riven": [
     {
       "id": 1,
       "name": "DEX 达克拉双剑",
@@ -32698,7 +32698,7 @@ const localLib =
       "ratio": 1
     }
   ],
-  "nightwave": [
+  "Nightwave": [
     {
       "id": 1,
       "zh": "在滑行时杀死20名敌人",
@@ -33445,7 +33445,7 @@ const localLib =
       "en": "Sharing is Caring"
     }
   ],
-  "invasion": [
+  "Invasion": [
     {
       "id": 1,
       "zh": "爆燃喷射器",
