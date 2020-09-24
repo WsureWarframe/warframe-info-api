@@ -345,7 +345,7 @@ function syndicateAsString(body,syndicate = 'Ostrons'){ //Solaris United
     });
     target.jobs.forEach(function (job,index) {
         resArr.push('赏金'+(index+1)+':');
-        resArr.push(job.standingStages.join('/')+'\n');
+        resArr.push(job.rewardPool.join('/')+'\n');
     });
     resArr.push('时间：'+target.eta);
     return resArr.join('\n');

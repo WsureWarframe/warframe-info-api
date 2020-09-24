@@ -33,7 +33,7 @@ const warframeMarket = {
         if(info.word == null && info.name!==''){
             return `未找到任何与${info.name}相关的物品`
         }
-        let res = '你查询的物品是:' + info.word.zh + ' (' + info.word.search + ')\n' +
+        let res = '你查询的物品是:' + info.word.zh + ' (' + info.word.code + ')\n' +
             '估计价格区间：' + info.statistics.min_price + ' - ' + info.statistics.max_price + 'p\n' +
             '昨日均价：' + info.statistics.avg_price + 'p\n' +
             '从' + info.seller.length + '位在线卖家中捕获到top5卖家信息(>^ω^<)\n';
