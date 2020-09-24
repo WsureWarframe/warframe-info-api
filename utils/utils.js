@@ -28,7 +28,7 @@ const utils = {
             ;
     },
     testType: function (type) {
-        if (type === 'Ostrons' || type === 'Solaris') {
+        if (type === 'Ostrons' || type === 'Solaris'|| type === 'EntratiSyndicate') {
             return 'syndicateMissions';
         }
         return type;
