@@ -66,7 +66,8 @@ const warframe = {
             case "Solaris":
                 return syndicateAsString(syndicateMissionsFormat(orginInfo),'Solaris United');
             case "Ostrons":
-                return syndicateAsString(syndicateMissionsFormat(orginInfo),'Ostrons');
+            case "EntratiSyndicate":
+                return syndicateAsString(syndicateMissionsFormat(orginInfo),type);
             case "fissures":
                 return fissuresAsString(fissuresFormat(orginInfo));
             case "globalUpgrades":

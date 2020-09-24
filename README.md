@@ -12,8 +12,10 @@
         - events: 活动
         - alerts: 警报
         - sortie: 突击
-        - Ostrons: 地球赏金
-        - Solaris: 金星赏金
+        - syndicateMissions: 集团任务 (仅限dev、detail的json数据)
+        - Ostrons: 地球赏金 (仅限robot的string数据)
+        - Solaris: 金星赏金 (仅限robot的string数据)
+        - EntratiSyndicate: 火卫二赏金 (仅限robot的string数据)
         - fissures: 裂缝
         - flashSales: 促销商品
         - invasions: 入侵
@@ -21,12 +23,12 @@
         - dailyDeals: 达尔沃
         - persistentEnemies: 小小黑
         - earthCycle: 地球
-        - cetusCycle: G平原
+        - cetusCycle: 地球平原
         - constructionProgress: 舰队
-        - vallisCycle: C平原
+        - vallisCycle: 金星平原
         - nightwave: 电波
         - arbitration: 仲裁
-        - cambionCycle: I平原
+        - cambionCycle: 火卫二平原
 2. warframeMarket 商品价格查询  __url:[/wm/①/②]()__
     - ① 必填参数
         - dev: 国际服`json`数据
