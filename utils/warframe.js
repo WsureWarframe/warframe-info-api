@@ -187,7 +187,7 @@ function newsFormat(body) {
 function syndicateMissionsFormat(body){
     body.forEach(function (value) {
         value.eta = utils.timeDiff(null,value.expiry);
-        value.syndicate = tran.translateByCache(value.syndicate);
+        value.syndicateZh = tran.translateByCache(value.syndicate);
         value.nodes.forEach(function (node,index) {
             value.nodes[index] = tran.translateByCache(node);
         });
