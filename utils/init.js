@@ -21,9 +21,7 @@ const init = {
         schedule.scheduleJob('0 0/3 * * * ?' , function (){
             wsSchedule.setWorldStateCache(wsSchedule).finally()
         });
-        schedule.scheduleJob('0 0 0/2 * * ?' , function (){
-            libSchedule.setWfaLibCache(libSchedule).finally()
-        });
+
 
         //init data
         if(config.localLib){
@@ -36,6 +34,15 @@ const init = {
                 .then(() => wfaLib.initOnlineRW(wfaLib))
                 .then(() => wfaLib.initOnlineLib(wfaLib))
                 .then(() => wfaLib.initLibsCache(wfaLib));
+
+            schedule.scheduleJob('0 0 0/2 * * ?' , function (){
+                libSchedule.setWfaLibCache(libSchedule)
+                    .then(() => libSchedule.getWfaLibCache(libSchedule))
+                    .then(res => console.log(Object.keys(res)))
+                    .then(() => wfaLib.initOnlineRW(wfaLib))
+                    .then(() => wfaLib.initOnlineLib(wfaLib))
+                    .then(() => wfaLib.initLibsCache(wfaLib));
+            });
         }
     },
     saveEndpoint: function(endpointInfo) {
