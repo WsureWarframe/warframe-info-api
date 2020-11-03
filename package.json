@@ -13,6 +13,7 @@
     "ejs": "~2.5.7",
     "express": "~4.16.0",
     "google-baidu-translate-api": "^1.0.3",
+    "translate-google": "^1.4.3",
     "http-errors": "~1.6.2",
     "memory-cache": "^0.2.0",
     "moment": "^2.24.0",

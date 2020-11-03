@@ -1,5 +1,6 @@
 const wfaLibs = require('./wfaLibs');
 const googleTranslate = require('google-baidu-translate-api');
+const googleTranslateAnother = require('translate-google');
 const translate = {
     translateByCache:function (original) {
         if(original)
@@ -13,14 +14,19 @@ const translate = {
         return null;
     },
     googleTranslate: function (original, from = 'en') {
-        return googleTranslate.google(original, 'zh-cn', from)
-        //     .then(res=>{
-        //     console.log(res);
-        //     return res.text;
-        // }).catch(err=>{
-        //     console.log(err);
-        //     return err;
-        // })
+        return new Promise((resolve, reject) => {
+            googleTranslate.google(original, 'zh-cn', from)
+                .then(res=> resolve(res.dist))
+                .catch(err=>{
+                    console.log(err);
+                    googleTranslateAnother(original,{from: from, to:'zh-cn'})
+                        .then( res => resolve(res.text))
+                        .catch( err => {
+                            console.error( err )
+                            resolve(original)
+                        })
+                })
+        })
     },
     saleName:function (input) {
         return getSearchStr(input,getCache);
