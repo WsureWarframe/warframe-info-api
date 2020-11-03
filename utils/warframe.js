@@ -2,6 +2,8 @@ const tran = require('./translate');
 const utils = require('./utils');
 const cycleState = require('./dict/CycleState.json');
 
+const timeout = 24 * 60 * 60 * 1000;
+
 const warframe = {
     getInfo:function (type = 'alerts',orginInfo) {
         switch (type) {
@@ -145,11 +147,11 @@ function sortieFormat(body){
 }
 
 function eventsFormat(body){
-    return new Promise(async (resolve, reject) => {
+    return utils.cacheUtil( 'events_key', async () => {
         for (let value of body) {
             value.description = tran.translateByCache(value.description);
             console.log(tran.translateByCache(value.tooltip));
-            value.tooltip = (await tran.googleTranslate(tran.translateByCache(value.tooltip))).dist;
+            value.tooltip = (await tran.googleTranslate(tran.translateByCache(value.tooltip)));
             value.node = tran.translateByCache(value.node);
             value.victimNode = tran.translateByCache(value.victimNode);
             for (let val of value.rewards) {
@@ -161,13 +163,14 @@ function eventsFormat(body){
                 val.reward.itemString = tran.translateByCache(val.reward.itemString);
             }
             value.eta = utils.timeDiff(null, value.expiry);
-            resolve(body);
+
         }
-    });
+        return body;
+    }, timeout);
 }
 
 function newsFormat(body) {
-    return new Promise(async (resolve, reject) => {
+    return utils.cacheUtil( 'news_key', async () => {
         for (let value of body) {
             if (value.translations.zh) {
                 value.message = value.translations.zh
@@ -176,12 +179,12 @@ function newsFormat(body) {
                 console.log(language, value.translations[language]);
                 const tranRes = await tran.googleTranslate(tran.translateByCache(value.translations[language]), language);
                 console.log(tranRes);
-                value.message = tranRes.dist;
+                value.message = tranRes;
             }
             value.eta = utils.timeDiff(null, value.date);
         }
-        resolve(body);
-    })
+        return body;
+    }, timeout);
 }
 
 function syndicateMissionsFormat(body){
