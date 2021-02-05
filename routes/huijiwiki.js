@@ -15,6 +15,8 @@ router.all(['/dev/:type','/dev'],async function (req,res) {
     res.send(await hjwiki.getInfo(type,page,size));
 });
 
+/*
+    自2021年2月6日起，废弃
 router.all(['/detail/:type','/detail'],async function (req,res) {
     const bodyType = req.query.type;
     const pathType = req.params.type;
@@ -28,7 +30,7 @@ router.all(['/text/:type','/text'],async function (req,res) {
     const type = pathType ? pathType : (bodyType ? bodyType : null);
     res.send(await hjwiki.getHtmlText(type));
 });
-
+*/
 router.all(['/robot/:type','/robot'],async function (req,res) {
     const bodyType = req.query.type;
     const pathType = req.params.type;

@@ -8,6 +8,9 @@ const { getScreenshot } = require('./puppeteer');
 
 huijiwiki ={
     getInfo: async function (name, page = 1, size = 10) {
+        return { url:getListUrl(name, page, size) }
+        /*
+            不再解析查询列表
         const res = await wikiHtml(getListUrl(name, page, size));
         if(res.state === 'success')
         {
@@ -33,7 +36,7 @@ huijiwiki ={
         }
         else {
             return res;
-        }
+        }*/
     },
     async getDetail(name) {
         const listInfo = await this.getInfo(name);
@@ -63,6 +66,8 @@ huijiwiki ={
         }
     },
     robotFormatStr: async function (name) {
+        return `为你找到:\n${getListUrl(name)}`
+        /*
         const apiData = await this.getInfo(name,1,6);
         let res = '';
         if(apiData.detail){
@@ -79,6 +84,8 @@ huijiwiki ={
         }
 
         return res;
+
+         */
     }
 };
 
