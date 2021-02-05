@@ -89,7 +89,7 @@ huijiwiki ={
     }
 };
 
-function getListUrl(name,page,size){
+function getListUrl(name,page = 1, size = 10){
     const offset = (page - 1) * size;
     const search = encodeURIComponent(name);
     return 'https://warframe.huijiwiki.com/index.php?title=%E7%89%B9%E6%AE%8A:%E6%90%9C%E7%B4%A2&limit='+size+'&offset='+offset+'&profile=default&search='+search;
