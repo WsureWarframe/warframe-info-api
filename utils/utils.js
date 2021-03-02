@@ -55,12 +55,12 @@ const utils = {
         const wordA = word.split('');
         let i = 0, len = 0, thick = [];
         keyA.forEach((value, index, array) => {
-            wloop:for (let j = i; j < wordA.length; j++) {
+            for (let j = i; j < wordA.length; j++) {
                 if (value === wordA[j]) {
                     thick.push(j);
                     i = j;
                     len++;
-                    break wloop;
+                    break;
                 }
             }
         });

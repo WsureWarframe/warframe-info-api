@@ -1,6 +1,7 @@
 const wfaLibs = require('./wfaLibs');
 const googleTranslate = require('google-baidu-translate-api');
 const googleTranslateAnother = require('translate-google');
+const utils = require("./utils");
 const translate = {
     translateByCache:function (original) {
         if(original)
@@ -30,6 +31,23 @@ const translate = {
     },
     saleName:function (input) {
         return getSearchStr(input,getCache);
+    },
+    fuzzTran: function (input, libRange = []) {
+        let _key = utils.formatter(input)
+        let libArray = Object.keys(wfaLibs.libs)
+            .filter(lib => !['rw', 'rd'].includes(lib))
+            .filter(lib => !libRange.length > 0 || libRange.includes(lib))
+        console.log(`translate lib range: ${libArray}`)
+        return libArray
+            .map(lib => utils.getSaleWord(_key, wfaLibs.libs[lib].keys())
+                .slice(0, 5)
+                .map(v => {
+                    return {...v, ...wfaLibs.libs[lib].get(v.key)}
+                }))
+            .flatMap(v => v)
+            .filter((v, i, arr) => i === arr.map(_v => _v.en).indexOf(v.en))
+            .filter((v, i, arr) => !v.main || i === arr.map(_v => _v.main).indexOf(v.main))
+            .sort((a, b) => b.acc - a.acc)
     }
 };
 
@@ -96,5 +114,8 @@ function getCache(key){
         suffix : suffix?suffix.join(''):''
     };
 }
+
+//万用翻译
+
 
 module.exports = translate;

@@ -77,8 +77,11 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
 });
 
 router.all('/keys',function (req,res) {
-  const mcache = wfaLibs.commonMcache;
-  res.send(mcache.keys());
+  res.send(Object.keys(wfaLibs.libs));
+});
+router.all('/keyList/:key',function (req,res) {
+  const pathKey = req.params.key;
+  res.json(wfaLibs.libs[pathKey].keys());
 });
 
 router.all('/keys/:type/:key',function (req,res) {
@@ -88,6 +91,16 @@ router.all('/keys/:type/:key',function (req,res) {
     res.send("参数错误");
   else
     res.json(wfaLibs.libs[pathType].get(pathKey));
+});
+
+router.all(['/fuzzKey/:key','/fuzzKey/:key/:libs'],function (req,res) {
+  const pathKey = req.param('key',null);
+  const pathLibs = req.param('libs') ;
+  const libs = pathLibs ? pathLibs.split(',') : [];
+  if(pathKey === '')
+    res.send("参数错误");
+  else
+    res.json(tran.fuzzTran(pathKey,libs));
 });
 
 router.all('/test',function (req, res) {
