@@ -32,15 +32,14 @@ const translate = {
     saleName:function (input) {
         return getSearchStr(input,getCache);
     },
-    fuzzTran: function (input, libRange = []) {
+    fuzzTran: function (input, libRange = [],max = 10) {
         let _key = utils.formatter(input)
         let libArray = Object.keys(wfaLibs.libs)
             .filter(lib => !['rw', 'rd'].includes(lib))
             .filter(lib => !libRange.length > 0 || libRange.includes(lib))
         console.log(`translate lib range: ${libArray}`)
         return libArray
-            .map(lib => utils.getSaleWord(_key, wfaLibs.libs[lib].keys())
-                .slice(0, 5)
+            .map(lib => utils.getSaleWordFromLib(_key, wfaLibs.libs[lib])
                 .map(v => {
                     return {...v, ...wfaLibs.libs[lib].get(v.key)}
                 }))
@@ -48,6 +47,13 @@ const translate = {
             .filter((v, i, arr) => i === arr.map(_v => _v.en).indexOf(v.en))
             .filter((v, i, arr) => !v.main || i === arr.map(_v => _v.main).indexOf(v.main))
             .sort((a, b) => b.acc - a.acc)
+            .slice(0,max)
+    },
+    fuzzTranRobot: function (input, libRange = [],max = 10) {
+        let words = this.fuzzTran(input,libRange,max)
+        return words.length === 0 ?
+            `未查询到${input}相关的词` :
+            `为你查到以下词：\n${words.map( word => `${word.zh} [${word.en}]`).join('\n')}`
     }
 };
 

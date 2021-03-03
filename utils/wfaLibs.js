@@ -3,6 +3,7 @@ const localLib = require('./dict/localLibs');
 const localRivenData = require('./dict/localRivenData');
 const statsName = require('./dict/RivenStatsName.json');
 const wfaLibrarySchedule = require('../schedule/wfaLibrarySchedule');
+const customDict = require('./dict/custom.json');
 
 const libs = {
     Dict: new mcache.Cache(),
@@ -74,6 +75,9 @@ const wfaLibs = {
             })
         });
 
+        //加载黑话
+        that.initCustomLib(that)
+
         console.log("rw :"+that.libs.rw.size()+" rm: "+that.libs.rm.size())
         console.log(that.libs.rw.keys().join(','))
     },
@@ -97,6 +101,17 @@ const wfaLibs = {
         that.initRWCache(that,library['RivenData']);
 
     },
+    initCustomLib:function (that){
+        let sale = that.commonMcache.get('Sale')
+        let customSale = customDict.map(
+            da => sale.filter( db => db.main.toUpperCase() === da.en.toUpperCase() )
+                .map( db => { return { ...db,customZh:db.zh.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
+        ).flatMap(v => v)
+        that.commonMcache.put('custom',customSale)
+        customSale.forEach(value_ => {
+            that.libs['wm'].put(value_.customZh, value_);
+        })
+    }
 };
 
 module.exports = wfaLibs;

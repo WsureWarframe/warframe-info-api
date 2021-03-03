@@ -67,6 +67,16 @@ const utils = {
         const state = len === keyA.length;
         return state ? {state: state, acc: this.getAcc(key, word, thick), key: word_} : {state: state, key: word};
     },
+    getSaleWordFromLib:function (key, lib) {
+        return this.getSaleWord(key,lib.keys())
+            .map( v => {
+                let word = lib.get(v.key)
+                return {
+                    ...v,
+                    key: word.customZh ? word.zh :v.key
+                }
+            } )
+    },
     getSaleWord: function (key, words) {
         const res = [];
         words.forEach((value) => {

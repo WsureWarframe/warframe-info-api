@@ -18,40 +18,6 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-/**
- *  wfa 信息相关接口
- *  ps：wfa是指http://wfa.richasy.cn
- */
-
-//获取字典接口
-router.all('/libs', function(req, res) {
-  //获取 wfa Token
-  wfaLibs.initToken(function (body) {
-    //获取拿到Token后请求 wfa lib字典
-    wfaLibs.initLibs(function (libResult) {
-      //将回调返回的结果输出
-      res.send(libResult);
-    })
-  },function () {
-    //error
-    res.json({error:"网络不畅",message:"获取wfa Token失败！"});
-  });
-});
-
-//单独获取 Token
-router.all('/token',function (req,res) {
-  wfaLibs.initToken(function (body) {
-    res.json({token:body});
-  },function () {
-    res.json({error:"网络不畅",message:"获取wfa Token失败！"});
-  });
-});
-
-/**
- * api信息接口
- * ps：来源：http://api.warframestat.us/
- */
-
 //获取分类
 router.all('/list',function (req,res) {
   wfApi(null).then( body => {
@@ -76,14 +42,6 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
   });
 });
 
-router.all('/keys',function (req,res) {
-  res.send(Object.keys(wfaLibs.libs));
-});
-router.all('/keyList/:key',function (req,res) {
-  const pathKey = req.params.key;
-  res.json(wfaLibs.libs[pathKey].keys());
-});
-
 router.all('/keys/:type/:key',function (req,res) {
   const pathType = req.params.type;
   const pathKey = req.params.key;
@@ -91,16 +49,6 @@ router.all('/keys/:type/:key',function (req,res) {
     res.send("参数错误");
   else
     res.json(wfaLibs.libs[pathType].get(pathKey));
-});
-
-router.all(['/fuzzKey/:key','/fuzzKey/:key/:libs'],function (req,res) {
-  const pathKey = req.param('key',null);
-  const pathLibs = req.param('libs') ;
-  const libs = pathLibs ? pathLibs.split(',') : [];
-  if(pathKey === '')
-    res.send("参数错误");
-  else
-    res.json(tran.fuzzTran(pathKey,libs));
 });
 
 router.all('/test',function (req, res) {

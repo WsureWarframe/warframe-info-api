@@ -21,7 +21,7 @@ const worldStateSchedule = {
     setWorldStateCache: async function (that) {
         let start = new Date().getTime();
         const ws = await retry( async () => { return await that.queryWorldState() },
-            { times : 999, delay: 3000,onRetry: (data) => {
+            { times : 3, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })

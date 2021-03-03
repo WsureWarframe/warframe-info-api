@@ -11,6 +11,7 @@ const warframe = require('./routes/warframe');
 const wm = require('./routes/warframeMarket');
 const rm = require('./routes/rivenMarket');
 const wiki = require('./routes/huijiwiki');
+const dict = require('./routes/dict');
 const app = express();
 
 
@@ -34,6 +35,7 @@ init.onstart().then(() =>{
   app.use('/wm', wm);
   app.use('/rm', rm);
   app.use('/wiki', wiki);
+  app.use('/dict', dict);
 // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     next(createError(404));

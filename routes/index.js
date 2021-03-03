@@ -5,12 +5,7 @@ const wfaSchedule = require('../schedule/wfaLibrarySchedule');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.all('/test', function(req, res, next) {
-  wfaLib.initLibsCache();
-  res.send(wfaLib.libsArr);
+  res.render('index', { title: 'warframe-info-api' });
 });
 
 router.all('/keys/:type/',function (req,res) {

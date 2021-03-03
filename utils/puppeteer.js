@@ -120,7 +120,7 @@ function isFileExisted(name) {
     })
 }
 
-async function getPageStorage (url){
+async function getPageStorage (url,storageList = []){
     //'https://wfa.richasy.cn/'
     const browser = await Chroium.getBrowser()
     console.log('wsEndpoint',browser.wsEndpoint())
@@ -129,8 +129,11 @@ async function getPageStorage (url){
         await page.goto(url)
         const returnedCookie = await page.cookies();
         console.log(`${url} - cookies - ${returnedCookie}`)
-
-        await page.waitForTimeout( 10000 );
+        let funStr = !storageList || !storageList.length || storageList.length  === 0 ?
+            'document.readyState === "complete"' :
+            storageList.map( v => `!!localStorage.${v}`).join(' && ')
+        // await page.waitForFunction('document.readyState === "complete"');
+        await page.waitForFunction(funStr);
 
         const localStorageData = await page.evaluate(() => {
             const checkIsJson = function (str) {

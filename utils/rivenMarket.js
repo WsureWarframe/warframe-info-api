@@ -7,8 +7,8 @@ const cheerio = require('cheerio');
 
 rivenMarket = {
     getInfo:async function (name,page = 1,size = 10) {
-        const objs = utils.getSaleWord(name, wfaLibs.libs.rm.keys());
-        const objs1 = utils.getSaleWord(name, wfaLibs.libs.rw.keys());
+        const objs = utils.getSaleWordFromLib(name, wfaLibs.libs.rm);
+        const objs1 = utils.getSaleWordFromLib(name, wfaLibs.libs.rw);
         let obj = null;
         objs.length > 0 && (obj = wfaLibs.libs.rm.get(objs[0].key));
         if(objs1.length > 0){

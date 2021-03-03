@@ -8,6 +8,8 @@ const retry = require('../utils/retry');
 const utils = require('../utils/utils');
 
 const cacheKey = 'lib';
+const wfaStorages = ['Dict','Invasion','Sale','Nightwave']
+const wfaRivenStorage = ['Riven']
 
 const wfaLibrarySchedule = {
     scheduleName:'刷新缓存的WFA字典',
@@ -42,21 +44,21 @@ const wfaLibrarySchedule = {
     //todo 使用闭包完成失败重试
     setWfaLibCache: async function(that){
         let start = new Date().getTime();
-        let wfa = await retry( async () => { return await getPageStorage(config.wfaHost); },
-            { times : 999, delay: 3000,onRetry: (data) => {
+        let wfa = await retry( async () => { return await getPageStorage(config.wfaHost,wfaStorages); },
+            { times : 3, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })
             .finally()
-        let riven = await retry( async () => { return await getPageStorage(config.wfaRivenHost); },
-            { times : 999, delay: 3000,onRetry: (data) => {
+        let riven = await retry( async () => { return await getPageStorage(config.wfaRivenHost,wfaRivenStorage); },
+            { times : 3, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 }
             })
             .finally()
         let rivenWeapon = await retry( async () => { return await that.getRivenMarketData(); },
-            { times : 999, delay: 3000,onRetry: (data) => {
+            { times : 3, delay: 3000,onRetry: (data) => {
                     console.log('onRetry',data)
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })

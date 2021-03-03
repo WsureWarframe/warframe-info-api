@@ -7,7 +7,7 @@ require('superagent-proxy')(superagent);
 
 const warframeMarket = {
     getInfo: async function (name, page = 1, size = 10) {
-        const objs = utils.getSaleWord(name, wfaLibs.libs.wm.keys());
+        const objs = utils.getSaleWordFromLib(name, wfaLibs.libs.wm);
         if(objs.length > 0){
             const obj = wfaLibs.libs.wm.get(objs[0].key);
             const list = (await wmOrders(obj.code)).data;
