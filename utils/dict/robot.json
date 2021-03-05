@@ -1,0 +1,167 @@
+{
+  "config": {
+  },
+  "commands": [
+    {
+      "name": "wm",
+      "type": "PARAM",
+      "path": "/wm/robot/",
+      "alia": "WarframeMarket",
+      "desc": "warframe market 市场价格查询"
+    },
+    {
+      "name": "rm",
+      "type": "PARAM",
+      "path": "/rm/robot/",
+      "alia": "RivenMarket",
+      "desc": "riven market 市场价格查询"
+    },
+    {
+      "name": "tran",
+      "type": "PARAM",
+      "path": "/dict/tran/robot/",
+      "alia": "翻译",
+      "desc": "游戏词语翻译"
+    },
+    {
+      "name": "wiki",
+      "type": "PARAM",
+      "path": "/wiki/robot/",
+      "alia": "灰机wiki",
+      "desc": "warframe market 市场价格查询"
+    },
+    {
+      "name": "新闻",
+      "type": "SIMPLE",
+      "path": "/wf/robot/news",
+      "alia": "新闻",
+      "desc": "warframe 世界状态 新闻"
+    },
+    {
+      "name": "事件",
+      "type": "SIMPLE",
+      "path": "/wf/robot/events",
+      "alia": "事件",
+      "desc": "warframe 世界状态 事件"
+    },
+    {
+      "name": "警报",
+      "type": "SIMPLE",
+      "path": "/wf/robot/alerts",
+      "alia": "警报",
+      "desc": "warframe 世界状态 警报"
+    },
+    {
+      "name": "突击",
+      "type": "SIMPLE",
+      "path": "/wf/robot/sortie",
+      "alia": "突击",
+      "desc": "warframe 世界状态 突击"
+    },
+    {
+      "name": "地球赏金",
+      "type": "SIMPLE",
+      "path": "/wf/robot/Ostrons",
+      "alia": "地球赏金",
+      "desc": "warframe 世界状态 地球赏金"
+    },
+    {
+      "name": "金星赏金",
+      "type": "SIMPLE",
+      "path": "/wf/robot/Solaris",
+      "alia": "金星赏金",
+      "desc": "warframe 世界状态 金星赏金"
+    },
+    {
+      "name": "火卫二赏金",
+      "type": "SIMPLE",
+      "path": "/wf/robot/EntratiSyndicate",
+      "alia": "火卫二赏金",
+      "desc": "warframe 世界状态 火卫二赏金"
+    },
+    {
+      "name": "裂缝",
+      "type": "SIMPLE",
+      "path": "/wf/robot/fissures",
+      "alia": "裂缝",
+      "desc": "warframe 世界状态 裂缝"
+    },
+    {
+      "name": "促销商品",
+      "type": "SIMPLE",
+      "path": "/wf/robot/flashSales",
+      "alia": "促销商品",
+      "desc": "warframe 世界状态 促销商品"
+    },
+    {
+      "name": "入侵",
+      "type": "SIMPLE",
+      "path": "/wf/robot/invasions",
+      "alia": "入侵",
+      "desc": "warframe 世界状态 入侵"
+    },
+    {
+      "name": "奸商",
+      "type": "SIMPLE",
+      "path": "/wf/robot/voidTrader",
+      "alia": "奸商",
+      "desc": "warframe 世界状态 奸商"
+    },
+    {
+      "name": "特价",
+      "type": "SIMPLE",
+      "path": "/wf/robot/dailyDeals",
+      "alia": "特价",
+      "desc": "warframe 世界状态 特价"
+    },
+    {
+      "name": "小小黑",
+      "type": "SIMPLE",
+      "path": "/wf/robot/persistentEnemies",
+      "alia": "小小黑",
+      "desc": "warframe 世界状态 小小黑"
+    },
+    {
+      "name": "地球",
+      "type": "SIMPLE",
+      "path": "/wf/robot/earthCycle",
+      "alia": "地球",
+      "desc": "warframe 世界状态 地球"
+    },
+    {
+      "name": "地球平原",
+      "type": "SIMPLE",
+      "path": "/wf/robot/cetusCycle",
+      "alia": "地球平原",
+      "desc": "warframe 世界状态 地球平原"
+    },
+    {
+      "name": "火卫二平原",
+      "type": "SIMPLE",
+      "path": "/wf/robot/cambionCycle",
+      "alia": "火卫二平原",
+      "desc": "warframe 世界状态 火卫二平原"
+    },
+    {
+      "name": "金星平原",
+      "type": "SIMPLE",
+      "path": "/wf/robot/vallisCycle",
+      "alia": "金星平原",
+      "desc": "warframe 世界状态 金星平原"
+    },
+    {
+      "name": "电波",
+      "type": "SIMPLE",
+      "path": "/wf/robot/nightwave",
+      "alia": "电波",
+      "desc": "warframe 世界状态 电波"
+    },
+    {
+      "name": "仲裁",
+      "type": "SIMPLE",
+      "path": "/wf/robot/arbitration",
+      "alia": "仲裁",
+      "desc": "warframe 世界状态 仲裁"
+    }
+  ]
+}
