@@ -28,7 +28,7 @@
       "type": "PARAM",
       "path": "/wiki/robot/",
       "alia": "wiki",
-      "desc": "warframe market 市场价格查询"
+      "desc": "灰机wiki连接"
     },
     {
       "name": "新闻",
