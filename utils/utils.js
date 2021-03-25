@@ -147,7 +147,7 @@ const utils = {
         if(command){
             let url = {
                 key:command.alia,
-                param:command.type === 'PARAM' ? req.originalUrl.match(new RegExp(`(?<=${path}).*?((?=\\?)|(?=$))`)).join('') : command.path.match(/(?<=\/)\w+$/).join(''),
+                param:command.type === 'PARAM' ? req.originalUrl.match(new RegExp(`(?<=${command.path}).*?((?=\\?)|(?=$))`)).join('') : command.path.match(/(?<=\/)\w+$/).join(''),
                 originalUrl:req.originalUrl,
                 bots :req.query.bots,
                 users:req.query.users
@@ -159,8 +159,8 @@ const utils = {
                 result = {
                     key:url.key,
                     param:url.param,
-                    bots:[url.bots],
-                    users:[url.users],
+                    bots:url.bots?[url.bots]:[],
+                    users:url.users?[url.users]:[],
                     count:1
                 }
             } else {
