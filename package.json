@@ -12,6 +12,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
+    "express-fingerprint": "^1.2.2",
     "google-baidu-translate-api": "^1.0.3",
     "http-errors": "~1.6.2",
     "memory-cache": "^0.2.0",

@@ -1,11 +1,19 @@
 const moment = require('moment');
 const mcache = require('memory-cache');
+const robotJson = require("./dict/robot.json");
 //require 方式
 require('moment/locale/zh-cn');
 const superagent = require('superagent');
 const proxyConfig = require('../config/proxyConfig');
 moment.locale('zh-cn');
+
+const oneDay =  24 * 60 * 60 * 1000;
+
 const utils = {
+    customerRecord:{
+        request: new mcache.Cache(),
+        menu: new mcache.Cache()
+    },
     apiTimeUtil: function (str) {
         const time = moment(str);
         return {
@@ -131,6 +139,53 @@ const utils = {
         }
         return false;
     },
+    getIp:getClientIp,
+    recordCustomer(req){
+        let ip = this.getIp(req)
+
+        let command = robotJson.commands.filter(cmd => req.originalUrl.includes(cmd.path))[0]
+        if(command){
+            let url = {
+                key:command.alia,
+                param:command.type === 'PARAM' ? req.originalUrl.match(new RegExp(`(?<=${command.path}).*(?=\\?)`)) : command.path.match(/(?<=\/)\w+$/),
+                originalUrl:req.originalUrl,
+                bots :req.query.bots,
+                users:req.query.users
+            }
+            let storeKey = `${url.key}::${url.param}`
+            let result = this.customerRecord.menu.get(storeKey);
+
+            if (!result) {
+                result = {
+                    key:url.key,
+                    param:url.param,
+                    bots:[url.bots],
+                    users:[url.users],
+                    count:1
+                }
+            } else {
+                result.count += 1;
+                if(!result.bots.includes(url.bots)){
+                    result.bots.push(url.bots)
+                }
+                if(!result.users.includes(url.users)){
+                    result.users.push(url.users)
+                }
+            }
+            this.customerRecord.menu.put(storeKey, result, oneDay, () => {
+            })
+        }
+
+        let record = {
+            ip:ip,
+            hash:req.fingerprint.hash,
+            ...req.fingerprint.components
+        }
+        //save
+        this.customerRecord.request.put(record.hash, record, oneDay , (k,v) => {
+            console.log('设备离线超过一天:',JSON.stringify(v))
+        })
+    }
 };
 
 function timeDiff(t1, t2) {
@@ -151,6 +206,19 @@ function millisecondToString(mss = 0) {
 
 function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time))
+}
+
+function getClientIp(req) {
+    let ip = req.headers['x-forwarded-for'] ||
+        req.ip ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress || '';
+    if(ip.split(',').length>0){
+        ip = ip.split(',')[0]
+    }
+    ip = ip.substr(ip.lastIndexOf(':')+1,ip.length);
+    return ip;
 }
 
 module.exports = utils;

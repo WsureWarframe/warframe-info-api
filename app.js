@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const init = require('./utils/init')
+const utils = require('./utils/utils')
+const Fingerprint = require('express-fingerprint')
 
 const indexRouter = require('./routes/index');
 const mpRouter = require('./routes/mp');
@@ -26,6 +28,28 @@ app.use(express.json());
 app.use( require('request-param')({ order: ["body","params","query"] } ) )
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(Fingerprint( {
+  parameters:[
+    // Defaults
+    Fingerprint.useragent,
+    Fingerprint.acceptHeaders,
+    Fingerprint.geoip,
+
+    // Additional parameters
+    function(next) {
+      // ...do something...
+      next(null,{})
+    },
+    function(next) {
+      // ...do something...
+      next(null,{})
+    },
+  ]
+}))
+app.use((req, res, next) => {
+  utils.recordCustomer(req)
+  next()
+})
 app.use(express.static(path.join(__dirname, 'public')));
 
 //启动时任务
