@@ -147,7 +147,7 @@ const utils = {
         if(command){
             let url = {
                 key:command.alia,
-                param:command.type === 'PARAM' ? req.originalUrl.match(new RegExp(`(?<=${command.path}).*(?=\\?)`)) : command.path.match(/(?<=\/)\w+$/),
+                param:command.type === 'PARAM' ? req.originalUrl.match(new RegExp(`(?<=${path}).*?((?=\\?)|(?=$))`)).join('') : command.path.match(/(?<=\/)\w+$/).join(''),
                 originalUrl:req.originalUrl,
                 bots :req.query.bots,
                 users:req.query.users
