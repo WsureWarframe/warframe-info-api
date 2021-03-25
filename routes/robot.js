@@ -23,6 +23,7 @@ router.all('/requestCache',function (req,res) {
   let cache = requestCache.keys().map( key => {
     let value = requestCache.get(key)
     value.ip = hideIp(value.ip)
+    return value
   })
   res.json(cache)
 });
