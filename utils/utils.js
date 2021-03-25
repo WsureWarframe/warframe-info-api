@@ -36,7 +36,7 @@ const utils = {
             ;
     },
     testType: function (type) {
-        if (type === 'Ostrons' || type === 'Solaris'|| type === 'EntratiSyndicate') {
+        if (type === 'Ostrons' || type === 'Solaris'|| type === 'EntratiSyndicate'|| type === 'Entrati') {
             return 'syndicateMissions';
         }
         return type;

@@ -75,7 +75,7 @@
     {
       "name": "火卫二赏金",
       "type": "SIMPLE",
-      "path": "/wf/robot/EntratiSyndicate",
+      "path": "/wf/robot/Entrati",
       "alia": "wf",
       "desc": "warframe 世界状态 火卫二赏金"
     },

@@ -68,8 +68,10 @@ const warframe = {
             case "Solaris":
                 return syndicateAsString(syndicateMissionsFormat(orginInfo),'Solaris United');
             case "Ostrons":
-            case "EntratiSyndicate":
+            case "Entrati":
                 return syndicateAsString(syndicateMissionsFormat(orginInfo),type);
+            case "EntratiSyndicate":
+                return syndicateAsString(syndicateMissionsFormat(orginInfo),'Entrati');
             case "fissures":
                 return fissuresAsString(fissuresFormat(orginInfo));
             case "globalUpgrades":
@@ -347,7 +349,7 @@ function syndicateAsString(body,syndicate = 'Ostrons'){ //Solaris United
             target = value;
     });
     target.jobs.forEach(function (job,index) {
-        resArr.push('赏金'+(index+1)+':');
+        resArr.push((index+1)+'.'+job.type+':');
         resArr.push(job.rewardPool.join('/')+'\n');
     });
     resArr.push('时间：'+target.eta);
@@ -462,6 +464,9 @@ function nightwaveAsString(body){
 }
 
 function arbitrationAsString(body){
-    return `类型：${body.type} (${body.enemy})\n节点：${body.node}\n时间：${body.eta}`
+    if(body.type)
+        return `类型：${body.type} (${body.enemy})\n节点：${body.node}\n时间：${body.eta}`
+    else
+        return "获取失败，请去游戏里查看"
 }
 module.exports = warframe;
