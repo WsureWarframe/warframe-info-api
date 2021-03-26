@@ -165,10 +165,10 @@ const utils = {
                 }
             } else {
                 result.count += 1;
-                if(!result.bots.includes(url.bots)){
+                if(url.bots && !result.bots.includes(url.bots)){
                     result.bots.push(url.bots)
                 }
-                if(!result.users.includes(url.users)){
+                if(url.users && !result.users.includes(url.users)){
                     result.users.push(url.users)
                 }
             }

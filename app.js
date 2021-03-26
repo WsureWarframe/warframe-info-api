@@ -33,17 +33,7 @@ app.use(Fingerprint( {
     // Defaults
     Fingerprint.useragent,
     Fingerprint.acceptHeaders,
-    Fingerprint.geoip,
-
-    // Additional parameters
-    function(next) {
-      // ...do something...
-      next(null,{})
-    },
-    function(next) {
-      // ...do something...
-      next(null,{})
-    },
+    Fingerprint.geoip
   ]
 }))
 app.use((req, res, next) => {

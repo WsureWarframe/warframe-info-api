@@ -13,8 +13,8 @@ router.all('/commands',function (req,res) {
 router.all('/menuCache',function (req,res) {
   let cache = menuCache.keys().map( key => {
     let value = menuCache.get(key)
-    value.bots = value.bots.map( qq => hideQQ(qq.toString()) )
-    value.users = value.users.map( qq => hideQQ(qq.toString()) )
+    value.bots = value.bots.map( qq => hideQQ(qq) )
+    value.users = value.users.map( qq => hideQQ(qq) )
     return value
   })
   res.json(cache)
