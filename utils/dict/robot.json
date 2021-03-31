@@ -163,5 +163,64 @@
       "alia": "wf",
       "desc": "warframe 世界状态 仲裁"
     }
-  ]
+  ],
+  "tasks": [
+    {
+      "name": "alert",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/alerts",
+      "infoPath": "/robot/info/wf/alerts/",
+      "type": "NOTIFY_GROUP",
+      "head": "新的警报任务"
+    },
+    {
+      "name": "voidTrader",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/voidTrader",
+      "infoPath": "/robot/info/wf/voidTrader/",
+      "type": "NOTIFY_GROUP",
+      "head": "新的奸商状态"
+    },
+    {
+      "name": "fissures",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/fissures",
+      "infoPath": "/robot/info/wf/fissures/",
+      "type": "NOTIFY_GROUP",
+      "head": "新的裂缝"
+    },
+    {
+      "name": "invasions",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/invasions",
+      "infoPath": "/robot/info/wf/invasions/",
+      "type": "NOTIFY_GROUP",
+      "head": "新的入侵"
+    },
+    {
+      "name": "arbitration",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/arbitration",
+      "infoPath": "/robot/info/wf/arbitration/",
+      "type": "NOTIFY_GROUP",
+      "head": "新的仲裁"
+    },
+    {
+      "name": "cancelTask",
+      "period": 500000,
+      "queuePath": "/robot/queue/task/cancel",
+      "infoPath": "/robot/info/task/cancel/",
+      "type": "CANCEL",
+      "head": "取消定时任务"
+    }
+  ],
+  "taskData": {
+    "cancel": [
+      "alert",
+      "voidTrader",
+      "fissures",
+      "invasions",
+      "arbitration"
+    ]
+  }
 }

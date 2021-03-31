@@ -35,6 +35,12 @@ const utils = {
             .replace(/s/g, '秒')
             ;
     },
+    dateFormat(str,pattern = 'YYYY-MM-DD HH:mm:ss'){
+        return moment(str,'MM/DD/YYYY, hh:mm:ss a').format(pattern)
+    },
+    formatExpiry(str){
+        return moment(str,'MM/DD/YYYY, hh:mm:ss a')
+    },
     testType: function (type) {
         if (type === 'Ostrons' || type === 'Solaris'|| type === 'EntratiSyndicate'|| type === 'Entrati') {
             return 'syndicateMissions';
@@ -111,8 +117,8 @@ const utils = {
                         res.text = res.body.toString('utf8');
                     resolve(res);
                 }).catch(err => {
-                reject(err);
-            })
+                    reject(err);
+                })
         });
     },
     async cacheUtil(key, data, timeout) {
