@@ -204,23 +204,154 @@
       "infoPath": "/robot/info/wf/arbitration/",
       "type": "NOTIFY_GROUP",
       "head": "新的仲裁"
-    },
-    {
-      "name": "cancelTask",
-      "period": 500000,
-      "queuePath": "/robot/queue/task/cancel",
-      "infoPath": "/robot/info/task/cancel/",
-      "type": "CANCEL",
-      "head": "取消定时任务"
     }
   ],
-  "taskData": {
-    "cancel": [
-      "alert",
-      "voidTrader",
-      "fissures",
-      "invasions",
-      "arbitration"
-    ]
-  }
+  "kkbCommands": [
+    {
+      "action": "wm {word}",
+      "name": "wm",
+      "params": [
+        "word"
+      ],
+      "url": "http://nymph.rbq.life:3000/wm/robot/%s"
+    },
+    {
+      "action": "rm {word}",
+      "name": "rm",
+      "params": [
+        "word"
+      ],
+      "url": "http://nymph.rbq.life:3000/rm/robot/%s"
+    },
+    {
+      "action": "tran {word}",
+      "name": "tran",
+      "params": [
+        "word"
+      ],
+      "url": "http://nymph.rbq.life:3000/dict/tran/robot/%s"
+    },
+    {
+      "action": "wiki {word}",
+      "name": "wiki",
+      "params": [
+        "word"
+      ],
+      "url": "http://nymph.rbq.life:3000/wiki/robot/%s"
+    },
+    {
+      "action": "新闻",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/news"
+    },
+    {
+      "action": "事件",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/events"
+    },
+    {
+      "action": "警报",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/alerts"
+    },
+    {
+      "action": "突击",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/sortie"
+    },
+    {
+      "action": "地球赏金",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/Ostrons"
+    },
+    {
+      "action": "金星赏金",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/Solaris"
+    },
+    {
+      "action": "火卫二赏金",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/Entrati"
+    },
+    {
+      "action": "裂缝",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/fissures"
+    },
+    {
+      "action": "促销商品",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/flashSales"
+    },
+    {
+      "action": "入侵",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/invasions"
+    },
+    {
+      "action": "奸商",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/voidTrader"
+    },
+    {
+      "action": "特价",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/dailyDeals"
+    },
+    {
+      "action": "小小黑",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/persistentEnemies"
+    },
+    {
+      "action": "地球",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/earthCycle"
+    },
+    {
+      "action": "地球平原",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/cetusCycle"
+    },
+    {
+      "action": "火卫二平原",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/cambionCycle"
+    },
+    {
+      "action": "金星平原",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/vallisCycle"
+    },
+    {
+      "action": "电波",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/nightwave"
+    },
+    {
+      "action": "仲裁",
+      "name": "wf",
+      "params": [],
+      "url": "http://nymph.rbq.life:3000/wf/robot/arbitration"
+    }
+  ]
 }

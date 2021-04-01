@@ -13,22 +13,15 @@ router.all('/commands',function (req,res) {
   res.json(robotJson.commands)
 });
 
+router.all('/kukubot/commands',function (req,res) {
+  res.json(robotJson.kkbCommands)
+});
+
 router.all('/tasks',function (req,res) {
   res.json(robotJson.tasks)
 });
 
 router.all(['/queue/wf/:type','/queue/wf/'],async function (req,res) {
-  let type = req.params.type || req.query.type
-  res.json(await robotUtils.taskQueue(type))
-});
-
-router.all(['/info/wf/:type/:key','/info/wf/'],async function (req,res) {
-  let type = req.params.type || req.query.type
-  let key = req.params.key || req.query.key
-  res.send(await robotUtils.taskInfo(type,key))
-});
-
-router.all(['/queue/task/:type','/queue/wf/'],async function (req,res) {
   let type = req.params.type || req.query.type
   res.json(await robotUtils.taskQueue(type))
 });
