@@ -22,18 +22,19 @@ module.exports = {
         return res
     },
     async taskInfo(type,key){
+        let keys = key.split(',')
         let res = ''
-        let task = robotJson.tasks.filter( v => v.name === type).slice(0,1)
+        let task = robotJson.tasks.filter( v => v.alia === type).slice(0,1)
         let head = task[0] && task[0].head ? task[0].head : ''
         let warframe = await worldState(type)
         let itemList = []
         if(warframe instanceof Array){
-            itemList = warframe.filter( v=> v.id === key)
+            itemList = warframe.filter( v=> keys.includes(v.id))
             if(itemList.length >0){
                 res = head + '\n' + wfUtils.robotFormatStr(type,itemList)
             }
         } else {
-            if(warframe.id === key){
+            if(keys.includes(warframe.id)){
                 res = head + '\n' + wfUtils.robotFormatStr(type,warframe)
             }
         }

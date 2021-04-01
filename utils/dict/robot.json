@@ -166,7 +166,8 @@
   ],
   "tasks": [
     {
-      "name": "alert",
+      "name": "警报通知",
+      "alia": "alerts",
       "period": 300000,
       "queuePath": "/robot/queue/wf/alerts",
       "infoPath": "/robot/info/wf/alerts/",
@@ -174,7 +175,8 @@
       "head": "新的警报任务"
     },
     {
-      "name": "voidTrader",
+      "name": "奸商通知",
+      "alia": "voidTrader",
       "period": 300000,
       "queuePath": "/robot/queue/wf/voidTrader",
       "infoPath": "/robot/info/wf/voidTrader/",
@@ -182,7 +184,8 @@
       "head": "新的奸商状态"
     },
     {
-      "name": "fissures",
+      "name": "裂缝通知",
+      "alia": "fissures",
       "period": 300000,
       "queuePath": "/robot/queue/wf/fissures",
       "infoPath": "/robot/info/wf/fissures/",
@@ -190,7 +193,8 @@
       "head": "新的裂缝"
     },
     {
-      "name": "invasions",
+      "name": "入侵通知",
+      "alia": "invasions",
       "period": 300000,
       "queuePath": "/robot/queue/wf/invasions",
       "infoPath": "/robot/info/wf/invasions/",
@@ -198,7 +202,8 @@
       "head": "新的入侵"
     },
     {
-      "name": "arbitration",
+      "name": "仲裁通知",
+      "alia": "arbitration",
       "period": 300000,
       "queuePath": "/robot/queue/wf/arbitration",
       "infoPath": "/robot/info/wf/arbitration/",
