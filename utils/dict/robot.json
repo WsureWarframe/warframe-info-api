@@ -172,7 +172,7 @@
       "queuePath": "/robot/queue/wf/alerts",
       "infoPath": "/robot/info/wf/alerts/",
       "type": "NOTIFY_GROUP",
-      "head": "新的警报任务"
+      "head": "在?来打警报?"
     },
     {
       "name": "奸商通知",
@@ -181,7 +181,7 @@
       "queuePath": "/robot/queue/wf/voidTrader",
       "infoPath": "/robot/info/wf/voidTrader/",
       "type": "NOTIFY_GROUP",
-      "head": "新的奸商状态"
+      "head": "在?刺杀奸商?"
     },
     {
       "name": "裂缝通知",
@@ -190,7 +190,7 @@
       "queuePath": "/robot/queue/wf/fissures",
       "infoPath": "/robot/info/wf/fissures/",
       "type": "NOTIFY_GROUP",
-      "head": "新的裂缝"
+      "head": "在?来开核桃?"
     },
     {
       "name": "入侵通知",
@@ -199,7 +199,7 @@
       "queuePath": "/robot/queue/wf/invasions",
       "infoPath": "/robot/info/wf/invasions/",
       "type": "NOTIFY_GROUP",
-      "head": "新的入侵"
+      "head": "在?来打入侵?"
     },
     {
       "name": "仲裁通知",
@@ -208,7 +208,7 @@
       "queuePath": "/robot/queue/wf/arbitration",
       "infoPath": "/robot/info/wf/arbitration/",
       "type": "NOTIFY_GROUP",
-      "head": "新的仲裁"
+      "head": "在?来肝仲裁?"
     }
   ],
   "kkbCommands": [
