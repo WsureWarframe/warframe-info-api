@@ -209,6 +209,42 @@
       "infoPath": "/robot/info/wf/arbitration/",
       "type": "NOTIFY_GROUP",
       "head": "在?来肝仲裁?"
+    },
+    {
+      "name": "地球昼夜通知",
+      "alia": "earthCycle",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/earthCycle",
+      "infoPath": "/robot/info/wf/earthCycle/",
+      "type": "NOTIFY_GROUP",
+      "head": "地球昼夜通知"
+    },
+    {
+      "name": "地球平原通知",
+      "alia": "cetusCycle",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/cetusCycle",
+      "infoPath": "/robot/info/wf/cetusCycle/",
+      "type": "NOTIFY_GROUP",
+      "head": "地球平原通知"
+    },
+    {
+      "name": "金星平原通知",
+      "alia": "vallisCycle",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/vallisCycle",
+      "infoPath": "/robot/info/wf/vallisCycle/",
+      "type": "NOTIFY_GROUP",
+      "head": "金星平原通知"
+    },
+    {
+      "name": "火卫二平原通知",
+      "alia": "cambionCycle",
+      "period": 300000,
+      "queuePath": "/robot/queue/wf/cambionCycle",
+      "infoPath": "/robot/info/wf/cambionCycle/",
+      "type": "NOTIFY_GROUP",
+      "head": "火卫二平原通知"
     }
   ],
   "kkbCommands": [
