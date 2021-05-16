@@ -26,7 +26,7 @@ const worldStateSchedule = {
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })
             .finally()
-        if(ws.arbitration){
+        if(ws.arbitration && ws.arbitration.type){
             ws.arbitration.id = (ws.arbitration.type+ws.arbitration.node).replace(/\s/g,'')
         }
         that.cache.put(cacheKey,ws)
