@@ -26,7 +26,9 @@ const worldStateSchedule = {
                     console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 获取失败，等待重试`)
                 } })
             .finally()
-        ws.arbitration.id = (ws.arbitration.type+ws.arbitration.node).replace(/\s/g,'')
+        if(ws.arbitration){
+            ws.arbitration.id = (ws.arbitration.type+ws.arbitration.node).replace(/\s/g,'')
+        }
         that.cache.put(cacheKey,ws)
         console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 结束 ,耗时${new Date().getTime() - start} ms`)
     },
