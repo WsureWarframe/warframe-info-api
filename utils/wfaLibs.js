@@ -105,7 +105,7 @@ const wfaLibs = {
         let sale = that.commonMcache.get('Sale')
         let customSale = customDict.map(
             da => sale.filter( db => db.main.toUpperCase() === da.en.toUpperCase() )
-                .map( db => { return { ...db,customZh:db.zh.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
+                .map( db => { return { ...db,customZh: db.main === db.en ? da.zh : db.zh.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
         ).flatMap(v => v)
         that.commonMcache.put('custom',customSale)
         customSale.forEach(value_ => {
