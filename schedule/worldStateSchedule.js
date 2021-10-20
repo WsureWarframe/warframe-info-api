@@ -29,6 +29,9 @@ const worldStateSchedule = {
         if(ws.arbitration && ws.arbitration.type){
             ws.arbitration.id = (ws.arbitration.type+ws.arbitration.node).replace(/\s/g,'')
         }
+        if(ws.voidTrader && ws.voidTrader.active){
+            ws.voidTrader.id += ws.voidTrader.active
+        }
         that.cache.put(cacheKey,ws)
         console.log( `[${moment().format('YYYY-MM-DD HH:mm:ss')}] -- [ScheduleJob] -- ${that.scheduleName} => 结束 ,耗时${new Date().getTime() - start} ms`)
     },
