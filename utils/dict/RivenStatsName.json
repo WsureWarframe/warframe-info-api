@@ -12,8 +12,8 @@
   "Electric": "电",
   "Heat": "火",
   "Toxin": "毒",
-  "ChannelDmg": "引导伤害",
-  "ChannelEff": "引导效率",
+  "InitC": "初始连击",
+  "ComboEfficiency": "重击效率",
   "Combo": "连击持续时间",
   "CritChance": "爆率",
   "Slide": "滑爆",
@@ -28,5 +28,8 @@
   "StatusC": "触发几率",
   "StatusD": "触发时间",
   "Recoil": "后座",
-  "Zoom": "变焦"
+  "Zoom": "变焦",
+  "ComboGainExtra": "额外连击效率",
+  "ChannelDmg": "引导伤害",
+  "ChannelEff": "引导效率"
 }

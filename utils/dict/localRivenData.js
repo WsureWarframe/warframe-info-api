@@ -146,10 +146,10 @@ const statsData = {
   },
   "ChannelDmg": {
     "id": "14",
-    "Name": "Channeling Damage",
+    "Name": "Legacy, please update Riven",
     "Pre": "+",
     "Unit": "%",
-    "Desc": "Damage while Channeling",
+    "Desc": "Legacy, please update Riven",
     "Prefix": "Tori",
     "Suffix": "bo",
     "MeleeOnly": true,
@@ -157,10 +157,10 @@ const statsData = {
   },
   "ChannelEff": {
     "id": "15",
-    "Name": "Channeling Efficiency",
+    "Name": "Legacy, please update Riven",
     "Pre": "+",
     "Unit": "%",
-    "Desc": "Efficiency while Channeling",
+    "Desc": "Legacy, please update Riven",
     "Prefix": "Uti",
     "Suffix": "tia",
     "MeleeOnly": true,
@@ -190,10 +190,10 @@ const statsData = {
   },
   "Slide": {
     "id": "18",
-    "Name": "Slide Attack Critical Chance",
+    "Name": "Critical Chance for Slide Attack",
     "Pre": "Slide Attack has +",
     "Unit": "%",
-    "Desc": "chance to be a Critical Hit",
+    "Desc": "Critical Chance for Slide Attack",
     "Prefix": "Pleci",
     "Suffix": "nent",
     "MeleeOnly": true,
@@ -344,10 +344,10 @@ const statsData = {
   },
   "ComboEfficiency": {
     "id": "32",
-    "Name": "Melee Combo Efficiency",
+    "Name": "Heavy Attack Efficiency",
     "Pre": "+",
     "Unit": "%",
-    "Desc": "Melee Combo Efficiency",
+    "Desc": "Heavy Attack Efficiency",
     "Prefix": "Forti",
     "Suffix": "us",
     "MeleeOnly": true,
@@ -355,10 +355,10 @@ const statsData = {
   },
   "ComboGainExtra": {
     "id": "33",
-    "Name": "Chance to gain extra Combo count",
+    "Name": "Additional Combo Count Chance",
     "Pre": "+",
     "Unit": "%",
-    "Desc": "Chance to gain extra Combo count",
+    "Desc": "Additional Combo Count Chance",
     "Prefix": "Laci",
     "Suffix": "nus",
     "MeleeOnly": true,
@@ -366,10 +366,10 @@ const statsData = {
   },
   "ComboGainLost": {
     "id": "34",
-    "Name": "Chance to not gain Combo count",
+    "Name": "Legacy, please update Riven",
     "Pre": "-",
     "Unit": "%",
-    "Desc": "Chance to not gain Combo count",
+    "Desc": "Legacy, please update Riven",
     "Prefix": "Laci",
     "Suffix": "nus",
     "MeleeOnly": true,
@@ -779,6 +779,56 @@ const weaponData = {
       "id": 79,
       "Disposition": 3
     },
+    "Kuva_Bramma": {
+      "Variants": "",
+      "id": 80,
+      "Disposition": 3
+    },
+    "Basmu": {
+      "Variants": "",
+      "id": 81,
+      "Disposition": 3
+    },
+    "Stahlta": {
+      "Variants": "",
+      "id": 82,
+      "Disposition": 3
+    },
+    "Trumna": {
+      "Variants": "",
+      "id": 83,
+      "Disposition": 3
+    },
+    "Bubonico": {
+      "Variants": "",
+      "id": 84,
+      "Disposition": 3
+    },
+    "Proboscis_Cernos": {
+      "Variants": "",
+      "id": 85,
+      "Disposition": 3
+    },
+    "Sporothrix": {
+      "Variants": "",
+      "id": 86,
+      "Disposition": 3
+    },
+    "Cedo": {
+      "Variants": "",
+      "id": 87,
+      "Disposition": 3
+    },
+    "Tenet_Envoy": {
+      "Variants": "",
+      "id": 88,
+      "Disposition": 3
+    },
+    "Ambassador": {
+      "Variants": "",
+      "id": 89,
+      "Disposition": 3
+    },
     "Corvas": {
       "Variants": "",
       "id": 4000,
@@ -827,6 +877,21 @@ const weaponData = {
     "Kuva_Ayanga": {
       "Variants": "",
       "id": 4009,
+      "Disposition": 3
+    },
+    "Cortege": {
+      "Variants": "",
+      "id": 4010,
+      "Disposition": 3
+    },
+    "Mausolon": {
+      "Variants": "",
+      "id": 4011,
+      "Disposition": 3
+    },
+    "Morgha": {
+      "Variants": "",
+      "id": 4012,
       "Disposition": 3
     }
   },
@@ -1209,6 +1274,61 @@ const weaponData = {
     "Kuva_Twin_Stubbas": {
       "Variants": "",
       "id": 1075,
+      "Disposition": 3
+    },
+    "Velox": {
+      "Variants": "",
+      "id": 1076,
+      "Disposition": 3
+    },
+    "Athodai": {
+      "Variants": "",
+      "id": 1077,
+      "Disposition": 1
+    },
+    "Zymos": {
+      "Variants": "",
+      "id": 1078,
+      "Disposition": 3
+    },
+    "Sepulcrum": {
+      "Variants": "",
+      "id": 1079,
+      "Disposition": 3
+    },
+    "Catabolyst": {
+      "Variants": "",
+      "id": 1080,
+      "Disposition": 3
+    },
+    "Sporelacer": {
+      "Variants": "",
+      "id": 1081,
+      "Disposition": 3
+    },
+    "Vermisplicer": {
+      "Variants": "",
+      "id": 1082,
+      "Disposition": 3
+    },
+    "Epitaph": {
+      "Variants": "",
+      "id": 1083,
+      "Disposition": 3
+    },
+    "Tenet_Diplos": {
+      "Variants": "",
+      "id": 1084,
+      "Disposition": 3
+    },
+    "Tenet_Spirex": {
+      "Variants": "",
+      "id": 1085,
+      "Disposition": 3
+    },
+    "Kompressa": {
+      "Variants": "",
+      "id": 1086,
       "Disposition": 3
     }
   },
@@ -1853,6 +1973,66 @@ const weaponData = {
       "id": 2128,
       "Disposition": 3
     },
+    "Xoris": {
+      "Variants": "",
+      "id": 2129,
+      "Disposition": 3
+    },
+    "Stropha": {
+      "Variants": "",
+      "id": 2130,
+      "Disposition": 3
+    },
+    "Keratinos": {
+      "Variants": "",
+      "id": 2131,
+      "Disposition": 3
+    },
+    "Quassus": {
+      "Variants": "",
+      "id": 2132,
+      "Disposition": 3
+    },
+    "Vitrica": {
+      "Variants": "",
+      "id": 2133,
+      "Disposition": 3
+    },
+    "Arum_Spinosa": {
+      "Variants": "",
+      "id": 2134,
+      "Disposition": 3
+    },
+    "Pulmonars": {
+      "Variants": "",
+      "id": 2135,
+      "Disposition": 3
+    },
+    "Tenet_Agendus": {
+      "Variants": "",
+      "id": 2136,
+      "Disposition": 3
+    },
+    "Tenet_Exec": {
+      "Variants": "",
+      "id": 2137,
+      "Disposition": 3
+    },
+    "Tenet_Livia": {
+      "Variants": "",
+      "id": 2138,
+      "Disposition": 3
+    },
+    "Tenet_Grigori": {
+      "Variants": "",
+      "id": 2139,
+      "Disposition": 3
+    },
+    "Vastilok": {
+      "Variants": "",
+      "id": 2140,
+      "Disposition": 3
+    },
     "Agkuza": {
       "Variants": "",
       "id": 5000,
@@ -1949,6 +2129,16 @@ const weaponData = {
       "Variants": "",
       "id": 3011,
       "Disposition": 5
+    },
+    "Helstrum": {
+      "Variants": "",
+      "id": 3012,
+      "Disposition": 3
+    },
+    "Verglas": {
+      "Variants": "",
+      "id": 3013,
+      "Disposition": 3
     }
   }
 };
