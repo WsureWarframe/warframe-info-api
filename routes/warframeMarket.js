@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const wm = require('../utils/warframeMarket');
 const utils = require('../utils/utils');
+const e = require("express");
 
 const cacheHeader = 'wm';
 const timeout = 60 * 1000;
@@ -25,9 +26,14 @@ router.all(['/robot/:type','/robot'],async function (req,res) {
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
     const key = `${cacheHeader}:${type}`;
-    let result = await utils.cacheUtil(key, async () => {
-        return await wm.robotFormatStr(type)
-    }, timeout);
-    res.send(result);
+    if(type !== null){
+        let result = await utils.cacheUtil(key, async () => {
+            return await wm.robotFormatStr(type)
+        }, timeout);
+        res.send(result);
+    } else {
+        res.send(null)
+    }
+
 });
 module.exports = router;
