@@ -14,36 +14,25 @@ const screenshotDir = path.join(__dirname, '../public/screenshot') ;
 const init = {
     onstart :async function (){
 
-        //初始化截图目录
-        this.initScreenshotDir()
-
         //Schedule
         schedule.scheduleJob('0 0/3 * * * ?' , function (){
             wsSchedule.setWorldStateCache(wsSchedule).finally()
         });
 
+        libSchedule.getWfaLibCache(libSchedule)
+            .then(res => console.log(Object.keys(res)))
+            .then(() => wfaLib.initOnlineRW(wfaLib))
+            .then(() => wfaLib.initOnlineLib(wfaLib))
+            .then(() => wfaLib.initLibsCache(wfaLib));
 
-        //init data
-        if(config.localLib){
-            wfaLib.initLocalRW(wfaLib);
-            wfaLib.initLocalLib(wfaLib);
-            wfaLib.initLibsCache(wfaLib);
-        } else {
-            libSchedule.getWfaLibCache(libSchedule)
+        schedule.scheduleJob('0 0 0/2 * * ?' , function (){
+            libSchedule.setWfaLibCache(libSchedule)
+                .then(() => libSchedule.getWfaLibCache(libSchedule))
                 .then(res => console.log(Object.keys(res)))
                 .then(() => wfaLib.initOnlineRW(wfaLib))
                 .then(() => wfaLib.initOnlineLib(wfaLib))
                 .then(() => wfaLib.initLibsCache(wfaLib));
-
-            schedule.scheduleJob('0 0 0/2 * * ?' , function (){
-                libSchedule.setWfaLibCache(libSchedule)
-                    .then(() => libSchedule.getWfaLibCache(libSchedule))
-                    .then(res => console.log(Object.keys(res)))
-                    .then(() => wfaLib.initOnlineRW(wfaLib))
-                    .then(() => wfaLib.initOnlineLib(wfaLib))
-                    .then(() => wfaLib.initLibsCache(wfaLib));
-            });
-        }
+        });
     },
     saveEndpoint: function(endpointInfo) {
         return new Promise( async (resolve, reject) => {
@@ -68,22 +57,6 @@ const init = {
                 reject(err)
             }
         })
-    },
-    initScreenshotDir: () => {
-
-        const exists = fs.existsSync(screenshotDir)
-        console.log(` ScreenshotDir is ${exists ? '' : 'not'} exists`);
-        if(!exists){
-            fs.mkdir( screenshotDir ,{recursive: true}, (err) => {
-                if(!err){
-                    console.log(" mkdir ScreenshotDir success!")
-                } else {
-                    console.error(" mkdir ScreenshotDir fail!")
-                    console.log(err)
-                }
-
-            })
-        }
     }
 
 };

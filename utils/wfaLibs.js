@@ -9,7 +9,7 @@ const libs = {
     Dict: new mcache.Cache(),
     Sale: new mcache.Cache(),
     Riven: new mcache.Cache(),
-    Nightwave: new mcache.Cache(),
+    NightWave: new mcache.Cache(),
     Invasion: new mcache.Cache(),
 
     wm: new mcache.Cache(),
@@ -23,7 +23,7 @@ const libs = {
 const wfaLibs = {
     commonMcache: new mcache.Cache(),
     libs: libs,
-    libsArr: ['Dict', 'Sale', 'Riven', 'Nightwave', 'Invasion'],
+    libsArr: ['Dict', 'Sale', 'Riven', 'NightWave', 'Invasion'],
     initRWCache(that,rivenData){
         Object.keys(rivenData.weaponData).forEach(type =>{
             Object.keys(rivenData.weaponData[type]).forEach(weapon=>{
@@ -61,7 +61,8 @@ const wfaLibs = {
             }
             */
 
-            that.commonMcache.get(value).forEach(function (value_, index_) {
+            let lib = that.commonMcache.get(value)
+            lib.forEach(function (value_, index_) {
 
                 that.libs[value].put(value_.en, value_);
                 /**

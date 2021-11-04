@@ -4,7 +4,6 @@ require('superagent-proxy')(superagent);
 const utils = require('./utils');
 const wfaLibs = require('../utils/wfaLibs');
 const cheerio = require('cheerio');
-const { getScreenshot } = require('./puppeteer');
 
 huijiwiki ={
     getInfo: async function (name, page = 1, size = 10) {
@@ -37,17 +36,6 @@ huijiwiki ={
         else {
             return res;
         }*/
-    },
-    async getDetail(name) {
-        const listInfo = await this.getInfo(name);
-        if(listInfo.state === 'success' ){
-            const data = listInfo.detail;
-            if(name === data.title)
-                data['screenshot'] = await getScreenshot(data.title);
-            return data;
-        } else {
-            return listInfo;
-        }
     },
     async getHtmlText(name) {
         const listInfo = await this.getInfo(name);

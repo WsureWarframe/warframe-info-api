@@ -121,6 +121,21 @@ const utils = {
                 })
         });
     },
+    getJsonResult: (url) => {
+        return new Promise((resolve, reject) => {
+            superagent
+                .get(url)
+                .proxy(proxyConfig.config)
+                .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
+                .then(res => {
+                    console.log(res)
+                    resolve(res.body);
+                }).catch(err => {
+                    console.error(err)
+                    resolve(null)
+                })
+        });
+    },
     async cacheUtil(key, data, timeout) {
         let result = null;
         if (!mcache.get(key)) {

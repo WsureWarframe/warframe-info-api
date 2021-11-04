@@ -7,11 +7,23 @@ const USE_HTTPS = false;
 //WFA_HOST
 const WFA_HOST = 'https://wfa.richasy.cn/';
 const WFA_RIVEN_HOST = 'https://riven.richasy.cn/';
+//WFA_LEXICON
+const WFA_LEXICON = "https://raw.githubusercontent.com/Richasy/WFA_Lexicon/WFA5/"
+const LEXICON_MAP = {
+    Dict:"Dict.json",
+    Invasion:"Invasion.json",
+    NightWave:"NightWave.json",
+    Lib:"Lib.json",
+    Sale:"Sale.json",
+    Riven:"Riven.json"
+}
 const myConfig = {
     localLib:LOCAL_LIB,
     isDev:MY_DEV,
     https:USE_HTTPS,
     wfaHost:WFA_HOST,
-    wfaRivenHost:WFA_RIVEN_HOST
+    wfaRivenHost:WFA_RIVEN_HOST,
+    wfaLexicon:WFA_LEXICON,
+    lexiconMap:LEXICON_MAP
 };
 module.exports = myConfig;

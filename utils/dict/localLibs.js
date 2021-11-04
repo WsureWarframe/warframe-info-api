@@ -32698,7 +32698,7 @@ const localLib =
       "ratio": 1
     }
   ],
-  "Nightwave": [
+  "NightWave": [
     {
       "id": 1,
       "zh": "在滑行时杀死20名敌人",
