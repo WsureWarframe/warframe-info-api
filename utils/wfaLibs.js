@@ -82,15 +82,6 @@ const wfaLibs = {
         console.log("rw :"+that.libs.rw.size()+" rm: "+that.libs.rm.size())
         console.log(that.libs.rw.keys().join(','))
     },
-    initLocalLib(that) {
-
-        that.libsArr.forEach(function (value) {
-            that.commonMcache.put(value, localLib[value])
-        })
-    },
-    initLocalRW(that){
-        that.initRWCache(that,localRivenData);
-    },
     initOnlineLib: async (that) => {
         let library = await wfaLibrarySchedule.getWfaLibCache(wfaLibrarySchedule);
         that.libsArr.forEach(function (value) {
