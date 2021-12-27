@@ -1,5 +1,5 @@
 const express = require('express');
-const WorldState = require('warframe-worldstate-parser');
+// const WorldState = require('warframe-worldstate-parser');
 const superagent = require('superagent');
 require('superagent-proxy')(superagent);
 const proxyConfig = require('../config/proxyConfig');
