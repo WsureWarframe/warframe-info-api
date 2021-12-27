@@ -1,4 +1,4 @@
-const USE_PROXY = true;
+const USE_PROXY = false;
 const PROXY_CONFIG = 'http://127.0.0.1:7890';
 proxyConfig = {
     enabled:USE_PROXY,
