@@ -1,5 +1,6 @@
 const express = require('express');
 const tran = require("../utils/translate");
+const logger = require('../utils/logger')(__filename)
 const router = express.Router();
 
 
@@ -18,7 +19,7 @@ router.all(['/tran/robot/:key','/tran/robot/:key/:libs'],function (req,res) {
   const pathKey = req.param('key',null);
   const pathLibs = req.param('libs') ;
   const max = parseInt(req.param('max',10)) ;
-  console.log('max:'+max)
+  logger.info('max:'+max)
   const libs = pathLibs ? pathLibs.split(',') : [];
   if(pathKey === '')
     res.send("参数错误");

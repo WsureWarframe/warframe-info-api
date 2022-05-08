@@ -12,3 +12,7 @@ yarn.lock
 public/screenshot/
 
 package-lock.json
+
+logs/
+
+utils/lexicon/wmItems/

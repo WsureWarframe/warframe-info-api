@@ -13,7 +13,7 @@ router.all('/keys/:type/',function (req,res) {
   if( !pathType )
     res.send("参数错误");
   else{
-    wfaSchedule.getWfaLibCache(wfaSchedule).then( data => {
+    wfaSchedule.getWfaLibCache().then( data => {
       res.json(data[pathType]);
     }).catch(error => {
       res.json({error:error})

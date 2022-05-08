@@ -2,6 +2,7 @@ const wfaLibs = require('./wfaLibs');
 const googleTranslate = require('google-baidu-translate-api');
 const googleTranslateAnother = require('translate-google');
 const utils = require("./utils");
+const logger = require('./logger')(__filename)
 const translate = {
     translateByCache:function (original) {
         if(original)
@@ -19,7 +20,7 @@ const translate = {
             googleTranslate.google(original, 'zh-cn', from)
                 .then(res=> resolve(res.dist))
                 .catch(err=>{
-                    console.log(err);
+                    logger.info(err);
                     googleTranslateAnother(original,{from: from, to:'zh-cn'})
                         .then( res => resolve(res.text))
                         .catch( err => {
@@ -37,7 +38,7 @@ const translate = {
         let libArray = Object.keys(wfaLibs.libs)
             .filter(lib => !['rw', 'rd'].includes(lib))
             .filter(lib => !libRange.length > 0 || libRange.includes(lib))
-        console.log(`translate lib range: ${libArray}`)
+        logger.info(`translate lib range: ${libArray}`)
         return libArray
             .map(lib => utils.getSaleWordFromLib(_key, wfaLibs.libs[lib])
                 .map(v => {
@@ -61,7 +62,7 @@ function getSearchStr(original,getCache){
     const stringArray = original.split(/\\n| /);//.split(' ');   //.match(/\w+|\S/g);   //.split(/\W+/);
     if(stringArray.length === 0)
     {
-        console.log('original.length === 0 !!');
+        logger.info('original.length === 0 !!');
         return original;
     }
     let resArr = [], start = 0, max = stringArray.length;
@@ -102,7 +103,7 @@ function preRegExpTest (input) {
 }
 
 function getStringByArray(arr,start,end){
-    // console.log(arr.slice(start,end).join(' '));
+    // logger.info(arr.slice(start,end).join(' '));
     return arr.slice(start,end).join(' ');
 }
 

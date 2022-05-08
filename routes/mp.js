@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mpUtils = require('../utils/mp');
+const mpUtils = require('../service/mp');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');

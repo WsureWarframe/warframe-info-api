@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const hjwiki = require('../utils/huijiwiki');
+const hjwiki = require('../service/warframe/huijiwiki');
 const utils = require('../utils/utils');
 
 const cacheHeader = 'wiki';

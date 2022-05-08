@@ -1,8 +1,8 @@
 const express = require('express');
-const robotJson = require("../utils/dict/robot.json");
+const robotJson = require("../service/robot/robot.json");
 const router = express.Router();
 const utils = require('../utils/utils');
-const robotUtils = require('../utils/robot')
+const robotUtils = require('../service/robot')
 
 const requestCache = utils.customerRecord.request
 const menuCache = utils.customerRecord.menu

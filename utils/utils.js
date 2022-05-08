@@ -1,15 +1,21 @@
 const moment = require('moment');
 const mcache = require('memory-cache');
-const robotJson = require("./dict/robot.json");
+const robotJson = require("../service/robot/robot.json");
+const logger = require('../utils/logger')(__filename)
 //require 方式
 require('moment/locale/zh-cn');
 const superagent = require('superagent');
 const proxyConfig = require('../config/proxyConfig');
 moment.locale('zh-cn');
+const path = require('path');
+const fs = require('fs');
 
 const oneDay =  24 * 60 * 60 * 1000;
 
 const utils = {
+    delay:function (time){
+        return new Promise(resolve => setTimeout(resolve, time))
+    },
     customerRecord:{
         request: new mcache.Cache(),
         menu: new mcache.Cache()
@@ -57,7 +63,7 @@ const utils = {
         const set = word.indexOf('一套') > -1 ? 1 : 0;
         const prime = word.indexOf('PRIME') > -1 ? 1 : 0;
         const result = acc * 0.15 + thick_ * 0.2 + head * 0.2 + set * 0.1 + 0.05 * prime;
-        // console.log('key:'+key+' word:'+word+' acc'+acc+' thick'+thick_+' head:'+head+' result:'+result);
+        // logger.info('key:'+key+' word:'+word+' acc'+acc+' thick'+thick_+' head:'+head+' result:'+result);
         return result;
     },
     comparison: function (key_, word_) {
@@ -128,7 +134,7 @@ const utils = {
                 .proxy(proxyConfig.config)
                 .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36')
                 .then(res => {
-                    console.log(res)
+                    logger.info(res)
                     resolve(res.body);
                 }).catch(err => {
                     console.error(err)
@@ -139,12 +145,12 @@ const utils = {
     async cacheUtil(key, data, timeout) {
         let result = null;
         if (!mcache.get(key)) {
-            console.log(`set cache , key:${key}`);
+            logger.info(`set cache , key:${key}`);
             result = await data();
             await mcache.put(key, result, timeout, () => {
             })
         } else {
-            console.log(`get cache , key:${key}`);
+            logger.info(`get cache , key:${key}`);
             result = mcache.get(key)
         }
         return result;
@@ -204,7 +210,66 @@ const utils = {
         }
         //save
         this.customerRecord.request.put(record.hash, record, oneDay , (k,v) => {
-            console.log('设备离线超过一天:',JSON.stringify(v))
+            logger.info('设备离线超过一天:',JSON.stringify(v))
+        })
+    },
+    createDirIfNotExist:function (dir){
+        return new Promise( (resolve, reject) => {
+            const exists = fs.existsSync(dir);
+            if(!exists){
+                fs.mkdir(dir, function(err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        logger.info(`目录创建${dir}成功。`);
+                        resolve()
+                    }
+                });
+            } else {
+                resolve()
+            }
+        })
+    },
+    writeJsonFile:function (path,json){
+        return new Promise((resolve, reject) => {
+            try {
+                let text = typeof json  == 'string' ? json : JSON.stringify(json)
+                fs.writeFileSync(path,text)
+                resolve()
+            }catch (err){
+                reject(err)
+            }
+        })
+    },
+    readJsonFile:function (path){
+        return new Promise((resolve, reject) => {
+            try {
+                let text = fs.readFileSync(path)
+                let json = JSON.parse(text)
+                resolve(json)
+            }catch (err){
+                reject(err)
+            }
+        })
+    },
+    readFileList:function (path){
+        return new Promise((resolve, reject) => {
+            try {
+                let fileList = fs.readdirSync(path)
+                resolve(fileList)
+            }catch (err){
+                reject(err)
+            }
+        })
+    },
+    mergeArray:(arr1 = [],arr2=[],apply,merge = (v1,v2)=>{ return {...v1,...v2}})=>{
+        let map = {}
+        arr2.forEach( value => {
+            map[apply(value)] = value
+        })
+        return arr1.map( value => {
+            let value2 = map[apply(value)]
+            return merge(value,value2)
         })
     }
 };
@@ -223,10 +288,6 @@ function millisecondToString(mss = 0) {
         (hours === 0 ? '' : hours + '小时') +
         (minutes === 0 ? '' : minutes + '分') +
         (seconds === 0 ? '' : seconds + '秒');
-}
-
-function delay(time) {
-    return new Promise(resolve => setTimeout(resolve, time))
 }
 
 function getClientIp(req) {

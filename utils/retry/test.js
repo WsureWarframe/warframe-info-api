@@ -1,24 +1,25 @@
 const retry = require('./index')
+const logger = require('../logger')(__filename)
 
 let getData = (index) => {
     return new Promise(((resolve, reject) => {
         if(index >0){
-            console.log('getData reject(), index:' + index)
+            logger.info('getData reject(), index:' + index)
             reject()
         } else {
-            console.log('getData resolve(), index:' + index)
+            logger.info('getData resolve(), index:' + index)
             resolve()
         }
     }))
 }
 let count = 5;
 retry( () => getData(count--),{times : 10, delay: 1000,onRetry: (data)=>{
-        console.log('onRetry',data)
+        logger.info('onRetry',data)
     }
 }).then(res => {
-    console.log('then',res)
+    logger.info('then',res)
 }).catch( error => {
-    console.log('catch',error)
+    logger.info('catch',error)
 }).finally( () => {
-    console.log('finally')
+    logger.info('finally')
 })

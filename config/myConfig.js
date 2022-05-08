@@ -8,11 +8,13 @@ const USE_HTTPS = false;
 const WFA_HOST = 'https://wfa.richasy.cn/';
 const WFA_RIVEN_HOST = 'https://riven.richasy.cn/';
 //WFA_LEXICON
-const WFA_LEXICON = "https://raw.githubusercontent.com/Richasy/WFA_Lexicon/WFA5/"
+const WFA_LEXICON = "https://wfa-1253605206.cos.ap-chengdu.myqcloud.com/dict/"
+
+//WarframeMarket
 const LEXICON_MAP = {
     Dict:"Dict.json",
     Invasion:"Invasion.json",
-    NightWave:"NightWave.json",
+    NightWave:"Nightwave.json",
     Lib:"Lib.json",
     Sale:"Sale.json",
     Riven:"Riven.json"

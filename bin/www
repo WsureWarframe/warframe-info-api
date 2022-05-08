@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+const logger = require('../utils/logger')(__filename)
 const app = require('../app');
 const debug = require('debug')('warframe-info-api:server');
 const http = require('http');
@@ -104,7 +105,8 @@ function onListening() {
   debug('Listening on ' + bind);
 
   process.on('unhandledRejection', (reason, p) => {
-    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    logger.error(`Unhandled Rejection :${reason} , at: Promise `);
+    console.log(p)
     // application specific logging, throwing an error, or other logic here
   });
 }

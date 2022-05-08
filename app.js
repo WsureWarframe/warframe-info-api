@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const init = require('./utils/init')
+const init = require('./service/init')
 const utils = require('./utils/utils')
 const Fingerprint = require('express-fingerprint')
 

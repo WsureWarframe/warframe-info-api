@@ -1,6 +1,7 @@
 const mpConfig = require('../config/mpConfig');
 const superagent = require('superagent');
 const proxyConfig = require('../config/proxyConfig');
+const logger = require('../utils/logger')(__filename)
 require('superagent-proxy')(superagent);
 
 mpUtils = {
@@ -13,7 +14,7 @@ function mpLogin(code,platform = 'weixin'){
         qq: 'https://api.q.qq.com/sns/jscode2session'
     };
     const mpLoginUrl = code2Session[platform] + '?appid=' + mpConfig[platform].appId + '&secret=' + mpConfig[platform].appSecret + '&grant_type=authorization_code&js_code=' + code;
-    console.log(mpLoginUrl);
+    logger.info(mpLoginUrl);
     return new Promise((resolve,reject)=>{
         superagent
             .get(mpLoginUrl)

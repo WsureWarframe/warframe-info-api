@@ -24,6 +24,7 @@
     "superagent": "^6.1.0",
     "superagent-proxy": "^3.0.0",
     "tar": "^4.4.8",
-    "translate-google": "^1.4.3"
+    "translate-google": "^1.4.3",
+    "winston": "^3.7.2"
   }
 }

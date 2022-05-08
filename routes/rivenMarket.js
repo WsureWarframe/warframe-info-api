@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rm = require('../utils/rivenMarket');
+const rm = require('../service/warframe/rivenMarket');
 const utils = require('../utils/utils');
 
 const cacheHeader = 'rm';

@@ -1,6 +1,7 @@
-const tran = require('./translate');
-const utils = require('./utils');
-const cycleState = require('./dict/CycleState.json');
+const tran = require('../../utils/translate');
+const utils = require('../../utils/utils');
+const logger = require('../../utils/logger')(__filename)
+const cycleState = require('../../utils/dict/CycleState.json');
 
 const timeout = 24 * 60 * 60 * 1000;
 
@@ -152,7 +153,7 @@ function eventsFormat(body){
     return utils.cacheUtil( 'events_key', async () => {
         for (let value of body) {
             value.description = tran.translateByCache(value.description);
-            console.log(tran.translateByCache(value.tooltip));
+            logger.info(tran.translateByCache(value.tooltip));
             value.tooltip = (await tran.googleTranslate(tran.translateByCache(value.tooltip)));
             value.node = tran.translateByCache(value.node);
             value.victimNode = tran.translateByCache(value.victimNode);
@@ -178,9 +179,9 @@ function newsFormat(body) {
                 value.message = value.translations.zh
             } else {
                 const language = Object.keys(value.translations)[0];
-                console.log(language, value.translations[language]);
+                logger.info(language, value.translations[language]);
                 const tranRes = await tran.googleTranslate(tran.translateByCache(value.translations[language]), language);
-                console.log(tranRes);
+                logger.info(tranRes);
                 value.message = tranRes;
             }
             value.eta = utils.timeDiff(null, value.date);

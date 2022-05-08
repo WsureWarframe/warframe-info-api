@@ -1,7 +1,7 @@
 const schedule = require('../../schedule/worldStateSchedule');
-const wfUtils = require('../warframe')
+const wfUtils = require('../warframe/warframe')
 const moment = require('moment')
-const robotJson = require("../dict/robot.json");
+const robotJson = require("./robot.json");
 
 module.exports = {
     async taskQueue(type){

@@ -6,10 +6,11 @@ const proxyConfig = require('../config/proxyConfig');
 const router = express.Router();
 const wfaLibs = require('../utils/wfaLibs');
 const utils = require('../utils/utils');
-const warframeUtil = require('../utils/warframe');
+const logger = require('../utils/logger')(__filename)
+const warframeUtil = require('../service/warframe/warframe');
 const tran = require('../utils/translate');
 const schedule = require('../schedule/worldStateSchedule');
-const initUtils = require('../utils/init')
+const initUtils = require('../service/init')
 
 const cacheHeader = 'rm';
 const timeout = 2 * 60 * 1000;
@@ -21,7 +22,7 @@ router.get('/', function(req, res, next) {
 //获取分类
 router.all('/list',function (req,res) {
   wfApi(null).then( body => {
-    console.log(body)
+    logger.info(body)
     const list = Object.keys(body);
     res.send(list);
   }).catch(e => {
@@ -76,7 +77,7 @@ router.all(['/dev/:type','/dev'],function (req,res) {
   const bodyType = req.query.type;
   const pathType = req.params.type;
   const type = pathType ? pathType : (bodyType ? bodyType : null);
-  console.log(type);
+  logger.info(type);
   wfApi(type).then(body => {
     const data = warframeUtil.getInfo(type, body);
     if (data instanceof Promise) {
@@ -110,7 +111,7 @@ let wfApi = (param) => new Promise(async (resolve, reject) => {
   //不用这玩意了，拿不到仲裁，还慢
   rp('http://content.warframe.com/dynamic/worldState.php')
       .then(res=>{
-        console.log("wfApi request success:",param);
+        logger.info("wfApi request success:",param);
         const ws = new WorldState(res);
         if(param) {
           resolve(ws[param]);
@@ -118,7 +119,7 @@ let wfApi = (param) => new Promise(async (resolve, reject) => {
           resolve(ws)
         }
       }).catch( err => {
-        console.log(err);
+        logger.info(err);
     reject(err);
   })
   */

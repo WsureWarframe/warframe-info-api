@@ -1,3 +1,5 @@
+const logger = require('../logger')(__filename)
+const utils = require('../utils')
 /*
 retry(function (){},{
     times: 3,
@@ -13,16 +15,21 @@ retry(function (){},{
         //收集error和次数信息
     }
 })
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+    .then(data => logger.info(data))
+    .catch(err => logger.info(err));
 */
 
 //then链实现
-function retry(promiseGen,opts){
+function retry(promiseGen,name = '',opts = {
+    times: 3, delay: 3000, onRetry: (data) => {
+        logger.info('onRetry',{message:data} )
+        logger.info(`${name} => 获取失败，等待重试`)
+    }
+}){
     return promiseGen().catch(err => {
         if(opts.shouldRetry && !opts.shouldRetry(err,opts)) return Promise.reject(err);
         if(opts.times-- < 1) return Promise.reject(err);
-        let starter = opts.delay ? delay(opts.delay) : Promise.resolve();
+        let starter = opts.delay ? utils.delay(opts.delay) : Promise.resolve();
 
         return starter.then((res) => {
             if(opts.onRetry) opts.onRetry({err,times:opts.times});
@@ -31,9 +38,5 @@ function retry(promiseGen,opts){
             return retry(promiseGen,opts);
         })
     })
-}
-
-function delay(time){
-    return new Promise(resolve => setTimeout(resolve, time))
 }
 module.exports = retry;
