@@ -23,7 +23,11 @@ const libs = {
     /* riven dict (stats)*/
     rd: new mcache.Cache(),
     /* warframe market lexicon */
-    wml: new mcache.Cache()
+    wmRiven: new mcache.Cache(),
+
+    auctionsWeapons: new mcache.Cache(),
+    ephemeras: new mcache.Cache(),
+    quirks: new mcache.Cache(),
 };
 const libsArr = ['Dict', 'Sale', 'Riven', 'NightWave', 'Invasion']
 const commonMcache = new mcache.Cache()
@@ -46,40 +50,28 @@ let initRWCache = (rivenData) => {
 let initLibsCache = () => {
     libsArr.forEach(function (value, index, array) {
         logger.info(value);
-        // that.libs[value].put(value,index);
-        // logger.info(value,that.libs[value].get(value))
-        if (value === 'items') {
-            commonMcache.get(value).forEach(function (value_, index_) {
-                libs['wm'].put(value_.en, value_);
-                value_.en !== value_.zh && libs['wm'].put(value_.zh, value_);
-            });
-        }
-
-        /*
-            紫卡
-        if(value === 'Riven'){
-            that.commonMcache.get(value).filter(item=> that.libs['rw'].get(item.en)!=null ).forEach(function (value_, index_) {
-                that.libs['rm'].put(value_.en, value_);
-                value_.en !== value_.zh && that.libs['rm'].put(value_.zh, value_);
-                that.libs.rw.del(value_.en);
-            });
-        }
-        */
-
         let lib = commonMcache.get(value)
         lib.forEach(function (value_, index_) {
-
             libs[value].put(value_.en, value_);
-            /**
-             * 判断是不是riven market的紫卡
-             * **/
-            if(libs['rw'].get(value_.en)){
-                libs['rm'].put(value_.en, value_);
-                value_.en !== value_.zh && libs['rm'].put(value_.zh, value_);
-                libs.rw.del(value_.en);
-            }
         })
     });
+
+    // wm
+    commonMcache.get('items').forEach((value_, index_) => {
+        libs['wm'].put(value_.en, value_);
+        value_.en !== value_.zh && libs['wm'].put(value_.zh, value_);
+    });
+
+    // riven
+    commonMcache.get('riven').forEach((value_, index_) => {
+        libs.wmRiven.put(value_.en,value_)
+        value_.en !== value_.zh && libs.wmRiven.put(value_.zh, value_);
+        if(libs['rw'].get(value_.en)){
+            libs['rm'].put(value_.en, value_);
+            value_.en !== value_.zh && libs['rm'].put(value_.zh, value_);
+            libs.rw.del(value_.en);
+        }
+    })
 
     //加载黑话
     initCustomLib()
@@ -89,9 +81,9 @@ let initLibsCache = () => {
 }
 let initOnlineLib = async () => {
     let library = await wfaLibrarySchedule.getWfaLibCache();
-    libsArr.forEach(function (value) {
+    Object.keys(library).forEach((value => {
         commonMcache.put(value, library[value])
-    })
+    }))
 }
 let initOnlineRW = async () => {
     let library = await wfaLibrarySchedule.getWfaLibCache();

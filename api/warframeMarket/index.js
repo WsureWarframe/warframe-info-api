@@ -56,8 +56,8 @@ const index = {
         return (await getJson(url)).payload.auctions
     },
     orders:async (name = 'primed_chamber') =>{
-        const url = `${WARFRAME_HOST}${name}/orders`;
-        let orderList = await getJson(url).payload
+        const url = `${WARFRAME_HOST}items/${name}/orders`;
+        let orderList = (await getJson(url)).payload
         let onlineList = orderList.orders
             .filter( (item) => item.order_type === 'sell'&&item.user.status !== 'offline')
             .sort((a,b) => a.platinum-b.platinum)
@@ -67,7 +67,7 @@ const index = {
         return onlineList.concat(offlineList)
     },
     statistics:async (name = 'primed_chamber')=> {
-        const url = `${WARFRAME_HOST}${name}/statistics`;
+        const url = `${WARFRAME_HOST}items/${name}/statistics`;
         return (await getJson(url)).payload.statistics_live['90days']
     }
 }

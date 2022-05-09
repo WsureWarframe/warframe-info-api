@@ -7,14 +7,14 @@ const warframeMarket = {
         const objs = utils.getSaleWordFromLib(name, wfaLibs.libs.wm);
         if(objs.length > 0){
             const obj = wfaLibs.libs.wm.get(objs[0].key);
-            const list = (await wmApi.orders(obj.code)).data;
+            const list = (await wmApi.orders(obj.code));
             return {
                 page: page,
                 size: size,
                 total: list.size,
                 word: obj,
                 words: objs.slice(1, 11),
-                statistics: (await wmApi.statistics(obj.code)).data.slice(-1)[0],
+                statistics: (await wmApi.statistics(obj.code)).slice(-1)[0],
                 seller: list.slice((page - 1) * size, page * size)
             }
         }
