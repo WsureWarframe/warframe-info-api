@@ -7,8 +7,11 @@ let getWfaLexiconFromGithub = async () => {
     let remoteMap = {}
     for (let key of Object.keys(config.lexiconMap)) {
         remoteMap[key] = await getText(config.wfaLexicon + "WF_" + config.lexiconMap[key],{Accept: 'text/html'})
-            .then(res => JSON.parse(res.text))
-            .catch(e => require(`../../utils/lexicon/${config.lexiconMap[key]}`))
+            .then(res => JSON.parse(res))
+            .catch(e => {
+                console.error(e)
+                return require(`../../utils/lexicon/${config.lexiconMap[key]}`)
+            })
         logger.info(`${key} - length :${remoteMap[key].length}`)
     }
     return remoteMap
