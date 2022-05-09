@@ -23,7 +23,8 @@ module.exports = {
                 } else {
                     reject()
                 }
-            }).catch(e => reject())
+            })
+            .catch(e => reject())
     })
 
 

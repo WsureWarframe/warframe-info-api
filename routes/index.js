@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const wfaLib = require('../utils/wfaLibs');
 const wfaSchedule = require('../schedule/wfaLibrarySchedule');
 
 /* GET home page. */

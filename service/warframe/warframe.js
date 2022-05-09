@@ -468,6 +468,6 @@ function arbitrationAsString(body){
     if(body.type)
         return `类型：${body.type} (${body.enemy})\n节点：${body.node}\n时间：${body.eta}`
     else
-        return "获取失败，请去游戏里查看"
+        return "获取失败，任务正在刷新中，请稍后重试"
 }
 module.exports = warframe;
