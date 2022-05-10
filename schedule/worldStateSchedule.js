@@ -13,7 +13,7 @@ let setWorldStateCache = async () => {
     let start = new Date().getTime();
     let head = `[ScheduleJob] -- ${scheduleName}`
     const ws = await retry(wsApi.queryWorldState, head)
-    if (ws.arbitration && ws.arbitration.type) {
+    if (ws.arbitration != null && ws.arbitration.type) {
         ws.arbitration.id = (ws.arbitration.type + ws.arbitration.node).replace(/\s/g, '')
     }
     if (ws.voidTrader && ws.voidTrader.active) {
