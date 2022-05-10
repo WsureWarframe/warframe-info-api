@@ -111,7 +111,7 @@ function getCache(key){
     const prefix = key.match(/^[^a-zA-Z0-9\s]+/);
     const suffix = key.match(/[^a-zA-Z0-9\s]+$/);
     /** 查缓存 **/
-    const cache = wfaLibs.libs.Dict.get(searchKy) || wfaLibs.libs.Invasion.get(searchKy) || wfaLibs.libs.NightWave.get(searchKy) || wfaLibs.libs.Sale.get(searchKy) || wfaLibs.libs.rm.get(searchKy);
+    const cache = wfaLibs.libs.Dict.get(searchKy) || wfaLibs.libs.Invasion.get(searchKy) || wfaLibs.libs.NightWave.get(searchKy) || wfaLibs.libs.wm.get(searchKy) || wfaLibs.libs.rm.get(searchKy);
     return {
         cache:cache,
         prefix : prefix?prefix.join(''):'',

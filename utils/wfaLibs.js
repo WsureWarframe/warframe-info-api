@@ -91,10 +91,10 @@ let initOnlineRW = async () => {
 
 }
 let initCustomLib = () => {
-    let sale = commonMcache.get('Sale')
+    let sale = commonMcache.get('items')
     let customSale = customDict.map(
-        da => sale.filter( db => db.main.toUpperCase() === da.en.toUpperCase() )
-            .map( db => { return { ...db,customZh: db.main === db.en ? da.zh : db.zh.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
+        da => sale.filter( db => db.en.toUpperCase().includes(da.en.toUpperCase()) )
+            .map( db => { return { ...db,customZh: db.en.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
     ).flatMap(v => v)
     commonMcache.put('custom',customSale)
     customSale.forEach(value_ => {
