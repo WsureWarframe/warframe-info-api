@@ -1,10 +1,10 @@
 [
   {
-    "zh": "阿什屎 PRIME",
+    "zh": "阿什屎\uD83D\uDCA9 PRIME",
     "en": "ASH PRIME"
   },
   {
-    "zh": "轮椅 PRIME",
+    "zh": "\uD83E\uDDBD \uD83E\uDDBC ♿♿︎轮椅 PRIME",
     "en": "ASH PRIME"
   },
   {
@@ -16,11 +16,11 @@
     "en": "EMBER PRIME"
   },
   {
-    "zh": "冰男队 PRIME",
+    "zh": "\uD83E\uDDCA冰男队 PRIME",
     "en": "FROST PRIME"
   },
   {
-    "zh": "水男 PRIME",
+    "zh": "☵♒︎\uD83D\uDCA7水男 PRIME",
     "en": "HYDROID PRIME"
   },
   {
@@ -36,7 +36,7 @@
     "en": "MAG PRIME"
   },
   {
-    "zh": "小丑🃏🤡 PRIME",
+    "zh": "小丑\uD83C\uDCE0🃏🤡\uD83C\uDCCF PRIME",
     "en": "MIRAGE PRIME"
   },
   {
@@ -64,7 +64,7 @@
     "en": "RHINO PRIME"
   },
   {
-    "zh": "毒妈 PRIME",
+    "zh": "\uD83E\uDDA0毒妈 PRIME",
     "en": "SARYN PRIME"
   },
   {
@@ -160,15 +160,19 @@
     "en": "Volatile Rebound"
   },
   {
-    "zh": "蛆 PRIME",
+    "zh": "\uD83D\uDC1B\uD83E\uDEB1\uD83E\uDEB0蛆 PRIME",
     "en": "NIDUS PRIME"
   },
   {
-    "zh": "主教 PRIME",
+    "zh": "✝主教 PRIME",
     "en": "HARROW PRIME"
   },
   {
     "zh": "\uD83E\uDE78 \uD83D\uDC89 \uD83E\uDDDB\uD83C\uDFFB\uDFFC\uDFFD\uDFFE\uDFFF\u200D♂♀♂️♀️血妈 PRIME",
     "en": "GARUDA PRIME"
+  },
+  {
+    "zh": "圣装",
+    "en": "PRIME"
   }
 ]
