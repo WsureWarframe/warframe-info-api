@@ -16,7 +16,8 @@ const getJson = (url,header = {}) => {
                 resolve(res.body)
             })
             .catch(err => {
-                logger.error(`getJson url: ${err.error}`)
+                logger.error(`getJson url: ${url} Fail !`)
+                console.log(err)
                 reject(err)
             })
     })
@@ -35,7 +36,8 @@ const getText = (url,header = {}) => {
                 resolve(res.text)
             })
             .catch(err => {
-                logger.error(`getText url: ${err.error}`)
+                logger.error(`getText url: ${url} Fail !`)
+                console.log(err)
                 reject(err)
             })
     })
