@@ -157,6 +157,13 @@
       "desc": "warframe 世界状态 电波"
     },
     {
+      "name": "扎里曼",
+      "type": "SIMPLE",
+      "path": "/wf/robot/zarimanCycle",
+      "alia": "wf",
+      "desc": "warframe 世界状态 扎里曼"
+    },
+    {
       "name": "仲裁",
       "type": "SIMPLE",
       "path": "/wf/robot/arbitration",

@@ -91,6 +91,7 @@ const warframe = {
             case "earthCycle":
             case "cetusCycle":
             case "cambionCycle":
+            case "zarimanCycle":
                 return cycleAsString(cycleFormat(orginInfo));
             case "constructionProgress":
                 return constructionProgressAsString(orginInfo);
