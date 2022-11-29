@@ -29,6 +29,7 @@
         - nightwave: 电波
         - arbitration: 仲裁
         - cambionCycle: 火卫二平原
+        - zarimanCycle: 扎里曼
 2. warframeMarket 商品价格查询  __url:[/wm/①/②]()__
     - ① 必填参数
         - dev: 国际服`json`数据
