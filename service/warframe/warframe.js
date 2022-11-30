@@ -124,12 +124,17 @@ function alertsFormat(body){
 }
 
 function nightwaveFormat(body){
-    body.activeChallenges.forEach(function (value) {
-        value.title = tran.translateByCache(value.title);
-        value.desc = tran.translateByCache(value.desc);
-        value.eta = utils.timeDiff(null,value.expiry);
-    });
-    return body;
+    if(body){
+        body.activeChallenges.forEach(function (value) {
+            value.title = tran.translateByCache(value.title);
+            value.desc = tran.translateByCache(value.desc);
+            value.eta = utils.timeDiff(null,value.expiry);
+        });
+        return body;
+    } else {
+        return {};
+    }
+
 }
 
 function arbitrationFormat(body){
@@ -454,15 +459,19 @@ function voidTraderAsString(body){
 }
 
 function nightwaveAsString(body){
-    let activeChallenges = [];
-    body.activeChallenges.forEach(function (value,index) {
-        activeChallenges.push(
-            (index+1)+'.'+value.title+'('+value.reputation+')'
-            +'\n'+value.desc
-            +(value.isDaily ? '\n时间：'+value.eta:'')
-        )
-    });
-    return activeChallenges.join('\n\n');
+    if(body.activeChallenges){
+        let activeChallenges = [];
+        body.activeChallenges.forEach(function (value,index) {
+            activeChallenges.push(
+                (index+1)+'.'+value.title+'('+value.reputation+')'
+                +'\n'+value.desc
+                +(value.isDaily ? '\n时间：'+value.eta:'')
+            )
+        });
+        return activeChallenges.join('\n\n');
+    } else {
+        return "当前没有电波任务"
+    }
 }
 
 function arbitrationAsString(body){
