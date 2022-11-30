@@ -36,6 +36,7 @@ const warframe = {
             case "cetusCycle":
             case "cambionCycle":
             case "vallisCycle":
+            case "zarimanCycle":
                 return cycleFormat(orginInfo);
             case "nightwave":
                 return nightwaveFormat(orginInfo);
