@@ -367,7 +367,8 @@ function syndicateAsString(body,syndicate = 'Ostrons'){ //Solaris United
 function fissuresAsString(body){
     let fissures = [];
     body.forEach(function (value) {
-        fissures.push('['+value.tier+']'+value.node
+        fissures.push('['+ ( value.isStorm ? '比邻星' :  value.isHard ? '钢铁' : '普通' ) +']'
+            +'['+value.tier+']'+value.node
             +'\n任务：'+value.missionType+'('+value.enemy+')'
             +'\n时间：'+value.eta
         )
