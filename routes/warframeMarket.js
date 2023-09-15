@@ -48,7 +48,7 @@ router.all('/lexicon',async function (req,res) {
     const pathType = req.params.type;
     const type = pathType ? pathType : (bodyType ? bodyType : null);
     let items = await wmApi.items();
-    res.send(await wmApi.items());
+    res.send(items);
 });
 //
 // router.all('/lexiconLoad',async function (req,res) {

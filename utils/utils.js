@@ -262,14 +262,15 @@ const utils = {
             }
         })
     },
-    mergeArray:(arr1 = [],arr2=[],apply,merge = (v1,v2)=>{ return {...v1,...v2}})=>{
+    // {n:'n',a:1} {n:'n',b:2} => {n:'n',a:1,b:2} , apply:match
+    mergeArray:(arr1 = [],arr2=[],matchItem,merge = (v1,v2)=>{ return {...v1,...v2}})=>{
         let map = {}
-        arr2.forEach( value => {
-            map[apply(value)] = value
+        arr2.forEach( item => {
+            map[matchItem(item)] = item
         })
-        return arr1.map( value => {
-            let value2 = map[apply(value)]
-            return merge(value,value2)
+        return arr1.map( item => {
+            let value2 = map[matchItem(item)]
+            return merge(item,value2)
         })
     }
 };

@@ -52,6 +52,7 @@ const index = {
         }
     },
     auctionsSearch:async (type, weapon_url_name)=>{
+        // type : riven,lich,sister
         let url = `${WARFRAME_HOST}auctions/search?type=${type}&weapon_url_name=${weapon_url_name}&polarity=any&buyout_policy=direct&sort_by=price_asc`
         return (await getJson(url)).payload.auctions
     },
