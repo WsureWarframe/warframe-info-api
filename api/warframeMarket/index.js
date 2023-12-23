@@ -12,6 +12,10 @@ const index = {
         const url = `${WARFRAME_HOST}items`
         return (await getJson(url)).payload.items
     },
+    rivenItems:async () => {
+        const url = `${WARFRAME_HOST}riven/items`
+        return (await getJson(url)).payload.items
+    },
     item:async (type) => {
         const url = `${WARFRAME_HOST}items/${type}`
         return (await getJson(url)).payload.item
@@ -23,8 +27,12 @@ const index = {
         let state_en = JSON.parse(text_en.match(/(?<=id="application-state">).*(?=<\/script>)/).join())
         let merge = (v1,v2)=>{ return {...v1,zh:v1.item_name,en:v2.item_name,code:v1.url_name}}
         let getKey = (v)=> v['url_name']
+        //数据结构 :{ items,riven:{items,attributes},lich:{ephemeras,weapons,quirks},sister:{ephemeras,weapons,quirks}}
         let items = utils.mergeArray(state_zh.items,state_en.items,getKey,merge)
-        let riven = utils.mergeArray(state_zh.riven.items,state_en.riven.items,getKey,merge)
+
+        let riven_attributes = utils.mergeArray(state_zh.riven.items,state_en.riven.items,getKey,(v1,v2)=>{ return {...v1,zh:v1.effect,en:v2.effect,code:v1.url_name}})
+        let riven_items = utils.mergeArray(state_zh.riven.items,state_en.riven.items,getKey,merge)
+
         let auctionsWeapons = utils.mergeArray(
             state_zh.lich.weapons.concat(state_zh.sister.weapons),
             state_en.lich.weapons.concat(state_en.sister.weapons),
@@ -45,7 +53,8 @@ const index = {
         )
         return {
             items,
-            riven,
+            riven_items,
+            riven_attributes,
             auctionsWeapons,
             ephemeras,
             quirks
