@@ -272,6 +272,19 @@ const utils = {
             let value2 = map[matchItem(item)]
             return merge(item,value2)
         })
+    },
+    getParamFromReq:function(req,key,required = false) {
+        let value = req && req.query && req.query[key] ? req.query[key] :
+        req && req.params && req.params[key] ? req.params[key] :
+        req && req.body && req.body[key] ? req.body[key] :
+        undefined
+        if(this.isEmpty(value) && required)
+            throw `required param: ${key} can't be empty`
+        else
+            return value
+    },
+    isEmpty:function (value) {
+        return (value == null || (typeof value === "string" && value.trim().length === 0));
     }
 };
 

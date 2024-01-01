@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = require('express-promise-router')();
 const wm = require('../service/warframe/warframeMarket');
 const utils = require('../utils/utils');
 const logger = require('../utils/logger')(__filename)
@@ -18,18 +18,14 @@ const timeout = 60 * 1000;
 
 //获取字典接口
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
-    const page = req.body.page;
-    const size = req.body.size;
+    const type = utils.getParamFromReq(req,'type',true)
+    const page = utils.getParamFromReq(req,'page')
+    const size = utils.getParamFromReq(req,'size')
     res.send(await wm.getInfo(type,page,size));
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
+    const type = utils.getParamFromReq(req,'type',true)
     const key = `${cacheHeader}:${type}`;
     if(type !== null){
         let result = await utils.cacheUtil(key, async () => {
@@ -44,9 +40,6 @@ router.all(['/robot/:type','/robot'],async function (req,res) {
 
 const filePath = path.join(__dirname, '../utils/lexicon/wmItems/')
 router.all('/lexicon',async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
     let items = await wmApi.items();
     res.send(items);
 });
@@ -111,9 +104,9 @@ router.all('/auctions',async function (req,res) {
     let text = await wmApi.auctions()
     res.json(text)
 })
-router.all('/auctionsSearch/:type/:weapon',async function (req,res) {
-    const type = req.query.type || req.params.type || req.body.type || null;
-    const weapon = req.query.weapon || req.params.weapon || req.body.weapon || null;
+router.all(['/auctionsSearch/:type/:weapon','/auctionsSearch/:type','/auctionsSearch'],async function (req,res) {
+    const type = utils.getParamFromReq(req,'type') 
+    const weapon = utils.getParamFromReq(req,'weapon',true) 
     let text = await wmApi.auctionsSearch(type,weapon)
     res.json(text)
 })

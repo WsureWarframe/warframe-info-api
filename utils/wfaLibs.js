@@ -63,7 +63,7 @@ let initLibsCache = () => {
     });
 
     // riven
-    commonMcache.get('riven').forEach((value_, index_) => {
+    commonMcache.get('riven_items').forEach((value_, index_) => {
         libs.wmRiven.put(value_.en,value_)
         value_.en !== value_.zh && libs.wmRiven.put(value_.zh, value_);
         if(libs['rw'].get(value_.en)){

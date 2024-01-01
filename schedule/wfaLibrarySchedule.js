@@ -16,16 +16,18 @@ let setWfaLibCache = async () => {
     let dicts = await retry(wfaApi.getWfaLexiconFromGithub,`${head} -- wfa dicts`)
     let wmDicts = await retry(wmApi.auctions,`${head} -- wm dicts`)
     let RivenData = await retry(rmApi.getRivenMarketData, `${head} -- rm RivenData`)
-    cache.put(cacheKey, { ...dicts,...wmDicts,RivenData })
+    let mergedLibData = { ...dicts,...wmDicts,RivenData }
+    logger.info(`${head} mergedLibData:{${Object.keys(mergedLibData)}} ${new Date().getTime() - start} ms`)
+    // save lib to cache
+    cache.put(cacheKey, mergedLibData)
     logger.info(`${head} => 结束 ,耗时${new Date().getTime() - start} ms`)
 }
 
 let getWfaLibCache = async () => {
-    let cacheLib = cache;
-    if (!cacheLib.get(cacheKey)) {
+    if (!cache.get(cacheKey)) {
         await setWfaLibCache();
     }
-    return cacheLib.get(cacheKey)
+    return cache.get(cacheKey)
 }
 
 
