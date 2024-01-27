@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const mpRouter = require('./routes/mp');
 const warframe = require('./routes/warframe');
 const wm = require('./routes/warframeMarket');
+const wma = require('./routes/warframeMarketAuctions');
 const rm = require('./routes/rivenMarket');
 const wiki = require('./routes/huijiwiki');
 const dict = require('./routes/dict');
@@ -58,6 +59,8 @@ init.onstart().then(() =>{
   app.use('/mp', mpRouter);
   app.use('/wf', warframe);
   app.use('/wm', wm);
+  app.use('/wmr', wma);
+  app.use('/wmw', wma);
   app.use('/rm', rm);
   app.use('/wiki', wiki);
   app.use('/dict', dict);

@@ -9,8 +9,9 @@ const warframeMarket = {
             const obj = wfaLibs.libs.wm.get(objs[0].key);
             const list = (await wmApi.orders(obj.code));
             return {
-                page: page,
-                size: size,
+                name,
+                page,
+                size,
                 total: list.size,
                 word: obj,
                 words: objs.slice(1, 11),

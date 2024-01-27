@@ -9,12 +9,14 @@ const wmApi = require("../api/warframeMarket");
 const utils = require("../utils/utils");
 const fs = require("fs");
 
+// 存放经过处理的特定业务的词库
 const libs = {
-    Dict: new mcache.Cache(),
-    Sale: new mcache.Cache(),
-    Riven: new mcache.Cache(),
-    NightWave: new mcache.Cache(),
-    Invasion: new mcache.Cache(),
+    // WFA的遗产词库，Dict为比较全面的词库（旧
+    Dict: new mcache.Cache(),       //Dict为比较全面的词库（旧
+    Sale: new mcache.Cache(),       //对应wm的items，不过比较旧已经废弃
+    Riven: new mcache.Cache(),      //废弃，被wm的riven_items替代
+    NightWave: new mcache.Cache(),  //午夜电波,可能还在使用
+    Invasion: new mcache.Cache(),   //入侵、裂隙、奸商相关
 
     wm: new mcache.Cache(),
     rm: new mcache.Cache(),
@@ -24,30 +26,47 @@ const libs = {
     rd: new mcache.Cache(),
     /* warframe market lexicon */
     wmRiven: new mcache.Cache(),
-
+    riven_attributes: new mcache.Cache(),
     auctionsWeapons: new mcache.Cache(),
     ephemeras: new mcache.Cache(),
     quirks: new mcache.Cache(),
 };
 const libsArr = ['Dict', 'Sale', 'Riven', 'NightWave', 'Invasion']
+const wmLibArr = [ 'riven_attributes','auctionsWeapons','ephemeras','quirks']
+// 内容对应：
+//      WFA遗产：Dict,Invasion,NightWave,Lib,Sale,Riven.    
+//      WarframeMarket: items(常规商品),riven_items(紫卡武器),riven_attributes(紫卡属性),auctionsWeapons(玄骸+姐妹武器),ephemeras,quirks.           
+//      RivenMarket: RivenData
 const commonMcache = new mcache.Cache()
-/* GET users listing. */
 
-let initRWCache = (rivenData) => {
+let initLibsCache = async () => {
+    // Setp 0:
+    //  从schedule cache获取最新词库
+    let library = await wfaLibrarySchedule.getWfaLibCache();
+    //  刷新到commonMcache
+    Object.keys(library).forEach((value => {
+        commonMcache.put(value, library[value])
+    }))
+
+    // Setp 1: 
+    //  init RivenMarket Dict
+    rivenData = commonMcache.get('RivenData');
+    // 遍历所有type,展开所有weapon, put到`libs.rw`
     Object.keys(rivenData.weaponData).forEach(type =>{
         Object.keys(rivenData.weaponData[type]).forEach(weapon=>{
             libs.rw.put(weapon.replace(/_/g,' '),rivenData.weaponData[type][weapon]);
         })
     });
     logger.info("rw:"+ libs.rw.size());
+    // 遍历所有词条, put到`libs.rd`
     Object.keys(rivenData.statsData).forEach(stats =>{
         let word = rivenData.statsData[stats];
         word.Name = statsName[stats] ? statsName[stats] : stats;
         libs.rd.put(stats,word);
     });
     logger.info("rd:"+ libs.rd.size());
-}
-let initLibsCache = () => {
+
+    // wfa static Dict
     libsArr.forEach(function (value, index, array) {
         logger.info(value);
         let lib = commonMcache.get(value)
@@ -56,13 +75,19 @@ let initLibsCache = () => {
         })
     });
 
-    // wm
+    // wm 常规物品的数据创建
     commonMcache.get('items').forEach((value_, index_) => {
         libs['wm'].put(value_.en, value_);
         value_.en !== value_.zh && libs['wm'].put(value_.zh, value_);
     });
+    wmLibArr.forEach( libName => {
+        commonMcache.get(libName).forEach((value_, index_) => {
+            libs[libName].put(value_.en, value_);
+            value_.en !== value_.zh && libs[libName].put(value_.zh, value_);
+        });
+    })
 
-    // riven
+    // 以WM的riven数据为基本：创建了两份riven的市场对应翻译，WarframeMarketRiven => lib.wmRiven , RivenMarket => lib.rw(查到删除) => lib.rm(查到填充)
     commonMcache.get('riven_items').forEach((value_, index_) => {
         libs.wmRiven.put(value_.en,value_)
         value_.en !== value_.zh && libs.wmRiven.put(value_.zh, value_);
@@ -73,35 +98,26 @@ let initLibsCache = () => {
         }
     })
 
-    //加载黑话
+    //加载黑话（本质是根据用户黑话对具体商品的映射，从wm数据复制了新的zh=>en关系的对象，此功能着重针对Prime Set
     initCustomLib()
 
     logger.info("rw :"+libs.rw.size()+" rm: "+libs.rm.size())
     logger.info(libs.rw.keys().join(','))
 }
-let initOnlineLib = async () => {
-    let library = await wfaLibrarySchedule.getWfaLibCache();
-    Object.keys(library).forEach((value => {
-        commonMcache.put(value, library[value])
-    }))
-}
-let initOnlineRW = async () => {
-    let library = await wfaLibrarySchedule.getWfaLibCache();
-    initRWCache(library['RivenData']);
 
-}
+//这是一段黑话植入代码，目前仅针对Prime Set
 let initCustomLib = () => {
     let sale = commonMcache.get('items')
     let customSale = customDict.map(
         da => sale.filter( db => db.en.toUpperCase().includes(da.en.toUpperCase()) )
             .map( db => { return { ...db,customZh: db.zh.toUpperCase().replace(da.en,da.zh),custom:da.zh}})
     ).flatMap(v => v)
-    commonMcache.put('custom',customSale)
     customSale.forEach(value_ => {
         libs['wm'].put(value_.customZh, value_);
     })
 }
 
+//请谨慎使用这两段傻逼代码，如果我没记错的话，会从wm爬一堆物品相关json下来存文件夹里，如果你不做离线化，不建议搞
 let lexiconLoad = async () => {
     logger.info(`[load items] - start`)
     let items = await wmApi.items();
@@ -149,10 +165,7 @@ let distinct = (arr,apply) => {
 module.exports = {
     libs,
     commonMcache,
-    initRWCache,
     initLibsCache,
-    initOnlineLib,
-    initOnlineRW,
     lexiconLoad,
     lexiconList
 };

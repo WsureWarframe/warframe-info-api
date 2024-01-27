@@ -38,11 +38,11 @@ router.all(['/robot/:type','/robot'],async function (req,res) {
 
 });
 
-const filePath = path.join(__dirname, '../utils/lexicon/wmItems/')
-router.all('/lexicon',async function (req,res) {
-    let items = await wmApi.items();
-    res.send(items);
-});
+// const filePath = path.join(__dirname, '../utils/lexicon/wmItems/')
+// router.all('/lexicon',async function (req,res) {
+//     let items = await wmApi.items();
+//     res.send(items);
+// });
 //
 // router.all('/lexiconLoad',async function (req,res) {
 //     const bodyType = req.query.type;

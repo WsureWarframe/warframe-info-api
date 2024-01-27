@@ -22,16 +22,12 @@ const init = {
 
         libSchedule.getWfaLibCache()
             .then(res => logger.info(Object.keys(res)))
-            .then(() => wfaLib.initOnlineRW())
-            .then(() => wfaLib.initOnlineLib())
             .then(() => wfaLib.initLibsCache());
 
         schedule.scheduleJob('0 0 0/2 * * ?' , function (){
             libSchedule.setWfaLibCache()
                 .then(() => libSchedule.getWfaLibCache())
                 .then(res => logger.info(Object.keys(res)))
-                .then(() => wfaLib.initOnlineRW())
-                .then(() => wfaLib.initOnlineLib())
                 .then(() => wfaLib.initLibsCache());
         });
     }

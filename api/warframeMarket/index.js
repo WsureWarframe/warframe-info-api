@@ -30,12 +30,12 @@ const index = {
         //数据结构 :{ items,riven:{items,attributes},lich:{ephemeras,weapons,quirks},sister:{ephemeras,weapons,quirks}}
         let items = utils.mergeArray(state_zh.items,state_en.items,getKey,merge)
 
-        let riven_attributes = utils.mergeArray(state_zh.riven.items,state_en.riven.items,getKey,(v1,v2)=>{ return {...v1,zh:v1.effect,en:v2.effect,code:v1.url_name}})
+        let riven_attributes = utils.mergeArray(state_zh.riven.attributes,state_en.riven.attributes,getKey,(v1,v2)=>{ return {...v1,zh:v1.effect,en:v2.effect,code:v1.url_name}})
         let riven_items = utils.mergeArray(state_zh.riven.items,state_en.riven.items,getKey,merge)
 
         let auctionsWeapons = utils.mergeArray(
-            state_zh.lich.weapons.concat(state_zh.sister.weapons),
-            state_en.lich.weapons.concat(state_en.sister.weapons),
+            state_zh.lich.weapons.map(v => { return {...v,type:'lich'}}).concat(state_zh.sister.weapons.map(v => { return {...v,type:'sister'}})),
+            state_en.lich.weapons.map(v => { return {...v,type:'lich'}}).concat(state_en.sister.weapons.map(v => { return {...v,type:'sister'}})),
             getKey,
             merge
         )
@@ -63,7 +63,7 @@ const index = {
     auctionsSearch:async (type='riven', weapon_url_name)=>{
         // type : riven,lich,sister
         let url = `${WARFRAME_HOST}auctions/search?type=${type}&weapon_url_name=${weapon_url_name}&polarity=any&buyout_policy=direct&sort_by=price_asc`
-        return (await getJson(url)).payload.auctions
+        return (await getJson(url)).payload.auctions.filter(v => v.owner.status !== 'offline')
     },
     orders:async (name = 'primed_chamber') =>{
         const url = `${WARFRAME_HOST}items/${name}/orders`;
