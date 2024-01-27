@@ -32,9 +32,7 @@ router.all('/list',function (req,res) {
 });
 
 router.all(['/detail/:detail','/detail'],function (req,res) {
-  const bodyDetail = req.body.detail;
-  const pathDetail = req.params.detail;
-  const detail = pathDetail ? pathDetail : (bodyDetail ? bodyDetail : null);
+  const detail = utils.getParamFromReq(req,'detail',true)
   wfApi(detail).then( body => {
     res.json(body);
   }).catch(e => {
@@ -43,24 +41,24 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
   });
 });
 
-router.all('/keys/:type/:key',function (req,res) {
-  const pathType = req.params.type;
-  const pathKey = req.params.key;
-  if(pathKey === '' || pathType === '')
-    res.send("参数错误");
-  else
-    res.json(wfaLibs.libs[pathType].get(pathKey));
-});
+// router.all('/keys/:type/:key',function (req,res) {
+//   const pathType = req.params.type;
+//   const pathKey = req.params.key;
+//   if(pathKey === '' || pathType === '')
+//     res.send("参数错误");
+//   else
+//     res.json(wfaLibs.libs[pathType].get(pathKey));
+// });
 
-router.all('/test',function (req, res) {
-  const test = req.body.str;
-  res.send(tran.translateByCache(test));
-});
+// router.all('/test',function (req, res) {
+//   const test = req.body.str;
+//   res.send(tran.translateByCache(test));
+// });
 
 router.all('/tran',async function (req, res) {
-  const test = req.body.str;
-  const lan = req.body.lan;
-  res.send(await tran.googleTranslate(test, lan))
+  const str = utils.getParamFromReq(req,'str',true)
+  const lan = utils.getParamFromReq(req,'lan',true)
+  res.send(await tran.googleTranslate(str, lan))
 });
 
 router.all('/time',function (req,res) {
@@ -74,9 +72,7 @@ router.all('/time',function (req,res) {
 });
 
 router.all(['/dev/:type','/dev'],function (req,res) {
-  const bodyType = req.query.type;
-  const pathType = req.params.type;
-  const type = pathType ? pathType : (bodyType ? bodyType : null);
+  const type = utils.getParamFromReq(req,'type',true)
   logger.info(type);
   wfApi(type).then(body => {
     const data = warframeUtil.getInfo(type, body);
@@ -96,11 +92,8 @@ router.all(['/dev/:type','/dev'],function (req,res) {
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-  const bodyType = req.query.type;
-  const pathType = req.params.type;
-  const type = pathType ? pathType : (bodyType ? bodyType : null);
+  const type = utils.getParamFromReq(req,'type',true)
   const param = utils.testType(type);
-  const key = `${cacheHeader}:${type}`;
   let body =  await wfApi(param)
   let result = await warframeUtil.robotFormatStr(type, body);
   res.send(result);

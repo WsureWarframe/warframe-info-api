@@ -22,13 +22,13 @@ router.all('/tasks',function (req,res) {
 });
 
 router.all(['/queue/wf/:type','/queue/wf/'],async function (req,res) {
-  let type = req.params.type || req.query.type
+  const type = utils.getParamFromReq(req,'type',true)
   res.json(await robotUtils.taskQueue(type))
 });
 
 router.all(['/info/wf/:type/:key','/info/wf/'],async function (req,res) {
-  let type = req.params.type || req.query.type
-  let key = req.params.key || req.query.key
+  const type = utils.getParamFromReq(req,'type',true)
+  const key = utils.getParamFromReq(req,'key',true)
   res.send(await robotUtils.taskInfo(type,key))
 });
 

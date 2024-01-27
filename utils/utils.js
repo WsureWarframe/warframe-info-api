@@ -274,10 +274,11 @@ const utils = {
         })
     },
     getParamFromReq:function(req,key,required = false) {
-        let value = req && req.query && req.query[key] ? req.query[key] :
-        req && req.params && req.params[key] ? req.params[key] :
-        req && req.body && req.body[key] ? req.body[key] :
-        undefined
+        let value = 
+            req?.query?.[key] ? req.query[key] :
+            req?.params?.[key] ? req.params[key] :
+            req?.body?.[key] ? req.body[key] :
+            undefined
         if(this.isEmpty(value) && required)
             throw `required param: ${key} can't be empty`
         else

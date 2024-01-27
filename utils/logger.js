@@ -7,6 +7,11 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
     return `[${timestamp}]--[${level}]--[${label.replace(projectPath,'')}]: ${message}`;
 });
 
+const defaultOptions = {
+    maxSize: "20m",
+    maxFiles: "14d",
+};
+
 const logger = (file) => createLogger({
     format: format.combine(
         label({ label: file }),
@@ -15,7 +20,11 @@ const logger = (file) => createLogger({
     ),
     transports: [
         new transports.Console(),
-        new transports.File({level: 'error', filename: 'logs/warframe-info-api.log'})
+        new transports.File({
+            level: 'error', 
+            filename: 'logs/warframe-info-api.log',
+            ...defaultOptions
+        })
     ],
 });
 

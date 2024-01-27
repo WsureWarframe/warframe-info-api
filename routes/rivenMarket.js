@@ -13,19 +13,15 @@ const timeout = 60 * 1000;
 
 //获取字典接口
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
-    const page = req.body.page;
-    const size = req.body.size;
+    const type = utils.getParamFromReq(req,'type',true)
+    const page = utils.getParamFromReq(req,'page')
+    const size = utils.getParamFromReq(req,'size')
     //warframe market
     res.send(await rm.getInfo(type,page,size));
 });
 
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
+    const type = utils.getParamFromReq(req,'type',true)
     //warframe market
     const key = `${cacheHeader}:${type}`;
     let result = await utils.cacheUtil(key, async () => {

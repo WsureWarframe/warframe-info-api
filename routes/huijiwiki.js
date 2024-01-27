@@ -7,11 +7,9 @@ const cacheHeader = 'wiki';
 const timeout = 24 * 60 * 60 * 1000;
 
 router.all(['/dev/:type','/dev'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
-    const page = req.body.page;
-    const size = req.body.size;
+    const type = utils.getParamFromReq(req,'type',true)
+    const page = utils.getParamFromReq(req,'page')
+    const size = utils.getParamFromReq(req,'size')
     res.send(await hjwiki.getInfo(type,page,size));
 });
 
@@ -32,9 +30,7 @@ router.all(['/text/:type','/text'],async function (req,res) {
 });
 */
 router.all(['/robot/:type','/robot'],async function (req,res) {
-    const bodyType = req.query.type;
-    const pathType = req.params.type;
-    const type = pathType ? pathType : (bodyType ? bodyType : null);
+    const type = utils.getParamFromReq(req,'type',true)
     const key = `${cacheHeader}:${type}`;
     let result = await utils.cacheUtil(key, async () => {
         return await hjwiki.robotFormatStr(type);
