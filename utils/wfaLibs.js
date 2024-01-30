@@ -1,5 +1,6 @@
 const mcache = require('memory-cache');
 const statsName = require('./dict/RivenStatsName.json');
+const WmRivenAttribute = require('./dict/WmRivenAttribute.json');
 const wfaLibrarySchedule = require('../schedule/wfaLibrarySchedule');
 const customDict = require('./dict/custom.json');
 const path = require("path");
@@ -30,9 +31,12 @@ const libs = {
     auctionsWeapons: new mcache.Cache(),
     ephemeras: new mcache.Cache(),
     quirks: new mcache.Cache(),
+
+    wmr2rma: new mcache.Cache(),
 };
 const libsArr = ['Dict', 'Sale', 'Riven', 'NightWave', 'Invasion']
 const wmLibArr = [ 'riven_attributes','auctionsWeapons','ephemeras','quirks']
+const wmLibURLArr = [ 'ephemeras','quirks']
 // 内容对应：
 //      WFA遗产：Dict,Invasion,NightWave,Lib,Sale,Riven.    
 //      WarframeMarket: items(常规商品),riven_items(紫卡武器),riven_attributes(紫卡属性),auctionsWeapons(玄骸+姐妹武器),ephemeras,quirks.           
@@ -75,15 +79,30 @@ let initLibsCache = async () => {
         })
     });
 
+    // wmr2rma()
+    wmr2rma()
+
     // wm 常规物品的数据创建
     commonMcache.get('items').forEach((value_, index_) => {
         libs['wm'].put(value_.en, value_);
         value_.en !== value_.zh && libs['wm'].put(value_.zh, value_);
     });
+    commonMcache.get('riven_attributes').forEach(v => {
+        rm_name = commonMcache.get('wmr2rma')[v.url_name]
+        libs.riven_attributes.put(v.url_name,{...v,rm_name})
+    })
+    commonMcache.get('ephemeras').forEach(v => {
+        libs.ephemeras.put(v.element,v)
+    })
     wmLibArr.forEach( libName => {
         commonMcache.get(libName).forEach((value_, index_) => {
             libs[libName].put(value_.en, value_);
             value_.en !== value_.zh && libs[libName].put(value_.zh, value_);
+        });
+    })
+    wmLibURLArr.forEach( libName => {
+        commonMcache.get(libName).forEach((value_) => {
+            libs[libName].put(value_.url_name, value_);
         });
     })
 
@@ -115,6 +134,18 @@ let initCustomLib = () => {
     customSale.forEach(value_ => {
         libs['wm'].put(value_.customZh, value_);
     })
+}
+
+//将wmr的attr转换为rm的，节省字数
+let wmr2rma = () =>{
+    let wmr2rmaMap = {}
+    Object.keys(WmRivenAttribute)
+        .map(key => { 
+                return {url_name:key,rm_name:statsName[WmRivenAttribute[key]]}
+            }
+        )
+        .forEach(v => wmr2rmaMap[v.url_name] = v.rm_name )
+    commonMcache.put('wmr2rma',wmr2rmaMap)
 }
 
 //请谨慎使用这两段傻逼代码，如果我没记错的话，会从wm爬一堆物品相关json下来存文件夹里，如果你不做离线化，不建议搞
