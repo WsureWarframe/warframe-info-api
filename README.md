@@ -98,6 +98,8 @@
 #### 3.clone 本项目
 ```
     git clone https://github.com/WsureWarframe/warframe-info-api.git
+
+    cd warframe-info-api
 ```
 如果你的网络无法稳定访问github，请自行搜索有关访问github的网络配置相关知识
 
