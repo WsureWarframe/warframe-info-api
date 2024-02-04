@@ -36,14 +36,35 @@
         - robot: 国际服中文`string`数据 （供机器人使用，缓存失效时间:1 min）
     - ② 必填参数
         - 商品名称，可模糊(支持中英文)
+    - 选填分页参数，目前仅针对`json`数据：
+        - `page`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
+        - `size`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
 3. rivenMarket 紫卡价格查询  __url:[/rm/①/②]()__
     - ① 必填参数
         - dev: 国际服`json`数据
         - robot: 国际服中文`string`数据 （供机器人使用，缓存失效时间:1 min）
     - ② 必填参数
         - 紫卡名称，可模糊(支持中英文，新武器建议英文搜索，词库中中文名更新不一定及时)
+4. WarframeMarket 紫卡价格查询  __url:[/wmr/①/②]()__
+    - ① 必填参数
+        - dev: 国际服`json`数据
+        - robot: 国际服中文`string`数据 （供机器人使用，缓存失效时间:1 min）
+    - ② 必填参数
+        - 紫卡名称，可模糊(支持中英文，新武器建议英文搜索，词库中中文名更新不一定及时) 
+    - 选填分页参数，目前仅针对`json`数据：
+        - `page`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
+        - `size`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
+5. WarframeMarket 玄骸价格查询  __url:[/wmw/①/②]()__
+    - ① 必填参数
+        - dev: 国际服`json`数据
+        - robot: 国际服中文`string`数据 （供机器人使用，缓存失效时间:1 min）
+    - ② 必填参数
+        - 玄骸名称，可模糊(支持中英文，新武器建议英文搜索，词库中中文名更新不一定及时) 
+    - 选填分页参数，目前仅针对`json`数据：
+        - `page`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
+        - `size`: 类型:整数，传参方式用Url Param或者 requestBody json的K:V
 >  *由于灰机wiki反对爬虫，本功能目前只提供拼接搜索链接，后续可能废弃。*
-4. ~~灰机wiki 查询 __url:[/wiki/①/②]()__~~
+6. ~~灰机wiki 查询 __url:[/wiki/①/②]()__~~
     - ① 必填参数
         - dev: 国际服`json`数据
         - robot: 国际服中文`string`数据 （供机器人使用，缓存失效时间:1 day）
@@ -51,5 +72,43 @@
         - 查询关键词，使用wiki的搜索接口
         
 ### 调用方式，以查询wm商品价格为例
-#### ①. [GET/POST]  [/wm/robot/持久力](http://nymph.rbq.life:3000/wm/robot/持久力)
-#### ②. [GET/POST]  [/wm/robot?type=持久力](http://nymph.rbq.life:3000/wm/robot?type=持久力)
+> (分页参数支持`wm`、`wmr`、`wmw`。`rm`接口未改造分页，因为WM紫卡使用更多)
+#### 1. [GET/POST]  [/wm/robot/持久力](http://nymph.rbq.life:3000/wm/robot/持久力)
+#### 2. [GET/POST]  [/wm/robot?type=持久力](http://nymph.rbq.life:3000/wm/robot?type=持久力)
+#### 3. [GET/POST]  [/wm/dev/持久力?page=2&size=10](http://nymph.rbq.life:3000/wm/dev/持久力?page=2&size=10)
+#### 4. [GET/POST]  [/wm/dev?type=持久力&page=2&size=10](http://nymph.rbq.life:3000/wm/dev?type=持久力&page=2&size=10)
+
+### CURL示例
+```curl
+    curl http://nymph.rbq.life:3000/wmw/dev/Kuva?page=2&size=10
+    // OR
+    curl http://nymph.rbq.life:3000/wmw/dev?type=Kuva&page=2&size=10
+    // OR
+    curl -X POST -d '{"page":2,"size":10}' -H 'Content-Type:application/json' http://nymph.rbq.life:3000/wmw/dev/Kuva
+    // OR
+    curl -X POST -d '{"page":2,"size":10,"type":"Kuva"}' -H 'Content-Type:application/json' http://nymph.rbq.life:3000/wmw/dev
+```
+
+## 如何运行
+#### 1.下载安装最新版本nodejs、git
+#### 2.安装yarn
+```
+    npm install --global yarn
+```
+#### 3.clone 本项目
+```
+    git clone https://github.com/WsureWarframe/warframe-info-api.git
+```
+如果你的网络无法稳定访问github，请自行搜索有关访问github的网络配置相关知识
+
+#### 4.使用yarn安装依赖
+```
+    yarn -i
+```
+
+#### 5.运行本项目
+```
+    yarn start
+```
+
+#### 6.如需修改端口或者配置证书，请自行修改`bin/www`内的配置
