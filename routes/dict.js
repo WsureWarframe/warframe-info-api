@@ -3,7 +3,17 @@ const tran = require("../utils/translate");
 const logger = require('../utils/logger')(__filename)
 const utils = require('../utils/utils');
 const router = express.Router();
+const wfaLibs = require('../utils/wfaLibs');
 
+router.all('/libs/dev/',function (req,res) {
+  const libs = Object.keys(wfaLibs.libs)
+  res.json(libs);
+});
+
+router.all('/libs/robot/',function (req,res) {
+  const libs = Object.keys(wfaLibs.libs)
+  res.send(libs.join(','));
+});
 
 router.all(['/tran/dev/:key','/tran/dev/:key/:libs'],function (req,res) {
   const pathKey = utils.getParamFromReq(req,'key',true)
