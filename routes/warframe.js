@@ -55,11 +55,11 @@ router.all(['/detail/:detail','/detail'],function (req,res) {
 //   res.send(tran.translateByCache(test));
 // });
 
-router.all('/tran',async function (req, res) {
-  const str = utils.getParamFromReq(req,'str',true)
-  const lan = utils.getParamFromReq(req,'lan',true)
-  res.send(await tran.googleTranslate(str, lan))
-});
+// router.all('/tran',async function (req, res) {
+//   const str = utils.getParamFromReq(req,'str',true)
+//   const lan = utils.getParamFromReq(req,'lan',true)
+//   res.send(await tran.googleTranslate(str, lan))
+// });
 
 router.all('/time',function (req,res) {
   wfApi('events').then(body => {

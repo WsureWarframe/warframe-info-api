@@ -161,7 +161,7 @@ function eventsFormat(body){
         for (let value of body) {
             value.description = tran.translateByCache(value.description);
             logger.info(tran.translateByCache(value.tooltip));
-            value.tooltip = (await tran.googleTranslate(tran.translateByCache(value.tooltip)));
+            value.tooltip = tran.translateByCache(value.tooltip);
             value.node = tran.translateByCache(value.node);
             value.victimNode = tran.translateByCache(value.victimNode);
             for (let val of value.rewards) {
@@ -187,7 +187,7 @@ function newsFormat(body) {
             } else {
                 const language = Object.keys(value.translations)[0];
                 logger.info(language, value.translations[language]);
-                const tranRes = await tran.googleTranslate(tran.translateByCache(value.translations[language]), language);
+                const tranRes = tran.translateByCache(value.translations[language]);
                 logger.info(tranRes);
                 value.message = tranRes;
             }
@@ -300,7 +300,7 @@ function newsAsString(promise){
                 otherArr.push(Object.keys(value.translations)[0]+':'+value.message+'\n'+value.link);
             }
         });
-        asString += '新闻：\n\n'+zhArr.join('\n')+'\n\n外区新闻(谷歌机翻)：\n\n'+otherArr.join('\n');
+        asString += '新闻：\n\n'+zhArr.join('\n')+'\n\n外区新闻：\n\n'+otherArr.join('\n');
         resolve(asString);
     });
 }

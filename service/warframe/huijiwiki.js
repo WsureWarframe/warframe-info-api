@@ -1,8 +1,6 @@
 const superagent = require('superagent');
 const proxyConfig = require('../../config/proxyConfig');
 require('superagent-proxy')(superagent);
-const utils = require('../../utils/utils');
-const wfaLibs = require('../../utils/wfaLibs');
 const cheerio = require('cheerio');
 
 huijiwiki ={

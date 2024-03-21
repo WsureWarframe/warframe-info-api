@@ -1,9 +1,8 @@
 const wfaLibs = require('./wfaLibs');
-const googleTranslate = require('google-baidu-translate-api');
-const googleTranslateAnother = require('translate-google');
+const { translate } = require('@vitalets/google-translate-api');
 const utils = require("./utils");
 const logger = require('./logger')(__filename)
-const translate = {
+const translateApi = {
     translateByCache:function (original) {
         if(original)
         {
@@ -17,16 +16,11 @@ const translate = {
     },
     googleTranslate: function (original, from = 'en') {
         return new Promise((resolve, reject) => {
-            googleTranslate.google(original, 'zh-cn', from)
-                .then(res=> resolve(res.dist))
-                .catch(err=>{
-                    logger.info(err);
-                    googleTranslateAnother(original,{from: from, to:'zh-cn'})
-                        .then( res => resolve(res.text))
-                        .catch( err => {
-                            console.error( err )
-                            resolve(original)
-                        })
+            translate(original,{from: from, to:'zh-cn'})
+                .then( res => resolve(res.text))
+                .catch( err => {
+                    console.error( err )
+                    resolve(original)
                 })
         })
     },
@@ -122,4 +116,4 @@ function getCache(key){
 //万用翻译
 
 
-module.exports = translate;
+module.exports = translateApi;
